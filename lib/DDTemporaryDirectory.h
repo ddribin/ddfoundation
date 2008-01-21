@@ -35,6 +35,8 @@
 
 - (id) init;
 
+- (void) cleanup;
+
 - (NSString *) fullPath;
 
 @end

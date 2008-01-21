@@ -73,12 +73,17 @@
 //=========================================================== 
 - (void) dealloc
 {
-    [[NSFileManager defaultManager] removeFileAtPath: mFullPath
-                                             handler: nil];
+    [self cleanup];
     [mFullPath release];
     
     mFullPath = nil;
     [super dealloc];
+}
+
+- (void) cleanup;
+{
+    [[NSFileManager defaultManager] removeFileAtPath: mFullPath
+                                             handler: nil];
 }
 
 - (NSString *) fullPath;

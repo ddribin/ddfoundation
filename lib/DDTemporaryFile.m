@@ -50,12 +50,18 @@
 //=========================================================== 
 - (void) dealloc
 {
+    [self cleanup];
     [mTemporaryDirectory release];
     [mFullPath release];
     
     mTemporaryDirectory = nil;
     mFullPath = nil;
     [super dealloc];
+}
+
+- (void) cleanup;
+{
+    [mTemporaryDirectory cleanup];
 }
 
 - (NSString *) fullPath;

@@ -29,7 +29,7 @@
 
 - (void) testTemporaryFile
 {
-    DDTemporaryFile * file = [[DDTemporaryFile alloc] initWithName: @"file.txt"];
+    DDTemporaryFile * file = [DDTemporaryFile temporaryFileWithName: @"file.txt"];
     NSFileManager * fileManager = [NSFileManager defaultManager];
     
     NSString * fullPath = [file fullPath];
@@ -42,7 +42,7 @@
                  nil);
     STAssertFalse(isDirectory, nil);
     
-    [file release];
+    [file cleanup];
     STAssertFalse([fileManager fileExistsAtPath: fullPath isDirectory: nil],
                  nil);
 }

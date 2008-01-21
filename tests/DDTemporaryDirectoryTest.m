@@ -35,7 +35,7 @@
 
 - (void) testTemporaryDirectory;
 {
-    DDTemporaryDirectory * directory = [[DDTemporaryDirectory alloc] init];
+    DDTemporaryDirectory * directory = [DDTemporaryDirectory temporaryDirectory];
     STAssertNotNil(directory, nil);
     
     NSFileManager * fileManager = [NSFileManager defaultManager];
@@ -58,7 +58,7 @@
                  nil);
     STAssertFalse(isDirectory, nil);
 
-    [directory release];
+    [directory cleanup];
     STAssertFalse([fileManager fileExistsAtPath: tempFile isDirectory: nil],
                   nil);
     STAssertFalse([fileManager fileExistsAtPath: fullPath isDirectory: nil],
