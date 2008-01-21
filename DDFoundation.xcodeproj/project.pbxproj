@@ -47,8 +47,8 @@
 		55CA85900D454F3F004492E9 /* NSString+DDExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+DDExtensions.m"; sourceTree = "<group>"; };
 		55CA85A00D454FE9004492E9 /* JRLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRLog.h; sourceTree = "<group>"; };
 		55CA85A10D454FE9004492E9 /* JRLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRLog.m; sourceTree = "<group>"; };
-		55CA86FA0D455108004492E9 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = UnitTests.octest; path = build/Debug/UnitTests.octest; sourceTree = "<group>"; };
-		55CA86FB0D455108004492E9 /* UnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UnitTests-Info.plist"; sourceTree = "<group>"; };
+		55CA86FA0D455108004492E9 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		55CA86FB0D455108004492E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55CA87060D455141004492E9 /* DDTemporaryDirectoryTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTemporaryDirectoryTest.h; sourceTree = "<group>"; };
 		55CA87070D455141004492E9 /* DDTemporaryDirectoryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTemporaryDirectoryTest.m; sourceTree = "<group>"; };
 		55CA87080D455141004492E9 /* DDTemporaryFileTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTemporaryFileTest.h; sourceTree = "<group>"; };
@@ -96,7 +96,6 @@
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				034768DFFF38A50411DB9C8B /* Products */,
-				55CA86FB0D455108004492E9 /* UnitTests-Info.plist */,
 			);
 			name = DDFoundation;
 			sourceTree = "<group>";
@@ -175,9 +174,18 @@
 				55CA87090D455141004492E9 /* DDTemporaryFileTest.m */,
 				55CA870A0D455141004492E9 /* NSString+DDExtensionsTest.h */,
 				55CA870B0D455141004492E9 /* NSString+DDExtensionsTest.m */,
+				55CA87360D455298004492E9 /* Resources */,
 			);
 			name = Tests;
 			path = tests;
+			sourceTree = "<group>";
+		};
+		55CA87360D455298004492E9 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				55CA86FB0D455108004492E9 /* Info.plist */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -377,7 +385,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
-				INFOPLIST_FILE = "UnitTests-Info.plist";
+				INFOPLIST_FILE = tests/Info.plist;
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -402,7 +410,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
-				INFOPLIST_FILE = "UnitTests-Info.plist";
+				INFOPLIST_FILE = tests/Info.plist;
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = (
 					"-framework",
