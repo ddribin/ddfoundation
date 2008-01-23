@@ -22,12 +22,33 @@
  * SOFTWARE.
  */
 
-#import <SenTestingKit/SenTestingKit.h>
-#import "DDTestCase.h"
+#import "DDTestCaseTest.h"
 
-@interface DDTemporaryDirectoryTest : DDTestCase
+
+@implementation DDTestCaseTest
+
+- (void) testPathForResource
 {
+    NSString * path = [self pathForResource: @"test" ofType: @"plist"];
+    STAssertNotNil(path, nil);
+}
 
+- (void) testForNonExistantResource
+{
+    NSString * path = [self pathForResource: @"unknown" ofType: @"plist"];
+    STAssertNil(path, nil);
+}
+
+- (void) testPlistForResource
+{
+    id plist = [self plistForResource: @"test"];
+    STAssertNotNil(plist, nil);
+    STAssertTrue([plist isKindOfClass: [NSDictionary class]], nil);
+
+    NSDictionary * actual = plist;
+    NSDictionary * expected = [NSDictionary dictionaryWithObjectsAndKeys:
+                               @"Foo", @"Name", nil];
+    STAssertEqualObjects(actual, expected, nil);
 }
 
 @end

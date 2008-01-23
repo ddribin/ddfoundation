@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		55B669910D47F91E006A4FB3 /* DDTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B669900D47F91E006A4FB3 /* DDTestCase.m */; };
+		55B6699B0D47FA31006A4FB3 /* DDTestCaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B6699A0D47FA31006A4FB3 /* DDTestCaseTest.m */; };
+		55B669C30D47FC93006A4FB3 /* test.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55B669C20D47FC93006A4FB3 /* test.plist */; };
 		55CA85910D454F3F004492E9 /* DDTemporaryDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = 55CA85890D454F3F004492E9 /* DDTemporaryDirectory.h */; };
 		55CA85920D454F3F004492E9 /* DDTemporaryDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CA858A0D454F3F004492E9 /* DDTemporaryDirectory.m */; };
 		55CA85930D454F3F004492E9 /* DDTemporaryFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 55CA858B0D454F3F004492E9 /* DDTemporaryFile.h */; };
@@ -29,7 +32,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D /* DDFoundation */;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = DDFoundation;
 		};
 /* End PBXContainerItemProxy section */
@@ -37,6 +40,11 @@
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32DBCF5E0370ADEE00C91783 /* DDFoundation_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFoundation_Prefix.pch; sourceTree = "<group>"; };
+		55B6698F0D47F91E006A4FB3 /* DDTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTestCase.h; sourceTree = "<group>"; };
+		55B669900D47F91E006A4FB3 /* DDTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTestCase.m; sourceTree = "<group>"; };
+		55B669990D47FA31006A4FB3 /* DDTestCaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTestCaseTest.h; sourceTree = "<group>"; };
+		55B6699A0D47FA31006A4FB3 /* DDTestCaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTestCaseTest.m; sourceTree = "<group>"; };
+		55B669C20D47FC93006A4FB3 /* test.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = test.plist; sourceTree = "<group>"; };
 		55CA85890D454F3F004492E9 /* DDTemporaryDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTemporaryDirectory.h; sourceTree = "<group>"; };
 		55CA858A0D454F3F004492E9 /* DDTemporaryDirectory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTemporaryDirectory.m; sourceTree = "<group>"; };
 		55CA858B0D454F3F004492E9 /* DDTemporaryFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTemporaryFile.h; sourceTree = "<group>"; };
@@ -48,7 +56,7 @@
 		55CA85A00D454FE9004492E9 /* JRLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRLog.h; sourceTree = "<group>"; };
 		55CA85A10D454FE9004492E9 /* JRLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRLog.m; sourceTree = "<group>"; };
 		55CA86FA0D455108004492E9 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		55CA86FB0D455108004492E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55CA86FB0D455108004492E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		55CA87060D455141004492E9 /* DDTemporaryDirectoryTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTemporaryDirectoryTest.h; sourceTree = "<group>"; };
 		55CA87070D455141004492E9 /* DDTemporaryDirectoryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTemporaryDirectoryTest.m; sourceTree = "<group>"; };
 		55CA87080D455141004492E9 /* DDTemporaryFileTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTemporaryFileTest.h; sourceTree = "<group>"; };
@@ -174,6 +182,10 @@
 				55CA87090D455141004492E9 /* DDTemporaryFileTest.m */,
 				55CA870A0D455141004492E9 /* NSString+DDExtensionsTest.h */,
 				55CA870B0D455141004492E9 /* NSString+DDExtensionsTest.m */,
+				55B6698F0D47F91E006A4FB3 /* DDTestCase.h */,
+				55B669900D47F91E006A4FB3 /* DDTestCase.m */,
+				55B669990D47FA31006A4FB3 /* DDTestCaseTest.h */,
+				55B6699A0D47FA31006A4FB3 /* DDTestCaseTest.m */,
 				55CA87360D455298004492E9 /* Resources */,
 			);
 			name = Tests;
@@ -183,9 +195,11 @@
 		55CA87360D455298004492E9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				55B669C20D47FC93006A4FB3 /* test.plist */,
 				55CA86FB0D455108004492E9 /* Info.plist */,
 			);
 			name = Resources;
+			path = resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -266,6 +280,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55B669C30D47FC93006A4FB3 /* test.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +310,8 @@
 				55CA87300D4551AF004492E9 /* DDTemporaryDirectoryTest.m in Sources */,
 				55CA87310D4551AF004492E9 /* DDTemporaryFileTest.m in Sources */,
 				55CA87320D4551AF004492E9 /* NSString+DDExtensionsTest.m in Sources */,
+				55B669910D47F91E006A4FB3 /* DDTestCase.m in Sources */,
+				55B6699B0D47FA31006A4FB3 /* DDTestCaseTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

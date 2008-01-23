@@ -25,8 +25,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "DDTestCase.h"
 
-@interface DDTemporaryDirectoryTest : DDTestCase
-{
+@interface DDTestCaseTest : DDTestCase {
 
 }
 

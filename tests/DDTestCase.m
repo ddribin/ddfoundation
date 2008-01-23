@@ -22,12 +22,41 @@
  * SOFTWARE.
  */
 
-#import <SenTestingKit/SenTestingKit.h>
 #import "DDTestCase.h"
+#import "JRLog.h"
 
-@interface DDTemporaryDirectoryTest : DDTestCase
+@implementation DDTestCase
+
++ (void) initialize;
 {
+    [self setDefaultJRLogLevel: JRLogLevel_Error];
+}
 
+- (NSString *) resourcePath;
+{
+    NSBundle * myBundle = [NSBundle bundleForClass: [self class]];
+    return [myBundle resourcePath];
+}
+
+- (NSString *) pathForResource: (NSString *) resource ofType: (NSString *) type;
+{
+    NSBundle * myBundle = [NSBundle bundleForClass: [self class]];
+    return [myBundle pathForResource: resource ofType: type];
+}
+
+- (id) plistForResource: (NSString *) resource;
+{
+    NSString * path = [self pathForResource: resource ofType: @"plist"];
+    STAssertNotNil(path, nil);
+    NSData * data = [NSData dataWithContentsOfFile: path];
+    NSString * errorString = nil;
+    id plist =
+    [NSPropertyListSerialization propertyListFromData: data
+                                     mutabilityOption: NSPropertyListMutableContainersAndLeaves
+                                               format: nil
+                                     errorDescription: &errorString];
+    STAssertNil(errorString, errorString);
+    return plist;
 }
 
 @end

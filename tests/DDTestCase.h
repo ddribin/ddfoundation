@@ -23,11 +23,14 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "DDTestCase.h"
 
-@interface DDTemporaryDirectoryTest : DDTestCase
+
+@interface DDTestCase : SenTestCase
 {
-
 }
+
+- (NSString *) resourcePath;
+- (NSString *) pathForResource: (NSString *) resource ofType: (NSString *) type;
+- (id) plistForResource: (NSString *) resource;
 
 @end

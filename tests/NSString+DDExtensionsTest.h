@@ -23,9 +23,9 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
+#import "DDTestCase.h"
 
-
-@interface NSString_DDExtensionsTest : SenTestCase {
+@interface NSString_DDExtensionsTest : DDTestCase {
 
 }
 

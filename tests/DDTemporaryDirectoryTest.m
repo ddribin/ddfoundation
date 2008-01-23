@@ -24,14 +24,8 @@
 
 #import "DDTemporaryDirectoryTest.h"
 #import "DDTemporaryDirectory.h"
-#import "JRLog.h"
 
 @implementation DDTemporaryDirectoryTest
-
-+ (void) initialize;
-{
-    [NSObject setDefaultJRLogLevel: JRLogLevel_Error];
-}
 
 - (void) testTemporaryDirectory;
 {
