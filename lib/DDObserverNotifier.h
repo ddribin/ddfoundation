@@ -11,17 +11,19 @@
 
 @interface DDObserverNotifier : NSObject
 {
-    NSMutableDictionary * _observedObjects;
+    NSMutableArray * _observedObjects;
 }
 
 - (void) addObserver: (id) notificationObserver
             selector: (SEL) selector
           forKeyPath: (NSString *) keyPath
-            ofObject: (id) object;
+            ofObject: (NSObject *) object;
 
 - (void) removeObserver: (id) notificationObserver
              forKeyPath: (NSString *) keyPath
-               ofObject: (id) object;
+               ofObject: (NSObject *) object;
+
+- (void) removeObserver: (id) notificationObserver;
 
 @end
 
