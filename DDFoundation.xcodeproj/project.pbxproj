@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		555D37250D48F512001A5533 /* DDObserverNotifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 555D37230D48F512001A5533 /* DDObserverNotifier.h */; };
+		555D37260D48F512001A5533 /* DDObserverNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 555D37240D48F512001A5533 /* DDObserverNotifier.m */; };
+		555D373A0D48F8E0001A5533 /* DDObserverNotifierTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 555D372A0D48F687001A5533 /* DDObserverNotifierTest.m */; };
 		55B669910D47F91E006A4FB3 /* DDTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B669900D47F91E006A4FB3 /* DDTestCase.m */; };
 		55B6699B0D47FA31006A4FB3 /* DDTestCaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B6699A0D47FA31006A4FB3 /* DDTestCaseTest.m */; };
 		55B669C30D47FC93006A4FB3 /* test.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55B669C20D47FC93006A4FB3 /* test.plist */; };
@@ -40,6 +43,10 @@
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32DBCF5E0370ADEE00C91783 /* DDFoundation_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFoundation_Prefix.pch; sourceTree = "<group>"; };
+		555D37230D48F512001A5533 /* DDObserverNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDObserverNotifier.h; sourceTree = "<group>"; };
+		555D37240D48F512001A5533 /* DDObserverNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDObserverNotifier.m; sourceTree = "<group>"; };
+		555D37290D48F687001A5533 /* DDObserverNotifierTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDObserverNotifierTest.h; sourceTree = "<group>"; };
+		555D372A0D48F687001A5533 /* DDObserverNotifierTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDObserverNotifierTest.m; sourceTree = "<group>"; };
 		55B6698F0D47F91E006A4FB3 /* DDTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTestCase.h; sourceTree = "<group>"; };
 		55B669900D47F91E006A4FB3 /* DDTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTestCase.m; sourceTree = "<group>"; };
 		55B669990D47FA31006A4FB3 /* DDTestCaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTestCaseTest.h; sourceTree = "<group>"; };
@@ -124,6 +131,8 @@
 				55CA858A0D454F3F004492E9 /* DDTemporaryDirectory.m */,
 				55CA858B0D454F3F004492E9 /* DDTemporaryFile.h */,
 				55CA858C0D454F3F004492E9 /* DDTemporaryFile.m */,
+				555D37230D48F512001A5533 /* DDObserverNotifier.h */,
+				555D37240D48F512001A5533 /* DDObserverNotifier.m */,
 				55CA858D0D454F3F004492E9 /* NSData+DDExtensions.h */,
 				55CA858E0D454F3F004492E9 /* NSData+DDExtensions.m */,
 				55CA858F0D454F3F004492E9 /* NSString+DDExtensions.h */,
@@ -180,6 +189,8 @@
 				55CA87070D455141004492E9 /* DDTemporaryDirectoryTest.m */,
 				55CA87080D455141004492E9 /* DDTemporaryFileTest.h */,
 				55CA87090D455141004492E9 /* DDTemporaryFileTest.m */,
+				555D37290D48F687001A5533 /* DDObserverNotifierTest.h */,
+				555D372A0D48F687001A5533 /* DDObserverNotifierTest.m */,
 				55CA870A0D455141004492E9 /* NSString+DDExtensionsTest.h */,
 				55CA870B0D455141004492E9 /* NSString+DDExtensionsTest.m */,
 				55B6698F0D47F91E006A4FB3 /* DDTestCase.h */,
@@ -214,6 +225,7 @@
 				55CA85950D454F3F004492E9 /* NSData+DDExtensions.h in Headers */,
 				55CA85970D454F3F004492E9 /* NSString+DDExtensions.h in Headers */,
 				55CA85A20D454FE9004492E9 /* JRLog.h in Headers */,
+				555D37250D48F512001A5533 /* DDObserverNotifier.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,6 +324,7 @@
 				55CA87320D4551AF004492E9 /* NSString+DDExtensionsTest.m in Sources */,
 				55B669910D47F91E006A4FB3 /* DDTestCase.m in Sources */,
 				55B6699B0D47FA31006A4FB3 /* DDTestCaseTest.m in Sources */,
+				555D373A0D48F8E0001A5533 /* DDObserverNotifierTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,6 +337,7 @@
 				55CA85960D454F3F004492E9 /* NSData+DDExtensions.m in Sources */,
 				55CA85980D454F3F004492E9 /* NSString+DDExtensions.m in Sources */,
 				55CA85A30D454FE9004492E9 /* JRLog.m in Sources */,
+				555D37260D48F512001A5533 /* DDObserverNotifier.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
