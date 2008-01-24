@@ -11,7 +11,7 @@
 
 @interface DDObserverNotifier : NSObject
 {
-    NSMutableArray * _observedObjects;
+    NSMutableDictionary * _observedObjects;
 }
 
 - (void) addObserver: (id) notificationObserver
@@ -26,6 +26,8 @@
 - (void) removeObserver: (id) notificationObserver;
 
 - (void) removeAllObservers;
+
+- (void) removeObserver: (id) notificationObserver;
 
 @end
 

@@ -10,7 +10,6 @@
 #import "DDTestCase.h"
 
 @interface DDObserverNotifierTest : DDTestCase {
-    int _notificationsSent;
 }
 
 @end

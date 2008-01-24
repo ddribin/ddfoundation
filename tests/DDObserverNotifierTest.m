@@ -16,7 +16,7 @@
     BOOL _flagged2;
 }
 
-+ (id) testObject;
++ (id) object;
 
 - (BOOL) isFlagged;
 - (void) setFlagged: (BOOL) flagged;
@@ -31,7 +31,7 @@
 
 @implementation DDObserverNotifierTestObject
 
-+ (id) testObject
++ (id) object
 {
     return [[[self alloc] init] autorelease];
 }
@@ -46,63 +46,86 @@
 
 @end
 
-@implementation DDObserverNotifierTest
-
-- (void) gotNotification: (NSNotification *) note
+@interface DDObserverNotifierTestObserver : NSObject
 {
-    _notificationsSent++;
+    int _notificationCount;
+}
+
++ (id) observer;
+
+- (void) countNotification: (NSNotification *) note;
+- (void) ignoreNotification: (NSNotification *) note;
+- (int) notificationCount;
+
+@end
+
+@implementation DDObserverNotifierTestObserver : NSObject
+
++ (id) observer;
+{
+    return [[[self alloc] init] autorelease];
+}
+
+- (void) countNotification: (NSNotification *) note;
+{
+    _notificationCount++;
 }
 
 - (void) ignoreNotification: (NSNotification *) note;
 {
 }
 
-- (void) setUp
+- (int) notificationCount;
 {
-    [super setUp];
-    _notificationsSent = 0;
+    return _notificationCount;
 }
+
+@end
+
+@implementation DDObserverNotifierTest
 
 - (void) testSimpleAddAndRemoveObserver;
 {
-    DDObserverNotifierTestObject * object = [DDObserverNotifierTestObject testObject];
+    DDObserverNotifierTestObject * object = [DDObserverNotifierTestObject object];
+    DDObserverNotifierTestObserver * observer = [DDObserverNotifierTestObserver observer];
     
     [object toggleFlagged];
-    STAssertEquals(_notificationsSent, 0, nil);
+    STAssertEquals([observer notificationCount], 0, nil);
     
     DDObserverNotifier * notifier = [[[DDObserverNotifier alloc] init] autorelease];
-    [notifier addObserver: self
-                 selector: @selector(gotNotification:)
+    [notifier addObserver: observer
+                 selector: @selector(countNotification:)
                forKeyPath: @"flagged" ofObject: object];
     
     [object toggleFlagged];
     [object toggleFlagged2];
     
     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
-    STAssertEquals(_notificationsSent, 1, nil);
+    STAssertEquals([observer notificationCount], 1, nil);
     
-    [notifier removeObserver: self forKeyPath: @"flagged" ofObject: object];
+    [notifier removeObserver: observer forKeyPath: @"flagged" ofObject: object];
     [object toggleFlagged];
     [object toggleFlagged2];
     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
-    STAssertEquals(_notificationsSent, 1, nil);
+    STAssertEquals([observer notificationCount], 1, nil);
 }
 
 - (void) testMultipleAddAndRemoveObserver;
 {
-    DDObserverNotifierTestObject * object = [DDObserverNotifierTestObject testObject];
+    DDObserverNotifierTestObject * object = [DDObserverNotifierTestObject object];
+    DDObserverNotifierTestObserver * observer = [DDObserverNotifierTestObserver observer];
     
     [object toggleFlagged];
-    STAssertEquals(_notificationsSent, 0, nil);
+    STAssertEquals([observer notificationCount], 0, nil);
     
     DDObserverNotifier * notifier = [[[DDObserverNotifier alloc] init] autorelease];
-    [notifier addObserver: self
-                 selector: @selector(gotNotification:)
+    [notifier addObserver: observer
+                 selector: @selector(countNotification:)
                forKeyPath: @"flagged" ofObject: object];
-    [notifier addObserver: self
-                 selector: @selector(gotNotification:)
+    [notifier addObserver: observer
+                 selector: @selector(countNotification:)
                forKeyPath: @"flagged" ofObject: object];
-    [notifier addObserver: self
+    [notifier addObserver: observer
                  selector: @selector(ignoreNotification:)
                forKeyPath: @"flagged2" ofObject: object];
     
@@ -110,57 +133,119 @@
     [object toggleFlagged2];
 
     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
-    STAssertEquals(_notificationsSent, 2, nil);
+    STAssertEquals([observer notificationCount], 2, nil);
     
-    [notifier removeObserver: self forKeyPath: @"flagged" ofObject: object];
+    [notifier removeObserver: observer forKeyPath: @"flagged" ofObject: object];
     [object toggleFlagged];
     [object toggleFlagged2];
     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
-    STAssertEquals(_notificationsSent, 3, nil);
+    STAssertEquals([observer notificationCount], 3, nil);
     
-    [notifier removeObserver: self forKeyPath: @"flagged" ofObject: object];
+    [notifier removeObserver: observer forKeyPath: @"flagged" ofObject: object];
     [object toggleFlagged];
     [object toggleFlagged2];
     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
-    STAssertEquals(_notificationsSent, 3, nil);
+    STAssertEquals([observer notificationCount], 3, nil);
     
-    [notifier removeObserver: self forKeyPath: @"flagged2" ofObject: object];
+    [notifier removeObserver: observer forKeyPath: @"flagged2" ofObject: object];
     [object toggleFlagged];
     [object toggleFlagged2];
     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
-    STAssertEquals(_notificationsSent, 3, nil);
+    STAssertEquals([observer notificationCount], 3, nil);
 }
 
-
-- (void) testRemoveAll;
+- (void) testMultipleObservers;
 {
-    DDObserverNotifierTestObject * object = [DDObserverNotifierTestObject testObject];
-    
-    [object toggleFlagged];
-    STAssertEquals(_notificationsSent, 0, nil);
-    
-    DDObserverNotifier * notifier = [[[DDObserverNotifier alloc] init] autorelease];
-    [notifier addObserver: self
-                 selector: @selector(gotNotification:)
-               forKeyPath: @"flagged" ofObject: object];
-    [notifier addObserver: self
-                 selector: @selector(gotNotification:)
-               forKeyPath: @"flagged" ofObject: object];
-    [notifier addObserver: self
-                 selector: @selector(gotNotification:)
-               forKeyPath: @"flagged2" ofObject: object];
+    DDObserverNotifierTestObject * object = [DDObserverNotifierTestObject object];
+    DDObserverNotifierTestObserver * observer1 = [DDObserverNotifierTestObserver observer];
+    DDObserverNotifierTestObserver * observer2 = [DDObserverNotifierTestObserver observer];
     
     [object toggleFlagged];
     [object toggleFlagged2];
+    STAssertEquals([observer1 notificationCount], 0, nil);
+    STAssertEquals([observer2 notificationCount], 0, nil);
     
-    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
-    STAssertEquals(_notificationsSent, 3, nil);
+    DDObserverNotifier * notifier = [[[DDObserverNotifier alloc] init] autorelease];
+    [notifier addObserver: observer1
+                 selector: @selector(countNotification:)
+               forKeyPath: @"flagged" ofObject: object];
+    
+    [object toggleFlagged];
+    [object toggleFlagged2];
+    STAssertEquals([observer1 notificationCount], 1, nil);
+    STAssertEquals([observer2 notificationCount], 0, nil);
+    
+    [notifier removeObserver: observer1 forKeyPath: @"flagged" ofObject: object];
+    [object toggleFlagged];
+    [object toggleFlagged2];
+    STAssertEquals([observer1 notificationCount], 1, nil);
+    STAssertEquals([observer2 notificationCount], 0, nil);
+}
+
+- (void) testRemoveAllObservers;
+{
+    DDObserverNotifierTestObject * object = [DDObserverNotifierTestObject object];
+    DDObserverNotifierTestObserver * observer1 = [DDObserverNotifierTestObserver observer];
+    DDObserverNotifierTestObserver * observer2 = [DDObserverNotifierTestObserver observer];
+    
+    [object toggleFlagged];
+    STAssertEquals([observer1 notificationCount], 0, nil);
+    STAssertEquals([observer2 notificationCount], 0, nil);
+    
+    DDObserverNotifier * notifier = [[[DDObserverNotifier alloc] init] autorelease];
+    [notifier addObserver: observer1
+                 selector: @selector(countNotification:)
+               forKeyPath: @"flagged" ofObject: object];
+    [notifier addObserver: observer1
+                 selector: @selector(countNotification:)
+               forKeyPath: @"flagged2" ofObject: object];
+    [notifier addObserver: observer2
+                 selector: @selector(countNotification:)
+               forKeyPath: @"flagged" ofObject: object];
+    
+    [object toggleFlagged];
+    [object toggleFlagged2];
+    STAssertEquals([observer1 notificationCount], 2, nil);
+    STAssertEquals([observer2 notificationCount], 1, nil);
     
     [notifier removeAllObservers];
     [object toggleFlagged];
     [object toggleFlagged2];
-    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
-    STAssertEquals(_notificationsSent, 3, nil);
+    STAssertEquals([observer1 notificationCount], 2, nil);
+    STAssertEquals([observer2 notificationCount], 1, nil);
+}
+
+- (void) testRemoveObserver;
+{
+    DDObserverNotifierTestObject * object = [DDObserverNotifierTestObject object];
+    DDObserverNotifierTestObserver * observer1 = [DDObserverNotifierTestObserver observer];
+    DDObserverNotifierTestObserver * observer2 = [DDObserverNotifierTestObserver observer];
+    
+    [object toggleFlagged];
+    STAssertEquals([observer1 notificationCount], 0, nil);
+    STAssertEquals([observer2 notificationCount], 0, nil);
+    
+    DDObserverNotifier * notifier = [[[DDObserverNotifier alloc] init] autorelease];
+    [notifier addObserver: observer1
+                 selector: @selector(countNotification:)
+               forKeyPath: @"flagged" ofObject: object];
+    [notifier addObserver: observer1
+                 selector: @selector(countNotification:)
+               forKeyPath: @"flagged2" ofObject: object];
+    [notifier addObserver: observer2
+                 selector: @selector(countNotification:)
+               forKeyPath: @"flagged" ofObject: object];
+    
+    [object toggleFlagged];
+    [object toggleFlagged2];
+    STAssertEquals([observer1 notificationCount], 2, nil);
+    STAssertEquals([observer2 notificationCount], 1, nil);
+    
+    [notifier removeObserver: observer1];
+    [object toggleFlagged];
+    [object toggleFlagged2];
+    STAssertEquals([observer1 notificationCount], 2, nil);
+    STAssertEquals([observer2 notificationCount], 2, nil);
 }
 
 @end
