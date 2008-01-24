@@ -17,45 +17,54 @@
 
 - (BOOL) isFlagged;
 - (void) setFlagged: (BOOL) flagged;
+- (void) toggleFlagged;
 
 @end
 
 @implementation DDObserverNotifierTestObject
 
-- (BOOL) isFlagged
-{
-    return _flagged;
-}
-
-- (void) setFlagged: (BOOL) flagged;
-{
-    _flagged = flagged;
-}
+- (BOOL) isFlagged { return _flagged; }
+- (void) setFlagged: (BOOL) flagged; { _flagged = flagged; }
+- (void) toggleFlagged; { [self setFlagged: !_flagged]; }
 
 @end
 
 @implementation DDObserverNotifierTest
 
-- (void) flaggedChanged: (NSNotification *) note
+- (void) gotNotification: (NSNotification *) note
 {
-    _notificationSent = YES;
+    _notificationsSent++;
 }
 
-- (void) testNotification;
+- (void) setUp
+{
+    [super setUp];
+    _notificationsSent = 0;
+}
+
+- (void) testAddAndRemoveObserver;
 {
     DDObserverNotifierTestObject * object =
         [[[DDObserverNotifierTestObject alloc] init] autorelease];
     [object setFlagged: NO];
-    _notificationSent = NO;
+    
+    [object toggleFlagged];
+    STAssertEquals(_notificationsSent, 0, nil);
     
     DDObserverNotifier * notifier = [[[DDObserverNotifier alloc] init] autorelease];
-    [notifier notify: self
-            selector: @selector(flaggedChanged:)
-          forKeyPath: @"flagged" onObject: object];
-    [object setFlagged: YES];
+    [notifier addObserver: self
+                 selector: @selector(gotNotification:)
+               forKeyPath: @"flagged" ofObject: object];
+    
+    [object toggleFlagged];
 
-    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate dateWithTimeIntervalSinceNow: .1]];
-    STAssertTrue(_notificationSent, nil);
+    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
+    STAssertEquals(_notificationsSent, 1, nil);
+    
+    [notifier removeObserver: self forKeyPath: @"flagged" ofObject: object];
+    [object toggleFlagged];
+    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
+    STAssertEquals(_notificationsSent, 1, nil);
 }
 
 @end

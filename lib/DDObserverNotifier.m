@@ -10,10 +10,12 @@
 
 @implementation DDObserverNotifier
 
-- (void) notify: (id) notificationObserver
-       selector: (SEL) selector
-     forKeyPath: (NSString *) keyPath
-       onObject: (id) object;
+NSString * DDObserverKeyPathChangedNotification = @"DDObserverKeyPathChanged";
+
+- (void) addObserver: (id) notificationObserver
+            selector: (SEL) selector
+          forKeyPath: (NSString *) keyPath
+            ofObject: (id) object;
 {
     [object addObserver: self
              forKeyPath: keyPath
@@ -21,14 +23,24 @@
                 context: NULL];
     [[NSNotificationCenter defaultCenter] addObserver: notificationObserver
                                              selector: selector
-                                                 name: @"DDObserverNotification"
+                                                 name: DDObserverKeyPathChangedNotification
                                                object: object];
 }
 
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+- (void) removeObserver: (id) notificationObserver
+             forKeyPath: (NSString *) keyPath
+               ofObject: (id) object;
 {
-    NSLog(@"Object: %@ keyPath: %@", object, keyPath);
-    [[NSNotificationCenter defaultCenter] postNotificationName: @"DDObserverNotification"
+    [object removeObserver: self forKeyPath: keyPath];
+    [[NSNotificationCenter defaultCenter] removeObserver: notificationObserver
+                                                    name: DDObserverKeyPathChangedNotification
+                                                  object: object];
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+                       change:(NSDictionary *)change context:(void *)context
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName: DDObserverKeyPathChangedNotification
                                                         object: object];
 }
 

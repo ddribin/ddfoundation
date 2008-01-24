@@ -14,9 +14,15 @@
     NSMutableDictionary * _observedObjects;
 }
 
-- (void) notify: (id) notificationObserver
-       selector: (SEL) selector
-     forKeyPath: (NSString *) keyPath
-       onObject: (id) object;
+- (void) addObserver: (id) notificationObserver
+            selector: (SEL) selector
+          forKeyPath: (NSString *) keyPath
+            ofObject: (id) object;
+
+- (void) removeObserver: (id) notificationObserver
+             forKeyPath: (NSString *) keyPath
+               ofObject: (id) object;
 
 @end
+
+extern NSString * DDObserverKeyPathChangedNotification;
