@@ -17,6 +17,14 @@
 
 @implementation DDObserverNotifier
 
++ (id) defaultNotifier;
+{
+    static DDObserverNotifier * sDefaultNotifier = nil;
+    if (sDefaultNotifier == nil)
+        sDefaultNotifier = [[DDObserverNotifier alloc] init];
+    return sDefaultNotifier;
+}
+
 - (id) init;
 {
     self = [super init];

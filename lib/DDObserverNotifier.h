@@ -14,6 +14,8 @@
     NSMutableDictionary * _observedObjects;
 }
 
++ (id) defaultNotifier;
+
 - (void) addObserver: (id) notificationObserver
             selector: (SEL) selector
           forKeyPath: (NSString *) keyPath
