@@ -31,6 +31,9 @@
 
 - (NSString *) resourcePath;
 - (NSString *) pathForResource: (NSString *) resource ofType: (NSString *) type;
+
+- (NSString *) stringForResource: (NSString *) resource ofType: (NSString *) type;
+- (NSData *) dataForResource: (NSString *) resource ofType: (NSString *) type;
 - (id) plistForResource: (NSString *) resource;
 
 @end

@@ -44,6 +44,22 @@
     return [myBundle pathForResource: resource ofType: type];
 }
 
+- (NSString *) stringForResource: (NSString *) resource ofType: (NSString *) type;
+{
+    NSString * path = [self pathForResource: resource ofType: type];
+    NSString * string = [NSString stringWithContentsOfFile: path
+                                              usedEncoding: nil
+                                                     error: nil];
+    return string;
+}
+
+- (NSData *) dataForResource: (NSString *) resource ofType: (NSString *) type;
+{
+    NSString * path = [self pathForResource: resource ofType: type];
+    NSData * data = [NSData dataWithContentsOfFile: path];
+    return data;
+}
+
 - (id) plistForResource: (NSString *) resource;
 {
     NSString * path = [self pathForResource: resource ofType: @"plist"];

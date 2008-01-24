@@ -39,6 +39,20 @@
     STAssertNil(path, nil);
 }
 
+- (void) testStringForResource
+{
+    NSString * actual = [self stringForResource: @"hello" ofType: @"txt"];
+    NSString * expected = @"Hello!\n";
+    STAssertEqualObjects(actual, expected, nil);
+}
+
+- (void) testDataForResource
+{
+    NSData * actual = [self dataForResource: @"hello" ofType: @"txt"];
+    NSData * expected = [@"Hello!\n" dataUsingEncoding: NSUTF8StringEncoding];
+    STAssertEqualObjects(actual, expected, nil);
+}
+
 - (void) testPlistForResource
 {
     id plist = [self plistForResource: @"test"];

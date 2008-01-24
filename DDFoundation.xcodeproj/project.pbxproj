@@ -10,6 +10,7 @@
 		555D37250D48F512001A5533 /* DDObserverNotifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 555D37230D48F512001A5533 /* DDObserverNotifier.h */; };
 		555D37260D48F512001A5533 /* DDObserverNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 555D37240D48F512001A5533 /* DDObserverNotifier.m */; };
 		555D373A0D48F8E0001A5533 /* DDObserverNotifierTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 555D372A0D48F687001A5533 /* DDObserverNotifierTest.m */; };
+		555D39DE0D494858001A5533 /* hello.txt in Resources */ = {isa = PBXBuildFile; fileRef = 555D39DD0D494858001A5533 /* hello.txt */; };
 		55B669910D47F91E006A4FB3 /* DDTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B669900D47F91E006A4FB3 /* DDTestCase.m */; };
 		55B6699B0D47FA31006A4FB3 /* DDTestCaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B6699A0D47FA31006A4FB3 /* DDTestCaseTest.m */; };
 		55B669C30D47FC93006A4FB3 /* test.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55B669C20D47FC93006A4FB3 /* test.plist */; };
@@ -47,6 +48,7 @@
 		555D37240D48F512001A5533 /* DDObserverNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDObserverNotifier.m; sourceTree = "<group>"; };
 		555D37290D48F687001A5533 /* DDObserverNotifierTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDObserverNotifierTest.h; sourceTree = "<group>"; };
 		555D372A0D48F687001A5533 /* DDObserverNotifierTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDObserverNotifierTest.m; sourceTree = "<group>"; };
+		555D39DD0D494858001A5533 /* hello.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hello.txt; sourceTree = "<group>"; };
 		55B6698F0D47F91E006A4FB3 /* DDTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTestCase.h; sourceTree = "<group>"; };
 		55B669900D47F91E006A4FB3 /* DDTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTestCase.m; sourceTree = "<group>"; };
 		55B669990D47FA31006A4FB3 /* DDTestCaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTestCaseTest.h; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 			children = (
 				55B669C20D47FC93006A4FB3 /* test.plist */,
 				55CA86FB0D455108004492E9 /* Info.plist */,
+				555D39DD0D494858001A5533 /* hello.txt */,
 			);
 			name = Resources;
 			path = resources;
@@ -293,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				55B669C30D47FC93006A4FB3 /* test.plist in Resources */,
+				555D39DE0D494858001A5533 /* hello.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
