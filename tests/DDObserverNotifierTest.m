@@ -16,6 +16,8 @@
     BOOL _flagged2;
 }
 
++ (id) testObject;
+
 - (BOOL) isFlagged;
 - (void) setFlagged: (BOOL) flagged;
 - (void) toggleFlagged;
@@ -28,6 +30,11 @@
 @end
 
 @implementation DDObserverNotifierTestObject
+
++ (id) testObject
+{
+    return [[[self alloc] init] autorelease];
+}
 
 - (BOOL) isFlagged { return _flagged; }
 - (void) setFlagged: (BOOL) flagged; { _flagged = flagged; }
@@ -56,16 +63,42 @@
     _notificationsSent = 0;
 }
 
-- (void) testAddAndRemoveObserver;
+- (void) testSimpleAddAndRemoveObserver;
 {
-    DDObserverNotifierTestObject * object =
-        [[[DDObserverNotifierTestObject alloc] init] autorelease];
-    [object setFlagged: NO];
+    DDObserverNotifierTestObject * object = [DDObserverNotifierTestObject testObject];
     
     [object toggleFlagged];
     STAssertEquals(_notificationsSent, 0, nil);
     
     DDObserverNotifier * notifier = [[[DDObserverNotifier alloc] init] autorelease];
+    [notifier addObserver: self
+                 selector: @selector(gotNotification:)
+               forKeyPath: @"flagged" ofObject: object];
+    
+    [object toggleFlagged];
+    [object toggleFlagged2];
+    
+    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
+    STAssertEquals(_notificationsSent, 1, nil);
+    
+    [notifier removeObserver: self forKeyPath: @"flagged" ofObject: object];
+    [object toggleFlagged];
+    [object toggleFlagged2];
+    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
+    STAssertEquals(_notificationsSent, 1, nil);
+}
+
+- (void) testMultipleAddAndRemoveObserver;
+{
+    DDObserverNotifierTestObject * object = [DDObserverNotifierTestObject testObject];
+    
+    [object toggleFlagged];
+    STAssertEquals(_notificationsSent, 0, nil);
+    
+    DDObserverNotifier * notifier = [[[DDObserverNotifier alloc] init] autorelease];
+    [notifier addObserver: self
+                 selector: @selector(gotNotification:)
+               forKeyPath: @"flagged" ofObject: object];
     [notifier addObserver: self
                  selector: @selector(gotNotification:)
                forKeyPath: @"flagged" ofObject: object];
@@ -77,19 +110,57 @@
     [object toggleFlagged2];
 
     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
-    STAssertEquals(_notificationsSent, 1, nil);
+    STAssertEquals(_notificationsSent, 2, nil);
     
     [notifier removeObserver: self forKeyPath: @"flagged" ofObject: object];
     [object toggleFlagged];
     [object toggleFlagged2];
     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
-    STAssertEquals(_notificationsSent, 1, nil);
+    STAssertEquals(_notificationsSent, 3, nil);
+    
+    [notifier removeObserver: self forKeyPath: @"flagged" ofObject: object];
+    [object toggleFlagged];
+    [object toggleFlagged2];
+    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
+    STAssertEquals(_notificationsSent, 3, nil);
     
     [notifier removeObserver: self forKeyPath: @"flagged2" ofObject: object];
     [object toggleFlagged];
     [object toggleFlagged2];
     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
-    STAssertEquals(_notificationsSent, 1, nil);
+    STAssertEquals(_notificationsSent, 3, nil);
+}
+
+
+- (void) testRemoveAll;
+{
+    DDObserverNotifierTestObject * object = [DDObserverNotifierTestObject testObject];
+    
+    [object toggleFlagged];
+    STAssertEquals(_notificationsSent, 0, nil);
+    
+    DDObserverNotifier * notifier = [[[DDObserverNotifier alloc] init] autorelease];
+    [notifier addObserver: self
+                 selector: @selector(gotNotification:)
+               forKeyPath: @"flagged" ofObject: object];
+    [notifier addObserver: self
+                 selector: @selector(gotNotification:)
+               forKeyPath: @"flagged" ofObject: object];
+    [notifier addObserver: self
+                 selector: @selector(gotNotification:)
+               forKeyPath: @"flagged2" ofObject: object];
+    
+    [object toggleFlagged];
+    [object toggleFlagged2];
+    
+    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
+    STAssertEquals(_notificationsSent, 3, nil);
+    
+    [notifier removeAllObservers];
+    [object toggleFlagged];
+    [object toggleFlagged2];
+    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
+    STAssertEquals(_notificationsSent, 3, nil);
 }
 
 @end

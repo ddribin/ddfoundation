@@ -8,50 +8,6 @@
 
 #import "DDObserverNotifier.h"
 
-@interface DDObserverNotifierSetInfo : NSObject
-{
-    NSObject * _object;
-    NSString * _keyPath;
-}
-
-+ (id) infoWithObject: (NSObject *) object keyPath: (NSString *) keyPath;
-
-- (id) initWithObject: (NSObject *) object keyPath: (NSString *) keyPath;
-
-@end
-
-@implementation DDObserverNotifierSetInfo
-
-+ (id) infoWithObject: (NSObject *) object keyPath: (NSString *) keyPath;
-{
-    return [[[self alloc] initWithObject: object keyPath: keyPath] autorelease];
-}
-
-- (id) initWithObject: (NSObject *) object keyPath: (NSString *) keyPath;
-{
-    self = [super init];
-    if (self == nil)
-        return nil;
-    
-    _object = [object retain];
-    _keyPath = [keyPath retain];
-    
-    return self;
-}
-
-- (void) dealloc
-{
-    [_object release];
-    [_keyPath release];
-    
-    _object = nil;
-    _keyPath = nil;
-    
-    [super dealloc];
-}
-
-@end
-
 @implementation DDObserverNotifier
 
 NSString * DDObserverKeyPathChangedNotification = @"DDObserverKeyPathChanged";
@@ -75,56 +31,42 @@ NSString * DDObserverKeyPathChangedNotification = @"DDObserverKeyPathChanged";
     [super dealloc];
 }
 
-- (NSCountedSet *) keyPathsOfObject: (NSObject *) object;
-{
-#if 0
-    NSCountedSet * keyPaths = [mObservedObjects objectForKey: object];
-    NSLog(@"keyPaths: %@", keyPaths);
-    if (keyPaths == nil)
-    {
-        keyPaths = [[[NSCountedSet alloc] init] autorelease];
-        NSLog(@"keyPaths: %@", keyPaths);
-        [mObservedObjects setObject: keyPaths forKey: object];
-    }
-    NSLog(@"keyPaths: %@", keyPaths);
-    return keyPaths;
-#else
-    return nil;
-#endif
-}
-
-- (NSString *) notificationForKeyPath: (NSString *) keyPath;
-{
-    return [NSString stringWithFormat: @"DDObserverNotification %@", keyPath];
-}
-
 - (void) addObserver: (id) notificationObserver
             selector: (SEL) selector
           forKeyPath: (NSString *) keyPath
             ofObject: (NSObject *) object;
 {
+    NSArray * context = [NSArray arrayWithObjects: notificationObserver,
+                         [NSValue valueWithPointer: selector], nil];
     [object addObserver: self
              forKeyPath: keyPath
                 options: 0
-                context: NULL];
-    
-    NSString * name = [self notificationForKeyPath: keyPath];
-    [[NSNotificationCenter defaultCenter] addObserver: notificationObserver
-                                             selector: selector
-                                                 name: name
-                                               object: object];
+                context: context];
+
+    NSArray * observer =  [NSArray arrayWithObjects: object, keyPath, nil];
+    [_observedObjects addObject: observer];
 }
 
 - (void) removeObserver: (id) notificationObserver
              forKeyPath: (NSString *) keyPath
                ofObject: (NSObject *) object;
 {
-    NSString * name = [self notificationForKeyPath: keyPath];
-    [[NSNotificationCenter defaultCenter] removeObserver: notificationObserver
-                                                    name: name
-                                                  object: object];
-   
     [object removeObserver: self forKeyPath: keyPath];
+
+    NSArray * observer =  [NSArray arrayWithObjects: object, keyPath, nil];
+    [_observedObjects removeObject: observer];
+}
+
+- (void) removeAllObservers;
+{
+    NSArray * observer;
+    NSEnumerator * e = [_observedObjects objectEnumerator];
+    while (observer = [e nextObject])
+    {
+        NSObject * object = [observer objectAtIndex: 0];
+        NSString * keyPath = [observer objectAtIndex: 1];
+        [object removeObserver: self forKeyPath: keyPath];
+    }
 }
 
 - (void) removeObserver: (id) notificationObserver;
@@ -132,11 +74,13 @@ NSString * DDObserverKeyPathChangedNotification = @"DDObserverKeyPathChanged";
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
-                       change:(NSDictionary *)change context:(void *)context
+                       change:(NSDictionary *)change context:(void *)context_
 {
-    NSString * name = [self notificationForKeyPath: keyPath];
-    [[NSNotificationCenter defaultCenter] postNotificationName: name
-                                                        object: object];
+    NSArray * context = (NSArray *) context_;
+    id target = [context objectAtIndex: 0];
+    SEL action = [[context objectAtIndex: 1] pointerValue];
+    
+    [target performSelector: action withObject: object];
 }
 
 
