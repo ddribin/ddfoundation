@@ -100,13 +100,11 @@
     [object toggleFlagged];
     [object toggleFlagged2];
     
-    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
     STAssertEquals([observer notificationCount], 1, nil);
     
     [notifier removeObserver: observer forKeyPath: @"flagged" ofObject: object];
     [object toggleFlagged];
     [object toggleFlagged2];
-    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
     STAssertEquals([observer notificationCount], 1, nil);
 }
 
@@ -132,25 +130,21 @@
     [object toggleFlagged];
     [object toggleFlagged2];
 
-    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
     STAssertEquals([observer notificationCount], 2, nil);
     
     [notifier removeObserver: observer forKeyPath: @"flagged" ofObject: object];
     [object toggleFlagged];
     [object toggleFlagged2];
-    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
     STAssertEquals([observer notificationCount], 3, nil);
     
     [notifier removeObserver: observer forKeyPath: @"flagged" ofObject: object];
     [object toggleFlagged];
     [object toggleFlagged2];
-    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
     STAssertEquals([observer notificationCount], 3, nil);
     
     [notifier removeObserver: observer forKeyPath: @"flagged2" ofObject: object];
     [object toggleFlagged];
     [object toggleFlagged2];
-    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate: [NSDate date]];
     STAssertEquals([observer notificationCount], 3, nil);
 }
 

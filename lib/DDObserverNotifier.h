@@ -30,5 +30,3 @@
 - (void) removeObserver: (id) notificationObserver;
 
 @end
-
-extern NSString * DDObserverKeyPathChangedNotification;

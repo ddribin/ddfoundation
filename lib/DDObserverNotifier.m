@@ -8,9 +8,14 @@
 
 #import "DDObserverNotifier.h"
 
-@implementation DDObserverNotifier
+@interface DDObserverNotifier (Private)
 
-NSString * DDObserverKeyPathChangedNotification = @"DDObserverKeyPathChanged";
+- (NSMutableArray *) observersForKeyPath: (NSString *) keyPath
+                                ofObject: (NSObject *) object;
+
+@end
+
+@implementation DDObserverNotifier
 
 - (id) init;
 {
@@ -32,19 +37,6 @@ NSString * DDObserverKeyPathChangedNotification = @"DDObserverKeyPathChanged";
     [super dealloc];
 }
 
-- (NSMutableArray *) observersForKeyPath: (NSString *) keyPath
-                                ofObject: (NSObject *) object;
-{
-    NSArray * key = [NSArray arrayWithObjects: keyPath, object, nil];
-    NSMutableArray * observers = [_observedObjects objectForKey: key];
-    if (observers == nil)
-    {
-        observers = [NSMutableArray array];
-        [_observedObjects setObject: observers forKey: key];
-    }
-    return observers;
-}
-
 - (void) addObserver: (id) notificationObserver
             selector: (SEL) selector
           forKeyPath: (NSString *) keyPath
@@ -63,7 +55,6 @@ NSString * DDObserverKeyPathChangedNotification = @"DDObserverKeyPathChanged";
     NSArray * oberverContext = [NSArray arrayWithObjects: notificationObserver,
                                   [NSValue valueWithPointer: selector], nil];
     [observers addObject: oberverContext];
-    NSLog(@"addObserver Observers: %@", _observedObjects);
 }
 
 - (void) removeAllObservers;
@@ -85,7 +76,6 @@ NSString * DDObserverKeyPathChangedNotification = @"DDObserverKeyPathChanged";
              forKeyPath: (NSString *) keyPath
                ofObject: (NSObject *) object;
 {
-    NSLog(@"Observers: %@", _observedObjects);
     NSMutableArray * observers = [self observersForKeyPath: keyPath ofObject: object];
     
     NSMutableIndexSet * indexesToRemove = [NSMutableIndexSet indexSet];
@@ -94,11 +84,9 @@ NSString * DDObserverKeyPathChangedNotification = @"DDObserverKeyPathChanged";
     for (i = 0; i < [observers count]; i++)
     {
         oberverContext = [observers objectAtIndex: i];
-        NSLog(@"Remove observer: %@, test: %@", observer, oberverContext);
         id observerTest = [oberverContext objectAtIndex: 0];
         if (observer == observerTest)
         {
-            NSLog(@"Remove: %@", observer);
             [indexesToRemove addIndex: i];
             break;
         }
@@ -110,8 +98,6 @@ NSString * DDObserverKeyPathChangedNotification = @"DDObserverKeyPathChanged";
         NSArray * key = [NSArray arrayWithObjects: keyPath, object, nil];
         [_observedObjects removeObjectForKey: key];
     }
-
-    NSLog(@"Observers post: %@", _observedObjects);
 }
 
 - (void) removeObserver: (id) observer;
@@ -163,5 +149,21 @@ NSString * DDObserverKeyPathChangedNotification = @"DDObserverKeyPathChanged";
     }
 }
 
+@end
+
+@implementation DDObserverNotifier (Private)
+
+- (NSMutableArray *) observersForKeyPath: (NSString *) keyPath
+                                ofObject: (NSObject *) object;
+{
+    NSArray * key = [NSArray arrayWithObjects: keyPath, object, nil];
+    NSMutableArray * observers = [_observedObjects objectForKey: key];
+    if (observers == nil)
+    {
+        observers = [NSMutableArray array];
+        [_observedObjects setObject: observers forKey: key];
+    }
+    return observers;
+}
 
 @end
