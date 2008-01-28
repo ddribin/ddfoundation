@@ -105,7 +105,7 @@
     return [[[DDObserverDispatcher alloc] initWithTarget: target] autorelease];
 }
 
-- (void) testSimpleAddAndRemoveObserver;
+- (void) testSimpleSetAction
 {
     DDObserverDispatcherTestObject * object = [DDObserverDispatcherTestObject object];
     DDObserverDispatcherTestObserver * observer = [DDObserverDispatcherTestObserver observer];
@@ -128,8 +128,7 @@
     STAssertEquals([observer notificationCount], 1, nil);
 }
 
-#if 0
-- (void) testMultipleAddAndRemoveObserver;
+- (void) testMultipleActions
 {
     DDObserverDispatcherTestObject * object = [DDObserverDispatcherTestObject object];
     DDObserverDispatcherTestObserver * observer = [DDObserverDispatcherTestObserver observer];
@@ -137,131 +136,87 @@
     [object toggleFlagged];
     STAssertEquals([observer notificationCount], 0, nil);
     
-    DDObserverDispatcher * Dispatcher = [[[DDObserverDispatcher alloc] init] autorelease];
-    [Dispatcher addObserver: observer
-                 selector: @selector(countNotification:)
-               forKeyPath: @"flagged" ofObject: object];
-    [Dispatcher addObserver: observer
-                 selector: @selector(countNotification:)
-               forKeyPath: @"flagged" ofObject: object];
-    [Dispatcher addObserver: observer
-                 selector: @selector(ignoreNotification:)
-               forKeyPath: @"flagged2" ofObject: object];
+    DDObserverDispatcher * dispatcher = [self dispatcherWithTarget: observer];
+    [dispatcher setDispatchAction: @selector(countNotification:)
+                       forKeyPath: @"flagged" ofObject: object];
+    [dispatcher setDispatchAction: @selector(countNotification:)
+                       forKeyPath: @"flagged2" ofObject: object];
+    
+    [object toggleFlagged];
+    [object toggleFlagged2];
+    
+    STAssertEquals([observer notificationCount], 2, nil);
+    
+    [dispatcher removeDispatchActionForKeyPath: @"flagged" ofObject: object];
+    [object toggleFlagged];
+    [object toggleFlagged2];
+    STAssertEquals([observer notificationCount], 3, nil);
+    
+    [dispatcher removeDispatchActionForKeyPath: @"flagged2" ofObject: object];
+    [object toggleFlagged];
+    [object toggleFlagged2];
+    STAssertEquals([observer notificationCount], 3, nil);
+}
+
+- (void) testResettingAction;
+{
+    DDObserverDispatcherTestObject * object = [DDObserverDispatcherTestObject object];
+    DDObserverDispatcherTestObserver * observer = [DDObserverDispatcherTestObserver observer];
+    
+    [object toggleFlagged];
+    STAssertEquals([observer notificationCount], 0, nil);
+    
+    DDObserverDispatcher * dispatcher = [self dispatcherWithTarget: observer];
+    [dispatcher setDispatchAction: @selector(countNotification:)
+                       forKeyPath: @"flagged" ofObject: object];
+    [dispatcher setDispatchAction: @selector(countNotification:)
+                       forKeyPath: @"flagged2" ofObject: object];
     
     [object toggleFlagged];
     [object toggleFlagged2];
 
     STAssertEquals([observer notificationCount], 2, nil);
     
-    [Dispatcher removeObserver: observer forKeyPath: @"flagged" ofObject: object];
+    [dispatcher setDispatchAction: @selector(ignoreNotification:)
+                       forKeyPath: @"flagged" ofObject: object];
     [object toggleFlagged];
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 3, nil);
     
-    [Dispatcher removeObserver: observer forKeyPath: @"flagged" ofObject: object];
+    [dispatcher removeDispatchActionForKeyPath: @"flagged2" ofObject: object];
     [object toggleFlagged];
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 3, nil);
     
-    [Dispatcher removeObserver: observer forKeyPath: @"flagged2" ofObject: object];
+    [dispatcher removeDispatchActionForKeyPath: @"flagged" ofObject: object];
     [object toggleFlagged];
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 3, nil);
 }
 
-- (void) testMultipleObservers;
+- (void) testRemoveAllActions
 {
     DDObserverDispatcherTestObject * object = [DDObserverDispatcherTestObject object];
-    DDObserverDispatcherTestObserver * observer1 = [DDObserverDispatcherTestObserver observer];
-    DDObserverDispatcherTestObserver * observer2 = [DDObserverDispatcherTestObserver observer];
+    DDObserverDispatcherTestObserver * observer = [DDObserverDispatcherTestObserver observer];
+    
+    [object toggleFlagged];
+    STAssertEquals([observer notificationCount], 0, nil);
+    
+    DDObserverDispatcher * dispatcher = [self dispatcherWithTarget: observer];
+    [dispatcher setDispatchAction: @selector(countNotification:)
+                       forKeyPath: @"flagged" ofObject: object];
+    [dispatcher setDispatchAction: @selector(countNotification:)
+                       forKeyPath: @"flagged2" ofObject: object];
     
     [object toggleFlagged];
     [object toggleFlagged2];
-    STAssertEquals([observer1 notificationCount], 0, nil);
-    STAssertEquals([observer2 notificationCount], 0, nil);
     
-    DDObserverDispatcher * Dispatcher = [[[DDObserverDispatcher alloc] init] autorelease];
-    [Dispatcher addObserver: observer1
-                 selector: @selector(countNotification:)
-               forKeyPath: @"flagged" ofObject: object];
+    STAssertEquals([observer notificationCount], 2, nil);
     
+    [dispatcher removeAllDispatchActions];
     [object toggleFlagged];
     [object toggleFlagged2];
-    STAssertEquals([observer1 notificationCount], 1, nil);
-    STAssertEquals([observer2 notificationCount], 0, nil);
-    
-    [Dispatcher removeObserver: observer1 forKeyPath: @"flagged" ofObject: object];
-    [object toggleFlagged];
-    [object toggleFlagged2];
-    STAssertEquals([observer1 notificationCount], 1, nil);
-    STAssertEquals([observer2 notificationCount], 0, nil);
+    STAssertEquals([observer notificationCount], 2, nil);
 }
-
-- (void) testRemoveAllObservers;
-{
-    DDObserverDispatcherTestObject * object = [DDObserverDispatcherTestObject object];
-    DDObserverDispatcherTestObserver * observer1 = [DDObserverDispatcherTestObserver observer];
-    DDObserverDispatcherTestObserver * observer2 = [DDObserverDispatcherTestObserver observer];
-    
-    [object toggleFlagged];
-    STAssertEquals([observer1 notificationCount], 0, nil);
-    STAssertEquals([observer2 notificationCount], 0, nil);
-    
-    DDObserverDispatcher * Dispatcher = [[[DDObserverDispatcher alloc] init] autorelease];
-    [Dispatcher addObserver: observer1
-                 selector: @selector(countNotification:)
-               forKeyPath: @"flagged" ofObject: object];
-    [Dispatcher addObserver: observer1
-                 selector: @selector(countNotification:)
-               forKeyPath: @"flagged2" ofObject: object];
-    [Dispatcher addObserver: observer2
-                 selector: @selector(countNotification:)
-               forKeyPath: @"flagged" ofObject: object];
-    
-    [object toggleFlagged];
-    [object toggleFlagged2];
-    STAssertEquals([observer1 notificationCount], 2, nil);
-    STAssertEquals([observer2 notificationCount], 1, nil);
-    
-    [Dispatcher removeAllObservers];
-    [object toggleFlagged];
-    [object toggleFlagged2];
-    STAssertEquals([observer1 notificationCount], 2, nil);
-    STAssertEquals([observer2 notificationCount], 1, nil);
-}
-
-- (void) testRemoveObserver;
-{
-    DDObserverDispatcherTestObject * object = [DDObserverDispatcherTestObject object];
-    DDObserverDispatcherTestObserver * observer1 = [DDObserverDispatcherTestObserver observer];
-    DDObserverDispatcherTestObserver * observer2 = [DDObserverDispatcherTestObserver observer];
-    
-    [object toggleFlagged];
-    STAssertEquals([observer1 notificationCount], 0, nil);
-    STAssertEquals([observer2 notificationCount], 0, nil);
-    
-    DDObserverDispatcher * Dispatcher = [[[DDObserverDispatcher alloc] init] autorelease];
-    [Dispatcher addObserver: observer1
-                 selector: @selector(countNotification:)
-               forKeyPath: @"flagged" ofObject: object];
-    [Dispatcher addObserver: observer1
-                 selector: @selector(countNotification:)
-               forKeyPath: @"flagged2" ofObject: object];
-    [Dispatcher addObserver: observer2
-                 selector: @selector(countNotification:)
-               forKeyPath: @"flagged" ofObject: object];
-    
-    [object toggleFlagged];
-    [object toggleFlagged2];
-    STAssertEquals([observer1 notificationCount], 2, nil);
-    STAssertEquals([observer2 notificationCount], 1, nil);
-    
-    [Dispatcher removeObserver: observer1];
-    [object toggleFlagged];
-    [object toggleFlagged2];
-    STAssertEquals([observer1 notificationCount], 2, nil);
-    STAssertEquals([observer2 notificationCount], 2, nil);
-}
-#endif
 
 @end

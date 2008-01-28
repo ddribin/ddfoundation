@@ -67,6 +67,7 @@
         return nil;
     
     _target = target;
+    _actionsByKeyPath = [[NSMutableDictionary alloc] init];
     _observedObjects = [[NSMutableDictionary alloc] init];
     
     return self;
@@ -79,7 +80,10 @@
 
 - (void) dealloc
 {
+    [self removeAllDispatchActions];
     [self removeAllObservers];
+    [_actionsByKeyPath release];
+    _actionsByKeyPath = nil;
     [_observedObjects release];
     _observedObjects = nil;
 
@@ -90,14 +94,41 @@
                 forKeyPath: (NSString *) keyPath
                   ofObject: (NSObject *) object;
 {
-    [self addObserver: _target selector: action
-           forKeyPath: keyPath ofObject: object];
+    NSArray * key = [NSArray arrayWithObjects: keyPath, object, nil];
+    if ([_actionsByKeyPath objectForKey: key] == nil)
+    {
+        [_actionsByKeyPath setObject: [NSValue valueWithPointer: action] forKey: key];
+        [object addObserver: self
+                 forKeyPath: keyPath
+                    options: 0
+                    context: NULL];
+    }
+    else
+        [_actionsByKeyPath setObject: [NSValue valueWithPointer: action] forKey: key];
 }
 
 - (void) removeDispatchActionForKeyPath: (NSString *) keyPath
                                ofObject: (NSObject *) object;
 {
-    [self removeObserver: _target forKeyPath: keyPath ofObject: object];
+    NSArray * key = [NSArray arrayWithObjects: keyPath, object, nil];
+    if ([_actionsByKeyPath objectForKey: key] != nil)
+    {
+        [_actionsByKeyPath removeObjectForKey: key];
+        [object removeObserver: self forKeyPath: keyPath];
+    }
+}
+
+- (void) removeAllDispatchActions
+{
+    NSEnumerator * e = [_actionsByKeyPath keyEnumerator];
+    NSArray * key;
+    while (key = [e nextObject])
+    {
+        NSString * keyPath = [key objectAtIndex: 0];
+        NSObject * object = [key objectAtIndex: 1];
+        [object removeObserver: self forKeyPath: keyPath];
+    }
+    [_actionsByKeyPath removeAllObjects];
 }
 
 - (void) addObserver: (id) notificationObserver
@@ -200,16 +231,10 @@
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                        change:(NSDictionary *)change context:(void *)context_
 {
-    NSMutableArray * observers = [self observersForKeyPath: keyPath ofObject: object];
-    unsigned i;
-    for (i = 0; i < [observers count]; i++)
-    {
-        NSArray * context = [observers objectAtIndex: i];
-        id target = [context objectAtIndex: 0];
-        SEL action = [[context objectAtIndex: 1] pointerValue];
-    
-        [target performSelector: action withObject: object];
-    }
+    NSArray * key = [NSArray arrayWithObjects: keyPath, object, nil];
+    NSValue * actionValue = [_actionsByKeyPath objectForKey: key];
+    SEL action = [actionValue pointerValue];
+    [_target performSelector: action withObject: object];
 }
 
 @end

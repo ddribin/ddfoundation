@@ -28,6 +28,7 @@
 @interface DDObserverDispatcher : NSObject
 {
     id _target;
+    NSMutableDictionary * _actionsByKeyPath;
     NSMutableDictionary * _observedObjects;
 }
 
@@ -41,5 +42,7 @@
 
 - (void) removeDispatchActionForKeyPath: (NSString *) keyPath
                                ofObject: (NSObject *) object;
+
+- (void) removeAllDispatchActions;
 
 @end
