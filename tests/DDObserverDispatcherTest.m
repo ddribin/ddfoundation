@@ -25,9 +25,19 @@
 #import "DDObserverDispatcherTest.h"
 #import "DDObserverDispatcher.h"
 
-@interface DDObserverDispatcher (Test)
 
-- (NSMutableDictionary *) keyPathsByObject;
+@interface DDObserverDispatcher (DDObserverDispatcherTest)
+
+- (NSMutableDictionary *) test_keyPathsByObject;
+
+@end
+
+@implementation DDObserverDispatcher (Test)
+
+- (NSMutableDictionary *) test_keyPathsByObject;
+{
+    return _keyPathsByObject;
+}
 
 @end
 
@@ -133,7 +143,7 @@
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 1, nil);
 
-    NSMutableDictionary * keyPathsByObject = [dispatcher keyPathsByObject];
+    NSMutableDictionary * keyPathsByObject = [dispatcher test_keyPathsByObject];
     STAssertEquals([keyPathsByObject count], 0U, nil);
 }
 
@@ -166,7 +176,7 @@
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 3, nil);
     
-    NSMutableDictionary * keyPathsByObject = [dispatcher keyPathsByObject];
+    NSMutableDictionary * keyPathsByObject = [dispatcher test_keyPathsByObject];
     STAssertEquals([keyPathsByObject count], 0U, nil);
 }
 
@@ -230,7 +240,7 @@
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 2, nil);
     
-    NSMutableDictionary * keyPathsByObject = [dispatcher keyPathsByObject];
+    NSMutableDictionary * keyPathsByObject = [dispatcher test_keyPathsByObject];
     STAssertEquals([keyPathsByObject count], 0U, nil);
 }
 
@@ -260,7 +270,7 @@
     [object2 toggleFlagged];
     STAssertEquals([observer notificationCount], 4, nil);
     
-    NSMutableDictionary * keyPathsByObject = [dispatcher keyPathsByObject];
+    NSMutableDictionary * keyPathsByObject = [dispatcher test_keyPathsByObject];
     STAssertEquals([keyPathsByObject count], 1U, nil);
     
     [dispatcher removeAllDispatchActionsOfObject: object2];
@@ -269,7 +279,7 @@
     [object2 toggleFlagged];
     STAssertEquals([observer notificationCount], 4, nil);
     
-    keyPathsByObject = [dispatcher keyPathsByObject];
+    keyPathsByObject = [dispatcher test_keyPathsByObject];
     STAssertEquals([keyPathsByObject count], 0U, nil);
 }
 

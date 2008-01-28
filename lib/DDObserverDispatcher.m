@@ -166,18 +166,3 @@
 
 @end
 
-@interface DDObserverDispatcher (Test)
-
-- (NSMutableDictionary *) keyPathsByObject;
-
-@end
-
-@implementation DDObserverDispatcher (Test)
-
-- (NSMutableDictionary *) keyPathsByObject;
-{
-    return _keyPathsByObject;
-}
-
-@end
-
