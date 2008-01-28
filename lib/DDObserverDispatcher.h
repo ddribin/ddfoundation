@@ -29,10 +29,7 @@
 {
     id _target;
     NSMutableDictionary * _actionsByKeyPath;
-    NSMutableDictionary * _observedObjects;
 }
-
-+ (id) defaultNotifier;
 
 - (id) initWithTarget: (id) target;
 

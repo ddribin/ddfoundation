@@ -24,41 +24,7 @@
 
 #import "DDObserverDispatcher.h"
 
-@interface DDObserverDispatcher ()
-
-- (void) addObserver: (id) notificationObserver
-            selector: (SEL) selector
-          forKeyPath: (NSString *) keyPath
-            ofObject: (NSObject *) object;
-
-- (void) removeObserver: (id) notificationObserver
-             forKeyPath: (NSString *) keyPath
-               ofObject: (NSObject *) object;
-
-- (void) removeObserver: (id) notificationObserver;
-
-- (void) removeAllObservers;
-
-- (void) removeObserver: (id) notificationObserver;
-
-@end
-
-@interface DDObserverDispatcher (Private)
-
-- (NSMutableArray *) observersForKeyPath: (NSString *) keyPath
-                                ofObject: (NSObject *) object;
-
-@end
-
 @implementation DDObserverDispatcher
-
-+ (id) defaultNotifier;
-{
-    static DDObserverDispatcher * sDefaultNotifier = nil;
-    if (sDefaultNotifier == nil)
-        sDefaultNotifier = [[DDObserverDispatcher alloc] init];
-    return sDefaultNotifier;
-}
 
 - (id) initWithTarget: (id) target;
 {
@@ -68,7 +34,6 @@
     
     _target = target;
     _actionsByKeyPath = [[NSMutableDictionary alloc] init];
-    _observedObjects = [[NSMutableDictionary alloc] init];
     
     return self;
 }
@@ -81,11 +46,8 @@
 - (void) dealloc
 {
     [self removeAllDispatchActions];
-    [self removeAllObservers];
     [_actionsByKeyPath release];
     _actionsByKeyPath = nil;
-    [_observedObjects release];
-    _observedObjects = nil;
 
     [super dealloc];
 }
@@ -131,127 +93,13 @@
     [_actionsByKeyPath removeAllObjects];
 }
 
-- (void) addObserver: (id) notificationObserver
-            selector: (SEL) selector
-          forKeyPath: (NSString *) keyPath
-            ofObject: (NSObject *) object;
-{
-    NSMutableArray * observers = [self observersForKeyPath: keyPath ofObject: object];
-    
-    if ([observers count] == 0)
-    {
-        [object addObserver: self
-                 forKeyPath: keyPath
-                    options: 0
-                    context: NULL];
-    }
-        
-    NSArray * oberverContext = [NSArray arrayWithObjects: notificationObserver,
-                                  [NSValue valueWithPointer: selector], nil];
-    [observers addObject: oberverContext];
-}
-
-- (void) removeAllObservers;
-{
-    NSArray * keys = [_observedObjects allKeys];
-    NSArray * observerKeyPath;
-    unsigned i;
-    for (i = 0; i < [keys count]; i++)
-    {
-        observerKeyPath = [keys objectAtIndex: i];
-        NSString * keyPath = [observerKeyPath objectAtIndex: 0];
-        NSObject * object = [observerKeyPath objectAtIndex: 1];
-        [object removeObserver: self forKeyPath: keyPath];
-    }
-    [_observedObjects removeAllObjects];
-}
-
-- (void) removeObserver: (id) observer
-             forKeyPath: (NSString *) keyPath
-               ofObject: (NSObject *) object;
-{
-    NSMutableArray * observers = [self observersForKeyPath: keyPath ofObject: object];
-    
-    NSMutableIndexSet * indexesToRemove = [NSMutableIndexSet indexSet];
-    NSArray * oberverContext;
-    unsigned i;
-    for (i = 0; i < [observers count]; i++)
-    {
-        oberverContext = [observers objectAtIndex: i];
-        id observerTest = [oberverContext objectAtIndex: 0];
-        if (observer == observerTest)
-        {
-            [indexesToRemove addIndex: i];
-            break;
-        }
-    }
-    [observers removeObjectsAtIndexes: indexesToRemove];
-    if ([observers count] == 0)
-    {
-        [object removeObserver: self forKeyPath: keyPath];
-        NSArray * key = [NSArray arrayWithObjects: keyPath, object, nil];
-        [_observedObjects removeObjectForKey: key];
-    }
-}
-
-- (void) removeObserver: (id) observer;
-{
-    NSArray * keys = [_observedObjects allKeys];
-    NSArray * observerKeyPath;
-    unsigned i;
-    for (i = 0; i < [keys count]; i++)
-    {
-        observerKeyPath = [keys objectAtIndex: i];
-        NSString * keyPath = [observerKeyPath objectAtIndex: 0];
-        NSObject * object = [observerKeyPath objectAtIndex: 1];
-
-        NSMutableArray * observers = [self observersForKeyPath: keyPath ofObject: object];
-        NSMutableIndexSet * indexesToRemove = [NSMutableIndexSet indexSet];
-        int j;
-        for (j = 0; j < [observers count]; j++)
-        {
-            NSArray * oberverContext = [observers objectAtIndex: j];
-            id observerTest = [oberverContext objectAtIndex: 0];
-            if (observerTest == observer)
-            {
-                [indexesToRemove addIndex: j];
-            }
-        }
-
-        [observers removeObjectsAtIndexes: indexesToRemove];
-        if ([observers count] == 0)
-        {
-            [object removeObserver: self forKeyPath: keyPath];
-            NSArray * key = [NSArray arrayWithObjects: keyPath, object, nil];
-            [_observedObjects removeObjectForKey: key];
-        }
-    }
-}
-
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
-                       change:(NSDictionary *)change context:(void *)context_
+-(void) observeValueForKeyPath: (NSString *) keyPath ofObject: (id) object
+                       change: (NSDictionary *) change context: (void *) context
 {
     NSArray * key = [NSArray arrayWithObjects: keyPath, object, nil];
     NSValue * actionValue = [_actionsByKeyPath objectForKey: key];
     SEL action = [actionValue pointerValue];
     [_target performSelector: action withObject: object];
-}
-
-@end
-
-@implementation DDObserverDispatcher (Private)
-
-- (NSMutableArray *) observersForKeyPath: (NSString *) keyPath
-                                ofObject: (NSObject *) object;
-{
-    NSArray * key = [NSArray arrayWithObjects: keyPath, object, nil];
-    NSMutableArray * observers = [_observedObjects objectForKey: key];
-    if (observers == nil)
-    {
-        observers = [NSMutableArray array];
-        [_observedObjects setObject: observers forKey: key];
-    }
-    return observers;
 }
 
 @end
