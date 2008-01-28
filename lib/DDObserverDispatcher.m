@@ -52,6 +52,12 @@
     [super dealloc];
 }
 
+- (void) finalize
+{
+    [self removeAllDispatchActions];
+    [super finalize];
+}
+
 - (void) setDispatchAction: (SEL) action
                 forKeyPath: (NSString *) keyPath
                   ofObject: (NSObject *) object;
