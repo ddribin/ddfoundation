@@ -25,7 +25,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface DDObserverNotifier : NSObject
+@interface DDObserverDispatcher : NSObject
 {
     NSMutableDictionary * _observedObjects;
 }

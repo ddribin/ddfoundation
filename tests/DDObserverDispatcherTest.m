@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#import "DDObserverNotifierTest.h"
-#import "DDObserverNotifier.h"
+#import "DDObserverDispatcherTest.h"
+#import "DDObserverDispatcher.h"
 
 
 @interface DDObserverNotifierTestObject : NSObject
@@ -98,7 +98,7 @@
 
 @end
 
-@implementation DDObserverNotifierTest
+@implementation DDObserverDispatcherTest
 
 - (void) testSimpleAddAndRemoveObserver;
 {
@@ -108,7 +108,7 @@
     [object toggleFlagged];
     STAssertEquals([observer notificationCount], 0, nil);
     
-    DDObserverNotifier * notifier = [[[DDObserverNotifier alloc] init] autorelease];
+    DDObserverDispatcher * notifier = [[[DDObserverDispatcher alloc] init] autorelease];
     [notifier addObserver: observer
                  selector: @selector(countNotification:)
                forKeyPath: @"flagged" ofObject: object];
@@ -132,7 +132,7 @@
     [object toggleFlagged];
     STAssertEquals([observer notificationCount], 0, nil);
     
-    DDObserverNotifier * notifier = [[[DDObserverNotifier alloc] init] autorelease];
+    DDObserverDispatcher * notifier = [[[DDObserverDispatcher alloc] init] autorelease];
     [notifier addObserver: observer
                  selector: @selector(countNotification:)
                forKeyPath: @"flagged" ofObject: object];
@@ -175,7 +175,7 @@
     STAssertEquals([observer1 notificationCount], 0, nil);
     STAssertEquals([observer2 notificationCount], 0, nil);
     
-    DDObserverNotifier * notifier = [[[DDObserverNotifier alloc] init] autorelease];
+    DDObserverDispatcher * notifier = [[[DDObserverDispatcher alloc] init] autorelease];
     [notifier addObserver: observer1
                  selector: @selector(countNotification:)
                forKeyPath: @"flagged" ofObject: object];
@@ -202,7 +202,7 @@
     STAssertEquals([observer1 notificationCount], 0, nil);
     STAssertEquals([observer2 notificationCount], 0, nil);
     
-    DDObserverNotifier * notifier = [[[DDObserverNotifier alloc] init] autorelease];
+    DDObserverDispatcher * notifier = [[[DDObserverDispatcher alloc] init] autorelease];
     [notifier addObserver: observer1
                  selector: @selector(countNotification:)
                forKeyPath: @"flagged" ofObject: object];
@@ -235,7 +235,7 @@
     STAssertEquals([observer1 notificationCount], 0, nil);
     STAssertEquals([observer2 notificationCount], 0, nil);
     
-    DDObserverNotifier * notifier = [[[DDObserverNotifier alloc] init] autorelease];
+    DDObserverDispatcher * notifier = [[[DDObserverDispatcher alloc] init] autorelease];
     [notifier addObserver: observer1
                  selector: @selector(countNotification:)
                forKeyPath: @"flagged" ofObject: object];

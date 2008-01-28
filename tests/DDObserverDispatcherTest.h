@@ -25,7 +25,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "DDTestCase.h"
 
-@interface DDObserverNotifierTest : DDTestCase {
+@interface DDObserverDispatcherTest : DDTestCase {
 }
 
 @end

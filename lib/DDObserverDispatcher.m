@@ -22,22 +22,22 @@
  * SOFTWARE.
  */
 
-#import "DDObserverNotifier.h"
+#import "DDObserverDispatcher.h"
 
-@interface DDObserverNotifier (Private)
+@interface DDObserverDispatcher (Private)
 
 - (NSMutableArray *) observersForKeyPath: (NSString *) keyPath
                                 ofObject: (NSObject *) object;
 
 @end
 
-@implementation DDObserverNotifier
+@implementation DDObserverDispatcher
 
 + (id) defaultNotifier;
 {
-    static DDObserverNotifier * sDefaultNotifier = nil;
+    static DDObserverDispatcher * sDefaultNotifier = nil;
     if (sDefaultNotifier == nil)
-        sDefaultNotifier = [[DDObserverNotifier alloc] init];
+        sDefaultNotifier = [[DDObserverDispatcher alloc] init];
     return sDefaultNotifier;
 }
 
@@ -175,7 +175,7 @@
 
 @end
 
-@implementation DDObserverNotifier (Private)
+@implementation DDObserverDispatcher (Private)
 
 - (NSMutableArray *) observersForKeyPath: (NSString *) keyPath
                                 ofObject: (NSObject *) object;
