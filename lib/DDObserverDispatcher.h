@@ -28,6 +28,12 @@
 @interface DDObserverDispatcher : NSObject
 {
     id _target;
+    /*
+     * This is a two-level dictionary. The first level is key paths, index
+     * by object.   The second level is an action indexed by key path.
+     * The key of the first index (the object) must also be wrapped in
+     * an NSArray, in case it is not copyable.
+     */
     NSMutableDictionary * _keyPathsByObject;
 }
 

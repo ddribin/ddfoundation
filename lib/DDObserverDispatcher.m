@@ -26,8 +26,6 @@
 
 @interface DDObserverDispatcher (Private)
 
-- (NSMutableDictionary *) keyPathsForObject: (NSObject *) object;
-
 - (void) removeObserverForAllKeyPaths: (NSMutableDictionary *) keyPaths
                       ofObjectWrapper: (NSArray *) objectWrapper;
 
@@ -71,7 +69,17 @@
                 forKeyPath: (NSString *) keyPath
                   ofObject: (NSObject *) object;
 {
-    NSMutableDictionary * actionsByKeyPath = [self keyPathsForObject: object];
+    NSArray * objectWrapper = [NSArray arrayWithObject: object];
+    NSMutableDictionary * actionsByKeyPath =
+        [_keyPathsByObject objectForKey: objectWrapper];
+
+    // Create if it does not yet exist
+    if (actionsByKeyPath == nil)
+    {
+        actionsByKeyPath = [NSMutableDictionary dictionary];
+        [_keyPathsByObject setObject: actionsByKeyPath forKey: objectWrapper];
+    }
+   
     if ([actionsByKeyPath objectForKey: keyPath] == nil)
     {
         [actionsByKeyPath setObject: [NSValue valueWithPointer: action] forKey: keyPath];
@@ -87,12 +95,15 @@
 - (void) removeDispatchActionForKeyPath: (NSString *) keyPath
                                ofObject: (NSObject *) object;
 {
-    NSMutableDictionary * actionsByKeyPath = [self keyPathsForObject: object];
-    if ([actionsByKeyPath objectForKey: keyPath] != nil)
-    {
-        [actionsByKeyPath removeObjectForKey: keyPath];
-        [object removeObserver: self forKeyPath: keyPath];
-    }
+    NSArray * objectWrapper = [NSArray arrayWithObject: object];
+    NSMutableDictionary * actionsByKeyPath =
+        [_keyPathsByObject objectForKey: objectWrapper];
+
+    if ([actionsByKeyPath objectForKey: keyPath] == nil)
+        return;
+        
+    [actionsByKeyPath removeObjectForKey: keyPath];
+    [object removeObserver: self forKeyPath: keyPath];
 }
 
 - (void) removeAllDispatchActions
@@ -118,30 +129,23 @@
 -(void) observeValueForKeyPath: (NSString *) keyPath ofObject: (id) object
                        change: (NSDictionary *) change context: (void *) context
 {
-    NSMutableDictionary * keyPaths = [self keyPathsForObject: object];
-    NSValue * actionValue = [keyPaths objectForKey: keyPath];
-    if (actionValue != nil)
-    {
-        SEL action = [actionValue pointerValue];
-        [_target performSelector: action withObject: object];
-    }
+    NSArray * objectWrapper = [NSArray arrayWithObject: object];
+    NSMutableDictionary * actionsByKeyPath =
+        [_keyPathsByObject objectForKey: objectWrapper];
+    if (actionsByKeyPath == nil)
+        return;
+    
+    NSValue * actionValue = [actionsByKeyPath objectForKey: keyPath];
+    if (actionValue == nil)
+        return;
+        
+    SEL action = [actionValue pointerValue];
+    [_target performSelector: action withObject: object];
 }
 
 @end
 
 @implementation DDObserverDispatcher (Private)
-
-- (NSMutableDictionary *) keyPathsForObject: (NSObject *) object;
-{
-    NSArray * objectWrapper = [NSArray arrayWithObject: object];
-    NSMutableDictionary * keyPaths = [_keyPathsByObject objectForKey: objectWrapper];
-    if (keyPaths == nil)
-    {
-        keyPaths = [NSMutableDictionary dictionary];
-        [_keyPathsByObject setObject: keyPaths forKey: objectWrapper];
-    }
-    return keyPaths;
-}
 
 - (void) removeObserverForAllKeyPaths: (NSMutableDictionary *) keyPaths
                       ofObjectWrapper: (NSArray *) objectWrapper;
