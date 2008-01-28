@@ -98,8 +98,11 @@
 {
     NSArray * key = [NSArray arrayWithObjects: keyPath, object, nil];
     NSValue * actionValue = [_actionsByKeyPath objectForKey: key];
-    SEL action = [actionValue pointerValue];
-    [_target performSelector: action withObject: object];
+    if (actionValue != nil)
+    {
+        SEL action = [actionValue pointerValue];
+        [_target performSelector: action withObject: object];
+    }
 }
 
 @end
