@@ -25,6 +25,12 @@
 #import "DDObserverDispatcherTest.h"
 #import "DDObserverDispatcher.h"
 
+@interface DDObserverDispatcher (Test)
+
+- (NSMutableDictionary *) keyPathsByObject;
+
+@end
+
 
 @interface DDObserverDispatcherTestObject : NSObject
 {
@@ -126,6 +132,9 @@
     [object toggleFlagged];
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 1, nil);
+
+    NSMutableDictionary * keyPathsByObject = [dispatcher keyPathsByObject];
+    STAssertEquals([keyPathsByObject count], 0U, nil);
 }
 
 - (void) testMultipleActions
@@ -156,6 +165,9 @@
     [object toggleFlagged];
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 3, nil);
+    
+    NSMutableDictionary * keyPathsByObject = [dispatcher keyPathsByObject];
+    STAssertEquals([keyPathsByObject count], 0U, nil);
 }
 
 - (void) testResettingAction;
@@ -217,6 +229,9 @@
     [object toggleFlagged];
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 2, nil);
+    
+    NSMutableDictionary * keyPathsByObject = [dispatcher keyPathsByObject];
+    STAssertEquals([keyPathsByObject count], 0U, nil);
 }
 
 - (void) testRemoveAllActionsForAnObserver
@@ -244,12 +259,18 @@
     [object1 toggleFlagged2];
     [object2 toggleFlagged];
     STAssertEquals([observer notificationCount], 4, nil);
-
+    
+    NSMutableDictionary * keyPathsByObject = [dispatcher keyPathsByObject];
+    STAssertEquals([keyPathsByObject count], 1U, nil);
+    
     [dispatcher removeAllDispatchActionsOfObject: object2];
     [object1 toggleFlagged];
     [object1 toggleFlagged2];
     [object2 toggleFlagged];
     STAssertEquals([observer notificationCount], 4, nil);
+    
+    keyPathsByObject = [dispatcher keyPathsByObject];
+    STAssertEquals([keyPathsByObject count], 0U, nil);
 }
 
 @end

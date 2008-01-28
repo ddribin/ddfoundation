@@ -104,6 +104,11 @@
         
     [actionsByKeyPath removeObjectForKey: keyPath];
     [object removeObserver: self forKeyPath: keyPath];
+    
+    if ([actionsByKeyPath count] == 0)
+    {
+        [_keyPathsByObject removeObjectForKey: objectWrapper];
+    }
 }
 
 - (void) removeAllDispatchActions
@@ -160,3 +165,19 @@
 }
 
 @end
+
+@interface DDObserverDispatcher (Test)
+
+- (NSMutableDictionary *) keyPathsByObject;
+
+@end
+
+@implementation DDObserverDispatcher (Test)
+
+- (NSMutableDictionary *) keyPathsByObject;
+{
+    return _keyPathsByObject;
+}
+
+@end
+
