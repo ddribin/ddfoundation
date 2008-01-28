@@ -24,6 +24,25 @@
 
 #import "DDObserverDispatcher.h"
 
+@interface DDObserverDispatcher ()
+
+- (void) addObserver: (id) notificationObserver
+            selector: (SEL) selector
+          forKeyPath: (NSString *) keyPath
+            ofObject: (NSObject *) object;
+
+- (void) removeObserver: (id) notificationObserver
+             forKeyPath: (NSString *) keyPath
+               ofObject: (NSObject *) object;
+
+- (void) removeObserver: (id) notificationObserver;
+
+- (void) removeAllObservers;
+
+- (void) removeObserver: (id) notificationObserver;
+
+@end
+
 @interface DDObserverDispatcher (Private)
 
 - (NSMutableArray *) observersForKeyPath: (NSString *) keyPath
@@ -41,15 +60,21 @@
     return sDefaultNotifier;
 }
 
-- (id) init;
+- (id) initWithTarget: (id) target;
 {
     self = [super init];
     if (self == nil)
         return nil;
     
+    _target = target;
     _observedObjects = [[NSMutableDictionary alloc] init];
     
     return self;
+}
+
+- (id) init;
+{
+    return [self initWithTarget: nil];
 }
 
 - (void) dealloc
@@ -59,6 +84,20 @@
     _observedObjects = nil;
 
     [super dealloc];
+}
+
+- (void) setDispatchAction: (SEL) action
+                forKeyPath: (NSString *) keyPath
+                  ofObject: (NSObject *) object;
+{
+    [self addObserver: _target selector: action
+           forKeyPath: keyPath ofObject: object];
+}
+
+- (void) removeDispatchActionForKeyPath: (NSString *) keyPath
+                               ofObject: (NSObject *) object;
+{
+    [self removeObserver: _target forKeyPath: keyPath ofObject: object];
 }
 
 - (void) addObserver: (id) notificationObserver

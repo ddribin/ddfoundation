@@ -27,24 +27,19 @@
 
 @interface DDObserverDispatcher : NSObject
 {
+    id _target;
     NSMutableDictionary * _observedObjects;
 }
 
 + (id) defaultNotifier;
 
-- (void) addObserver: (id) notificationObserver
-            selector: (SEL) selector
-          forKeyPath: (NSString *) keyPath
-            ofObject: (NSObject *) object;
+- (id) initWithTarget: (id) target;
 
-- (void) removeObserver: (id) notificationObserver
-             forKeyPath: (NSString *) keyPath
-               ofObject: (NSObject *) object;
+- (void) setDispatchAction: (SEL) action
+                forKeyPath: (NSString *) keyPath
+                  ofObject: (NSObject *) object;
 
-- (void) removeObserver: (id) notificationObserver;
-
-- (void) removeAllObservers;
-
-- (void) removeObserver: (id) notificationObserver;
+- (void) removeDispatchActionForKeyPath: (NSString *) keyPath
+                               ofObject: (NSObject *) object;
 
 @end
