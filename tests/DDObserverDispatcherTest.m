@@ -219,4 +219,37 @@
     STAssertEquals([observer notificationCount], 2, nil);
 }
 
+- (void) testRemoveAllActionsForAnObserver
+{
+    DDObserverDispatcherTestObject * object1 = [DDObserverDispatcherTestObject object];
+    DDObserverDispatcherTestObject * object2 = [DDObserverDispatcherTestObject object];
+    DDObserverDispatcherTestObserver * observer = [DDObserverDispatcherTestObserver observer];
+    
+    DDObserverDispatcher * dispatcher = [self dispatcherWithTarget: observer];
+    [dispatcher setDispatchAction: @selector(countNotification:)
+                       forKeyPath: @"flagged" ofObject: object1];
+    [dispatcher setDispatchAction: @selector(countNotification:)
+                       forKeyPath: @"flagged2" ofObject: object1];
+    [dispatcher setDispatchAction: @selector(countNotification:)
+                       forKeyPath: @"flagged" ofObject: object2];
+    
+    [object1 toggleFlagged];
+    [object1 toggleFlagged2];
+    [object2 toggleFlagged];
+    
+    STAssertEquals([observer notificationCount], 3, nil);
+    
+    [dispatcher removeAllDispatchActionsOfObject: object1];
+    [object1 toggleFlagged];
+    [object1 toggleFlagged2];
+    [object2 toggleFlagged];
+    STAssertEquals([observer notificationCount], 4, nil);
+
+    [dispatcher removeAllDispatchActionsOfObject: object2];
+    [object1 toggleFlagged];
+    [object1 toggleFlagged2];
+    [object2 toggleFlagged];
+    STAssertEquals([observer notificationCount], 4, nil);
+}
+
 @end
