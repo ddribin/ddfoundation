@@ -60,6 +60,17 @@
     return self;
 }
 
+- (void) dealloc;
+{
+    [_currentSourceObject release];
+    [_currentFinalObject release];
+    [_sourceSequence release];
+    [_sourceKey release];
+    [_finalSequence release];
+    [_finalKey release];
+    [super dealloc];
+}
+
 - (id) nextObject;
 {
     NSAssert((_advanceSource == YES) || (_advanceFinal == YES),
