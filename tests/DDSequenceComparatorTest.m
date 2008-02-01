@@ -70,10 +70,10 @@ static DDSequenceComparator * newComparator(NSArray * sourceArray, NSString * so
     while (comparisonValue = [comparator nextObject])\
     {\
         NSComparisonResult actualResult = [comparisonValue intValue];\
-        STAssertEquals(actualResult, expectedResults[i], [NSString stringWithFormat: @"i = %d", i]);\
+        STAssertEquals(actualResult, _R_[i], [NSString stringWithFormat: @"i = %d", i]);\
         i++;\
     }\
-    STAssertEquals(i, DIM(expectedResults), nil);\
+    STAssertEquals(i, DIM(_R_), nil);\
     [comparator release];\
 }
 
