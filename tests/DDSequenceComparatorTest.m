@@ -36,6 +36,9 @@ static int U = DDSequenceComparatorUpdate;
 
 static NSEnumerator * sequenceOfStrings(NSArray * strings, NSString * key)
 {
+    if (key == nil)
+        return [strings objectEnumerator];
+    
     NSMutableArray * arrayOfStrings = [NSMutableArray array];
     for (NSString * string in strings)
     {
@@ -48,21 +51,20 @@ static NSEnumerator * sequenceOfStrings(NSArray * strings, NSString * key)
 static DDSequenceComparator * newComparator(NSArray * sourceArray, NSString * sourceKey,
                                             NSArray * finalArray, NSString * finalKey)
 {
-    NSEnumerator * finalSequence = sequenceOfStrings(finalArray, @"title");
-    
-    NSEnumerator * sourceSequence = sequenceOfStrings(sourceArray, @"name");
+    NSEnumerator * finalSequence = sequenceOfStrings(finalArray, finalKey);
+    NSEnumerator * sourceSequence = sequenceOfStrings(sourceArray, sourceKey);
     
     DDSequenceComparator * comparator =
         [[DDSequenceComparator alloc] initWithSourceEnumerator: sourceSequence
-                                                     sourceKey: @"name"
+                                                     sourceKey: sourceKey
                                                finalEnumerator: finalSequence
-                                                      finalKey: @"title"];
+                                                      finalKey: finalKey];
     return comparator;
 }
 
-#define RUN_COMPARISON(_S_, _F_, _R_) \
+#define RUN_COMPARISON_WITH_KEYS(_S_, _SK_, _F_, _FK_, _R_) \
 { \
-    DDSequenceComparator * comparator = newComparator(_S_, @"name", _F_, @"title"); \
+    DDSequenceComparator * comparator = newComparator(_S_, _SK_, _F_, _FK_); \
     size_t i = 0;\
     NSNumber * comparisonValue;\
     while (comparisonValue = [comparator nextObject])\
@@ -74,6 +76,8 @@ static DDSequenceComparator * newComparator(NSArray * sourceArray, NSString * so
     STAssertEquals(i, DIM(expectedResults), nil);\
     [comparator release];\
 }
+
+#define RUN_COMPARISON(_S_, _F_, _R_) RUN_COMPARISON_WITH_KEYS(_S_, @"name", _F_, @"title", _R_)
 
 - (void) testDeletingMiddleItems;
 {
@@ -123,7 +127,7 @@ static DDSequenceComparator * newComparator(NSArray * sourceArray, NSString * so
     RUN_COMPARISON(sourceArray, finalArray, expectedResults);
 }
 
-- (void) testComplexComparisons
+- (void) testComplexComparison
 {
     NSArray * sourceArray = [NSArray arrayWithObjects:       @"B", @"C",             nil];
     NSArray * finalArray = [NSArray arrayWithObjects:  @"A", @"B",       @"D", @"E", nil];
@@ -145,6 +149,30 @@ static DDSequenceComparator * newComparator(NSArray * sourceArray, NSString * so
     NSArray * finalArray = [NSArray arrayWithObjects:                                nil];
     NSComparisonResult expectedResults[] = {D,D,D,D,D};
     RUN_COMPARISON(sourceArray, finalArray, expectedResults);
+}
+
+- (void) testComplexComparisonNoSourceKey
+{
+    NSArray * sourceArray = [NSArray arrayWithObjects:       @"B", @"C",             nil];
+    NSArray * finalArray = [NSArray arrayWithObjects:  @"A", @"B",       @"D", @"E", nil];
+    NSComparisonResult expectedResults[] = {A,U,D,A,A};
+    RUN_COMPARISON_WITH_KEYS(sourceArray, nil, finalArray, @"title", expectedResults);
+}
+
+- (void) testComplexComparisonNoFinalKey
+{
+    NSArray * sourceArray = [NSArray arrayWithObjects:       @"B", @"C",             nil];
+    NSArray * finalArray = [NSArray arrayWithObjects:  @"A", @"B",       @"D", @"E", nil];
+    NSComparisonResult expectedResults[] = {A,U,D,A,A};
+    RUN_COMPARISON_WITH_KEYS(sourceArray, @"name", finalArray, nil, expectedResults);
+}
+
+- (void) testComplexComparisonNoKeys
+{
+    NSArray * sourceArray = [NSArray arrayWithObjects:       @"B", @"C",             nil];
+    NSArray * finalArray = [NSArray arrayWithObjects:  @"A", @"B",       @"D", @"E", nil];
+    NSComparisonResult expectedResults[] = {A,U,D,A,A};
+    RUN_COMPARISON_WITH_KEYS(sourceArray, nil, finalArray, nil, expectedResults);
 }
 
 @end

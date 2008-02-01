@@ -79,6 +79,7 @@
     if ((_currentSourceObject == nil) && (_currentFinalObject == nil))
         return nil;
 
+    // NSLog(@"currentSource: %@, currentFinal: %@", _currentSourceObject, _currentFinalObject);
     NSComparisonResult result;
     if (_currentSourceObject == nil)
     {
@@ -90,8 +91,10 @@
     }
     else
     {
-        id sourceValue = [_currentSourceObject valueForKey: _sourceKey];
-        id finalValue = [_currentFinalObject valueForKey: _finalKey];
+        id sourceValue = (_sourceKey == nil)? _currentSourceObject
+            : [_currentSourceObject valueForKey: _sourceKey];
+        id finalValue = (_finalKey == nil)? _currentFinalObject
+            : [_currentFinalObject valueForKey: _finalKey];
         result = [sourceValue compare: finalValue];
     }
 

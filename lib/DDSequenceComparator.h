@@ -25,8 +25,15 @@
 #import <Foundation/Foundation.h>
 
 
-@class DDSequenceComparatorItem;
-
+/**
+ * Implements the "Find-or-Create Efficiently" as described in the
+ * "Efficiently Importing Legacy Data" chapter of the "Core Data Programming
+ * Guide".  It is more flexible in that you can delete or update effeciently
+ * as well.  As such, you can mirror a Core Data collection with an external
+ * data set.
+ *
+ * http://developer.apple.com/documentation/Cocoa/Conceptual/CoreData/Articles/cdImporting.html
+ */
 @interface DDSequenceComparator : NSEnumerator
 {
     NSEnumerator * _sourceSequence;
