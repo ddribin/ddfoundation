@@ -14,6 +14,9 @@
 		55B669910D47F91E006A4FB3 /* DDTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B669900D47F91E006A4FB3 /* DDTestCase.m */; };
 		55B6699B0D47FA31006A4FB3 /* DDTestCaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B6699A0D47FA31006A4FB3 /* DDTestCaseTest.m */; };
 		55B669C30D47FC93006A4FB3 /* test.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55B669C20D47FC93006A4FB3 /* test.plist */; };
+		55BC33320D52E80C0030033C /* DDSequenceComparator.h in Headers */ = {isa = PBXBuildFile; fileRef = 55BC33300D52E80C0030033C /* DDSequenceComparator.h */; };
+		55BC33330D52E80C0030033C /* DDSequenceComparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BC33310D52E80C0030033C /* DDSequenceComparator.m */; };
+		55BC33380D52EA490030033C /* DDSequenceComparatorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BC33370D52EA490030033C /* DDSequenceComparatorTest.m */; };
 		55CA85910D454F3F004492E9 /* DDTemporaryDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = 55CA85890D454F3F004492E9 /* DDTemporaryDirectory.h */; };
 		55CA85920D454F3F004492E9 /* DDTemporaryDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CA858A0D454F3F004492E9 /* DDTemporaryDirectory.m */; };
 		55CA85930D454F3F004492E9 /* DDTemporaryFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 55CA858B0D454F3F004492E9 /* DDTemporaryFile.h */; };
@@ -54,6 +57,10 @@
 		55B669990D47FA31006A4FB3 /* DDTestCaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTestCaseTest.h; sourceTree = "<group>"; };
 		55B6699A0D47FA31006A4FB3 /* DDTestCaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTestCaseTest.m; sourceTree = "<group>"; };
 		55B669C20D47FC93006A4FB3 /* test.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = test.plist; sourceTree = "<group>"; };
+		55BC33300D52E80C0030033C /* DDSequenceComparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDSequenceComparator.h; sourceTree = "<group>"; };
+		55BC33310D52E80C0030033C /* DDSequenceComparator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDSequenceComparator.m; sourceTree = "<group>"; };
+		55BC33360D52EA490030033C /* DDSequenceComparatorTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDSequenceComparatorTest.h; sourceTree = "<group>"; };
+		55BC33370D52EA490030033C /* DDSequenceComparatorTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDSequenceComparatorTest.m; sourceTree = "<group>"; };
 		55CA85890D454F3F004492E9 /* DDTemporaryDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTemporaryDirectory.h; sourceTree = "<group>"; };
 		55CA858A0D454F3F004492E9 /* DDTemporaryDirectory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTemporaryDirectory.m; sourceTree = "<group>"; };
 		55CA858B0D454F3F004492E9 /* DDTemporaryFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTemporaryFile.h; sourceTree = "<group>"; };
@@ -98,8 +105,8 @@
 		034768DFFF38A50411DB9C8B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D2AAC07E0554694100DB518D /* libDDFoundation.a */,
 				55CA86FA0D455108004492E9 /* UnitTests.octest */,
+				D2AAC07E0554694100DB518D /* libDDFoundation.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -135,6 +142,8 @@
 				55CA858C0D454F3F004492E9 /* DDTemporaryFile.m */,
 				555D37230D48F512001A5533 /* DDObserverDispatcher.h */,
 				555D37240D48F512001A5533 /* DDObserverDispatcher.m */,
+				55BC33300D52E80C0030033C /* DDSequenceComparator.h */,
+				55BC33310D52E80C0030033C /* DDSequenceComparator.m */,
 				55CA858D0D454F3F004492E9 /* NSData+DDExtensions.h */,
 				55CA858E0D454F3F004492E9 /* NSData+DDExtensions.m */,
 				55CA858F0D454F3F004492E9 /* NSString+DDExtensions.h */,
@@ -193,6 +202,8 @@
 				55CA87090D455141004492E9 /* DDTemporaryFileTest.m */,
 				555D37290D48F687001A5533 /* DDObserverDispatcherTest.h */,
 				555D372A0D48F687001A5533 /* DDObserverDispatcherTest.m */,
+				55BC33360D52EA490030033C /* DDSequenceComparatorTest.h */,
+				55BC33370D52EA490030033C /* DDSequenceComparatorTest.m */,
 				55CA870A0D455141004492E9 /* NSString+DDExtensionsTest.h */,
 				55CA870B0D455141004492E9 /* NSString+DDExtensionsTest.m */,
 				55B6698F0D47F91E006A4FB3 /* DDTestCase.h */,
@@ -229,6 +240,7 @@
 				55CA85970D454F3F004492E9 /* NSString+DDExtensions.h in Headers */,
 				55CA85A20D454FE9004492E9 /* JRLog.h in Headers */,
 				555D37250D48F512001A5533 /* DDObserverDispatcher.h in Headers */,
+				55BC33320D52E80C0030033C /* DDSequenceComparator.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,6 +341,7 @@
 				55B669910D47F91E006A4FB3 /* DDTestCase.m in Sources */,
 				55B6699B0D47FA31006A4FB3 /* DDTestCaseTest.m in Sources */,
 				555D373A0D48F8E0001A5533 /* DDObserverDispatcherTest.m in Sources */,
+				55BC33380D52EA490030033C /* DDSequenceComparatorTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,6 +355,7 @@
 				55CA85980D454F3F004492E9 /* NSString+DDExtensions.m in Sources */,
 				55CA85A30D454FE9004492E9 /* JRLog.m in Sources */,
 				555D37260D48F512001A5533 /* DDObserverDispatcher.m in Sources */,
+				55BC33330D52E80C0030033C /* DDSequenceComparator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,7 +379,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = DDFoundation_Prefix.pch;
+				GCC_PREFIX_HEADER = tests/DDFoundation_Prefix.pch;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = DDFoundation;
 				ZERO_LINK = YES;
@@ -378,7 +392,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = DDFoundation_Prefix.pch;
+				GCC_PREFIX_HEADER = tests/DDFoundation_Prefix.pch;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = DDFoundation;
 			};
@@ -430,6 +444,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = UnitTests;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -455,6 +470,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = UnitTests;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				WRAPPER_EXTENSION = octest;
 				ZERO_LINK = NO;
 			};
