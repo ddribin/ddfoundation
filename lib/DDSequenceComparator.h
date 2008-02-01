@@ -52,6 +52,11 @@
                       finalEnumerator: (NSEnumerator *) finalEnumerator
                              finalKey: (NSString *) finalKey;
 
++ (id) comparatorWithSourceArray: (NSArray *) sourceArray
+                       sourceKey: (NSString *) sourceKey
+                      finalArray: (NSArray *) finalArray
+                        finalKey: (NSString *) finalKey;
+
 - (id) initWithSourceEnumerator: (NSEnumerator *) sourceEnumerator
                       sourceKey: (NSString *) sourceKey
                 finalEnumerator: (NSEnumerator *) finalEnumerator

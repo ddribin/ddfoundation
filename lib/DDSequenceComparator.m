@@ -51,6 +51,19 @@ static NSNumber * sAddResult;
     return [comparator autorelease];
 }
 
++ (id) comparatorWithSourceArray: (NSArray *) sourceArray
+                       sourceKey: (NSString *) sourceKey
+                      finalArray: (NSArray *) finalArray
+                        finalKey: (NSString *) finalKey;
+{
+    id comparator = 
+        [[self alloc] initWithSourceEnumerator: [sourceArray objectEnumerator]
+                                     sourceKey: (NSString *) sourceKey
+                               finalEnumerator: [finalArray objectEnumerator]
+                                      finalKey: (NSString *) finalKey];
+    return [comparator autorelease];
+}
+
 - (id) initWithSourceEnumerator: (NSEnumerator *) sourceEnumerator
                       sourceKey: (NSString *) sourceKey
                 finalEnumerator: (NSEnumerator *) finalEnumerator
