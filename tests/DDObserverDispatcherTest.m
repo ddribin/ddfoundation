@@ -49,10 +49,12 @@
 }
 
 + (id) object;
++ (NSThread *) backgroundThread;
 
 - (BOOL) isFlagged;
 - (void) setFlagged: (BOOL) flagged;
 - (void) toggleFlagged;
+- (void) toggleFlaggedInBackground;
 
 - (BOOL) isFlagged2;
 - (void) setFlagged2: (BOOL) flagged2;
@@ -63,14 +65,47 @@
 
 @implementation DDObserverDispatcherTestObject
 
+static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
+
 + (id) object
 {
     return [[[self alloc] init] autorelease];
 }
 
++ (NSThread *) backgroundThread;
+{
+    static NSThread * sBackgroundThread = nil;
+    if (sBackgroundThread == nil)
+    {
+        sBackgroundThread = [[NSThread alloc] initWithTarget: self
+                                                    selector: @selector(backgroundEntry)
+                                                      object: nil];
+        [sBackgroundThread setName: BACKGROUND_THREAD_NAME];
+        [sBackgroundThread start];
+    }
+    return sBackgroundThread;
+}
+
++ (void) backgroundEntry
+{
+    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    while (![[NSThread currentThread] isCancelled])
+    {
+        [[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 1.0]];
+    }
+    [pool drain];
+}
+
 - (BOOL) isFlagged { return _flagged; }
 - (void) setFlagged: (BOOL) flagged; { _flagged = flagged; }
 - (void) toggleFlagged; { [self setFlagged: !_flagged]; }
+
+- (void) toggleFlaggedInBackground;
+{
+    [self performSelector: @selector(toggleFlagged)
+                 onThread: [[self class] backgroundThread]
+               withObject: nil waitUntilDone: YES];
+}
 
 - (BOOL) isFlagged2 { return _flagged2; }
 - (void) setFlagged2: (BOOL) flagged2; { _flagged2 = flagged2; }
@@ -81,7 +116,10 @@
 @interface DDObserverDispatcherTestObserver : NSObject
 {
     int _notificationCount;
+    NSString * _lastThreadName;
 }
+
+@property(readwrite, copy) NSString * lastThreadName;
 
 + (id) observer;
 
@@ -93,14 +131,24 @@
 
 @implementation DDObserverDispatcherTestObserver : NSObject
 
+@synthesize lastThreadName = _lastThreadName;
+
 + (id) observer;
 {
     return [[[self alloc] init] autorelease];
 }
 
+- (void) dealloc;
+{
+    [_lastThreadName release];
+    [super dealloc];
+}
+
 - (void) countNotification: (NSNotification *) note;
 {
     _notificationCount++;
+    NSLog(@"My thread 2: %@", [[NSThread currentThread] name]);
+    self.lastThreadName = [NSThread currentThread].name;
 }
 
 - (void) ignoreNotification: (NSNotification *) note;
@@ -119,6 +167,11 @@
 - (id) dispatcherWithTarget: (id) target;
 {
     return [[[DDObserverDispatcher alloc] initWithTarget: target] autorelease];
+}
+
+- (id) dispatcherWithTarget: (id) target dispatchOption: (DDObserverDispatchOption) dispatchOption;
+{
+    return [[[DDObserverDispatcher alloc] initWithTarget: target dispatchOption: dispatchOption] autorelease];
 }
 
 - (void) testSimpleSetAction
@@ -281,6 +334,40 @@
     
     keyPathsByObject = [dispatcher test_keyPathsByObject];
     STAssertEquals([keyPathsByObject count], 0U, nil);
+}
+
+- (void) testBackgroundThreadName
+{
+    NSString * currentThreadName = [[NSThread currentThread] name];
+    NSString * backgroundThreadName = [[DDObserverDispatcherTestObject backgroundThread] name];
+    STAssertTrue(![currentThreadName isEqualToString: backgroundThreadName], nil);
+}
+
+- (void) testDefaultThreadOption
+{
+    DDObserverDispatcherTestObject * object = [DDObserverDispatcherTestObject object];
+    DDObserverDispatcherTestObserver * observer = [DDObserverDispatcherTestObserver observer];
+    
+    DDObserverDispatcher * dispatcher = [self dispatcherWithTarget: observer];
+    [dispatcher setDispatchAction: @selector(countNotification:)
+                       forKeyPath: @"flagged" ofObject: object];
+    
+    [object toggleFlaggedInBackground];
+    STAssertEqualObjects(observer.lastThreadName, BACKGROUND_THREAD_NAME, nil);
+}
+
+- (void) testMainThreadOption
+{
+    DDObserverDispatcherTestObject * object = [DDObserverDispatcherTestObject object];
+    DDObserverDispatcherTestObserver * observer = [DDObserverDispatcherTestObserver observer];
+    
+    DDObserverDispatcher * dispatcher = [self dispatcherWithTarget: observer
+                                                    dispatchOption: DDObserverDispatchOnMainThread];
+    [dispatcher setDispatchAction: @selector(countNotification:)
+                       forKeyPath: @"flagged" ofObject: object];
+    
+    [object toggleFlaggedInBackground];
+    STAssertEqualObjects(observer.lastThreadName, [[NSThread currentThread] name], nil);
 }
 
 @end

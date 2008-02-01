@@ -24,6 +24,12 @@
 
 #import <Cocoa/Cocoa.h>
 
+typedef enum
+{
+    DDObserverDispatchOnCallingThread,
+    DDObserverDispatchOnMainThread,
+    DDObserverDispatchOnMainThreadAndWait,
+} DDObserverDispatchOption;
 
 @interface DDObserverDispatcher : NSObject
 {
@@ -35,7 +41,11 @@
      * an NSArray, in case it is not copyable.
      */
     NSMutableDictionary * _keyPathsByObject;
+    DDObserverDispatchOption _dispatchOption;
 }
+
+- (id) initWithTarget: (id) target
+       dispatchOption: (DDObserverDispatchOption) dispatchOption;
 
 - (id) initWithTarget: (id) target;
 

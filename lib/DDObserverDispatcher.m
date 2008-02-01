@@ -33,7 +33,8 @@
 
 @implementation DDObserverDispatcher
 
-- (id) initWithTarget: (id) target;
+- (id) initWithTarget: (id) target
+       dispatchOption: (DDObserverDispatchOption) dispatchOption;
 {
     self = [super init];
     if (self == nil)
@@ -41,8 +42,14 @@
     
     _target = target;
     _keyPathsByObject = [[NSMutableDictionary alloc] init];
+    _dispatchOption = dispatchOption;
     
     return self;
+}
+
+- (id) initWithTarget: (id) target;
+{
+    return [self initWithTarget: target dispatchOption: DDObserverDispatchOnCallingThread];
 }
 
 - (id) init;
@@ -145,7 +152,12 @@
         return;
         
     SEL action = [actionValue pointerValue];
-    [_target performSelector: action withObject: object];
+    if (_dispatchOption == DDObserverDispatchOnMainThreadAndWait)
+        [_target performSelectorOnMainThread: action withObject: object waitUntilDone: YES];
+    else if (_dispatchOption == DDObserverDispatchOnMainThread)
+        [_target performSelectorOnMainThread: action withObject: object waitUntilDone: NO];
+    else // (_dispatchOption == DDObserverDispatchOnCallingThread)
+        [_target performSelector: action withObject: object];
 }
 
 @end
