@@ -131,4 +131,20 @@ static DDSequenceComparator * newComparator(NSArray * sourceArray, NSString * so
     RUN_COMPARISON(sourceArray, finalArray, expectedResults);
 }
 
+- (void) testEmptySource
+{
+    NSArray * sourceArray = [NSArray arrayWithObjects:                               nil];
+    NSArray * finalArray = [NSArray arrayWithObjects:  @"A", @"B", @"C", @"D", @"E", nil];
+    NSComparisonResult expectedResults[] = {A,A,A,A,A};
+    RUN_COMPARISON(sourceArray, finalArray, expectedResults);
+}
+
+- (void) testEmptyFinal
+{
+    NSArray * sourceArray = [NSArray arrayWithObjects: @"A", @"B", @"C", @"D", @"E", nil];
+    NSArray * finalArray = [NSArray arrayWithObjects:                                nil];
+    NSComparisonResult expectedResults[] = {D,D,D,D,D};
+    RUN_COMPARISON(sourceArray, finalArray, expectedResults);
+}
+
 @end

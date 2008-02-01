@@ -92,7 +92,6 @@
     {
         id sourceValue = [_currentSourceObject valueForKey: _sourceKey];
         id finalValue = [_currentFinalObject valueForKey: _finalKey];
-        NSLog(@"sourceValue: %@, finalValue: %@", sourceValue, finalValue);
         result = [sourceValue compare: finalValue];
     }
 
@@ -111,7 +110,6 @@
         _advanceSource = YES;
         _advanceFinal = YES;
     }
-    NSLog(@"Result: %d", result);
     
     return [NSNumber numberWithInt: result];
 }
