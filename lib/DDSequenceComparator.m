@@ -25,7 +25,18 @@
 #import "DDSequenceComparator.h"
 
 
+static NSNumber * sDeleteResult;
+static NSNumber * sUpdateResult;
+static NSNumber * sAddResult;
+
 @implementation DDSequenceComparator
+
++ (void) initialize
+{
+    sDeleteResult = [[NSNumber alloc] initWithInt: DDSequenceComparatorDelete];
+    sUpdateResult = [[NSNumber alloc] initWithInt: DDSequenceComparatorUpdate];
+    sAddResult = [[NSNumber alloc] initWithInt: DDSequenceComparatorAdd];
+}
 
 + (id) comparatorWithSourceEnumerator: (NSEnumerator *) sourceEnumerator
                             sourceKey: (NSString *) sourceKey
@@ -109,23 +120,27 @@
         result = [sourceValue compare: finalValue];
     }
 
+    NSNumber * resultValue = nil;
     if (result == DDSequenceComparatorAdd)
     {
+        resultValue = sAddResult;
         _advanceSource = NO;
         _advanceFinal = YES;
     }
     else if (result == DDSequenceComparatorDelete)
     {
+        resultValue = sDeleteResult;
         _advanceSource = YES;
         _advanceFinal = NO;
     }
     else
     {
+        resultValue = sUpdateResult;
         _advanceSource = YES;
         _advanceFinal = YES;
     }
     
-    return [NSNumber numberWithInt: result];
+    return resultValue;
 }
 
 - (id) currentSourceObject;
