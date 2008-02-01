@@ -36,6 +36,10 @@
 
 - (id) nextObject;
 
+- (id) currentSourceObject;
+
+- (id) currentFinalObject;
+
 @end
 
 #define DDSequenceComparatorDelete NSOrderedAscending

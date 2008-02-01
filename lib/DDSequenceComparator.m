@@ -100,4 +100,14 @@
     return [NSNumber numberWithInt: result];
 }
 
+- (id) currentSourceObject;
+{
+    return _currentSourceObject;
+}
+
+- (id) currentFinalObject;
+{
+    return _currentFinalObject;
+}
+
 @end
