@@ -76,82 +76,100 @@
                 forKeyPath: (NSString *) keyPath
                   ofObject: (NSObject *) object;
 {
-    NSArray * objectWrapper = [NSArray arrayWithObject: object];
-    NSMutableDictionary * actionsByKeyPath =
-        [_keyPathsByObject objectForKey: objectWrapper];
-
-    // Create if it does not yet exist
-    if (actionsByKeyPath == nil)
+    @synchronized (self)
     {
-        actionsByKeyPath = [NSMutableDictionary dictionary];
-        [_keyPathsByObject setObject: actionsByKeyPath forKey: objectWrapper];
+        NSArray * objectWrapper = [NSArray arrayWithObject: object];
+        NSMutableDictionary * actionsByKeyPath =
+            [_keyPathsByObject objectForKey: objectWrapper];
+        
+        // Create if it does not yet exist
+        if (actionsByKeyPath == nil)
+        {
+            actionsByKeyPath = [NSMutableDictionary dictionary];
+            [_keyPathsByObject setObject: actionsByKeyPath forKey: objectWrapper];
+        }
+        
+        if ([actionsByKeyPath objectForKey: keyPath] == nil)
+        {
+            [actionsByKeyPath setObject:
+             [NSValue valueWithPointer: action] forKey: keyPath];
+            [object addObserver: self
+                     forKeyPath: keyPath
+                        options: 0
+                        context: NULL];
+        }
+        else
+            [actionsByKeyPath setObject: [NSValue valueWithPointer: action] forKey: keyPath];
     }
-   
-    if ([actionsByKeyPath objectForKey: keyPath] == nil)
-    {
-        [actionsByKeyPath setObject: [NSValue valueWithPointer: action] forKey: keyPath];
-        [object addObserver: self
-                 forKeyPath: keyPath
-                    options: 0
-                    context: NULL];
-    }
-    else
-        [actionsByKeyPath setObject: [NSValue valueWithPointer: action] forKey: keyPath];
 }
 
 - (void) removeDispatchActionForKeyPath: (NSString *) keyPath
                                ofObject: (NSObject *) object;
 {
-    NSArray * objectWrapper = [NSArray arrayWithObject: object];
-    NSMutableDictionary * actionsByKeyPath =
-        [_keyPathsByObject objectForKey: objectWrapper];
-
-    if ([actionsByKeyPath objectForKey: keyPath] == nil)
-        return;
-        
-    [actionsByKeyPath removeObjectForKey: keyPath];
-    [object removeObserver: self forKeyPath: keyPath];
-    
-    if ([actionsByKeyPath count] == 0)
+    @synchronized (self)
     {
-        [_keyPathsByObject removeObjectForKey: objectWrapper];
+        NSArray * objectWrapper = [NSArray arrayWithObject: object];
+        NSMutableDictionary * actionsByKeyPath =
+            [_keyPathsByObject objectForKey: objectWrapper];
+        
+        if ([actionsByKeyPath objectForKey: keyPath] == nil)
+            return;
+        
+        [actionsByKeyPath removeObjectForKey: keyPath];
+        [object removeObserver: self forKeyPath: keyPath];
+        
+        if ([actionsByKeyPath count] == 0)
+        {
+            [_keyPathsByObject removeObjectForKey: objectWrapper];
+        }
     }
 }
 
 - (void) removeAllDispatchActions
 {
-    NSEnumerator * e = [_keyPathsByObject keyEnumerator];
-    NSArray * objectWrapper;
-    while (objectWrapper = [e nextObject])
+    @synchronized (self)
     {
-        NSMutableDictionary * keyPaths = [_keyPathsByObject objectForKey: objectWrapper];
-        [self removeObserverForAllKeyPaths: keyPaths ofObjectWrapper: objectWrapper];
+        NSEnumerator * e = [_keyPathsByObject keyEnumerator];
+        NSArray * objectWrapper;
+        while (objectWrapper = [e nextObject])
+        {
+            NSMutableDictionary * keyPaths = [_keyPathsByObject objectForKey: objectWrapper];
+            [self removeObserverForAllKeyPaths: keyPaths ofObjectWrapper: objectWrapper];
+        }
+        [_keyPathsByObject removeAllObjects];
     }
-    [_keyPathsByObject removeAllObjects];
 }
 
 - (void) removeAllDispatchActionsOfObject: (NSObject *) object;
 {
-    NSArray * objectWrapper = [NSArray arrayWithObject: object];
-    NSMutableDictionary * keyPaths = [_keyPathsByObject objectForKey: objectWrapper];
-    [self removeObserverForAllKeyPaths: keyPaths ofObjectWrapper: objectWrapper];
-    [_keyPathsByObject removeObjectForKey: objectWrapper];
+    @synchronized (self)
+    {
+        NSArray * objectWrapper = [NSArray arrayWithObject: object];
+        NSMutableDictionary * keyPaths = [_keyPathsByObject objectForKey: objectWrapper];
+        [self removeObserverForAllKeyPaths: keyPaths ofObjectWrapper: objectWrapper];
+        [_keyPathsByObject removeObjectForKey: objectWrapper];
+    }
 }
 
 -(void) observeValueForKeyPath: (NSString *) keyPath ofObject: (id) object
                        change: (NSDictionary *) change context: (void *) context
 {
     NSArray * objectWrapper = [NSArray arrayWithObject: object];
-    NSMutableDictionary * actionsByKeyPath =
-        [_keyPathsByObject objectForKey: objectWrapper];
-    if (actionsByKeyPath == nil)
-        return;
+    SEL action;
+    @synchronized (self)
+    {
+        NSMutableDictionary * actionsByKeyPath;
+        actionsByKeyPath = [_keyPathsByObject objectForKey: objectWrapper];
+        if (actionsByKeyPath == nil)
+            return;
     
-    NSValue * actionValue = [actionsByKeyPath objectForKey: keyPath];
-    if (actionValue == nil)
-        return;
+        NSValue * actionValue = [actionsByKeyPath objectForKey: keyPath];
+        if (actionValue == nil)
+            return;
         
-    SEL action = [actionValue pointerValue];
+        action = [actionValue pointerValue];
+    }
+
     if (_dispatchOption == DDObserverDispatchOnMainThreadAndWait)
         [_target performSelectorOnMainThread: action withObject: object waitUntilDone: YES];
     else if (_dispatchOption == DDObserverDispatchOnMainThread)
