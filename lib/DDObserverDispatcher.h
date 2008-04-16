@@ -41,17 +41,22 @@ typedef enum
      * an NSArray, in case it is not copyable.
      */
     NSMutableDictionary * _keyPathsByObject;
-    DDObserverDispatchOption _dispatchOption;
+    DDObserverDispatchOption _defaultDispatchOption;
 }
 
 - (id) initWithTarget: (id) target
-       dispatchOption: (DDObserverDispatchOption) dispatchOption;
+defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
 
 - (id) initWithTarget: (id) target;
 
 - (void) setDispatchAction: (SEL) action
                 forKeyPath: (NSString *) keyPath
                   ofObject: (NSObject *) object;
+
+- (void) setDispatchAction: (SEL) action
+                forKeyPath: (NSString *) keyPath
+                  ofObject: (NSObject *) object
+            dispatchOption: (DDObserverDispatchOption) dispatchOption;
 
 - (void) removeDispatchActionForKeyPath: (NSString *) keyPath
                                ofObject: (NSObject *) object;
@@ -61,3 +66,7 @@ typedef enum
 - (void) removeAllDispatchActionsOfObject: (NSObject *) object;
 
 @end
+
+extern NSString * DDObserverDispatcherKeyPathKey;
+extern NSString * DDObserverDispatcherObjectKey;
+extern NSString * DDObserverDispatcherChangeKey;

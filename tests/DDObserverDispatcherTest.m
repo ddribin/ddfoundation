@@ -171,7 +171,8 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
 
 - (id) dispatcherWithTarget: (id) target dispatchOption: (DDObserverDispatchOption) dispatchOption;
 {
-    return [[[DDObserverDispatcher alloc] initWithTarget: target dispatchOption: dispatchOption] autorelease];
+    return [[[DDObserverDispatcher alloc] initWithTarget: target
+                                   defaultDispatchOption: dispatchOption] autorelease];
 }
 
 - (void) testSimpleSetAction

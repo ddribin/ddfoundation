@@ -24,17 +24,108 @@
 
 #import "DDObserverDispatcher.h"
 
+@interface DDObserverDispatcherEntry : NSObject
+{
+    SEL _action;
+    BOOL _hasDispatchOption;
+    DDObserverDispatchOption _dispatchOption;
+}
+
++ (id) entryWithAction: (SEL) action;
+
++ (id) entryWithAction: (SEL) action
+        dispatchOption: (DDObserverDispatchOption) dispatchOption;
+
+- (id) initWithAction: (SEL) action;
+
+- (id) initWithAction: (SEL) action
+       dispatchOption: (DDObserverDispatchOption) dispatchOption;
+
+- (SEL) action;
+
+- (BOOL) hasDispatchOption;
+
+- (DDObserverDispatchOption) dispatchOption;
+
+@end
+
+NSString * DDObserverDispatcherKeyPathKey = @"keyPath";
+NSString * DDObserverDispatcherObjectKey = @"object";
+NSString * DDObserverDispatcherChangeKey = @"change";
+
+@implementation DDObserverDispatcherEntry
+
++ (id) entryWithAction: (SEL) action;
+{
+    id o =[[self alloc] initWithAction: action];
+    return [o autorelease];
+}
+
++ (id) entryWithAction: (SEL) action
+        dispatchOption: (DDObserverDispatchOption) dispatchOption;
+{
+    id o =[[self alloc] initWithAction: action dispatchOption: dispatchOption];
+    return [o autorelease];
+}
+
+- (id) initWithAction: (SEL) action;
+{
+    self = [super init];
+    if (self == nil)
+        return nil;
+    
+    _action = action;
+    _hasDispatchOption = NO;
+    
+    return self;
+}
+
+- (id) initWithAction: (SEL) action
+       dispatchOption: (DDObserverDispatchOption) dispatchOption;
+{
+    self = [super init];
+    if (self == nil)
+        return nil;
+    
+    _action = action;
+    _hasDispatchOption = YES;
+    _dispatchOption = dispatchOption;
+    
+    return self;
+}
+
+- (SEL) action;
+{
+    return _action;
+}
+
+- (BOOL) hasDispatchOption;
+{
+    return _hasDispatchOption;
+}
+
+- (DDObserverDispatchOption) dispatchOption;
+{
+    return _dispatchOption;
+}
+
+@end
+
 @interface DDObserverDispatcher (Private)
 
 - (void) removeObserverForAllKeyPaths: (NSMutableDictionary *) keyPaths
                       ofObjectWrapper: (NSArray *) objectWrapper;
+
+- (void) setDispatchEntry: (DDObserverDispatcherEntry *) entry
+               forKeyPath: (NSString *) keyPath
+                 ofObject: (NSObject *) object;
 
 @end
 
 @implementation DDObserverDispatcher
 
 - (id) initWithTarget: (id) target
-       dispatchOption: (DDObserverDispatchOption) dispatchOption;
+defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
 {
     self = [super init];
     if (self == nil)
@@ -42,14 +133,15 @@
     
     _target = target;
     _keyPathsByObject = [[NSMutableDictionary alloc] init];
-    _dispatchOption = dispatchOption;
+    _defaultDispatchOption = dispatchOption;
     
     return self;
 }
 
 - (id) initWithTarget: (id) target;
 {
-    return [self initWithTarget: target dispatchOption: DDObserverDispatchOnCallingThread];
+    return [self initWithTarget: target
+          defaultDispatchOption: DDObserverDispatchOnCallingThread];
 }
 
 - (id) init;
@@ -62,7 +154,7 @@
     [self removeAllDispatchActions];
     [_keyPathsByObject release];
     _keyPathsByObject = nil;
-
+    
     [super dealloc];
 }
 
@@ -76,31 +168,24 @@
                 forKeyPath: (NSString *) keyPath
                   ofObject: (NSObject *) object;
 {
-    @synchronized (self)
-    {
-        NSArray * objectWrapper = [NSArray arrayWithObject: object];
-        NSMutableDictionary * actionsByKeyPath =
-            [_keyPathsByObject objectForKey: objectWrapper];
-        
-        // Create if it does not yet exist
-        if (actionsByKeyPath == nil)
-        {
-            actionsByKeyPath = [NSMutableDictionary dictionary];
-            [_keyPathsByObject setObject: actionsByKeyPath forKey: objectWrapper];
-        }
-        
-        if ([actionsByKeyPath objectForKey: keyPath] == nil)
-        {
-            [actionsByKeyPath setObject:
-             [NSValue valueWithPointer: action] forKey: keyPath];
-            [object addObserver: self
-                     forKeyPath: keyPath
-                        options: 0
-                        context: NULL];
-        }
-        else
-            [actionsByKeyPath setObject: [NSValue valueWithPointer: action] forKey: keyPath];
-    }
+    DDObserverDispatcherEntry * entry =
+    [DDObserverDispatcherEntry entryWithAction: action];
+    [self setDispatchEntry: entry
+                forKeyPath: keyPath
+                  ofObject: object];
+}
+
+- (void) setDispatchAction: (SEL) action
+                forKeyPath: (NSString *) keyPath
+                  ofObject: (NSObject *) object
+            dispatchOption: (DDObserverDispatchOption) dispatchOption;
+{
+    DDObserverDispatcherEntry * entry =
+    [DDObserverDispatcherEntry entryWithAction: action
+                                dispatchOption: dispatchOption];
+    [self setDispatchEntry: entry
+                forKeyPath: keyPath
+                  ofObject: object];
 }
 
 - (void) removeDispatchActionForKeyPath: (NSString *) keyPath
@@ -110,7 +195,7 @@
     {
         NSArray * objectWrapper = [NSArray arrayWithObject: object];
         NSMutableDictionary * actionsByKeyPath =
-            [_keyPathsByObject objectForKey: objectWrapper];
+        [_keyPathsByObject objectForKey: objectWrapper];
         
         if ([actionsByKeyPath objectForKey: keyPath] == nil)
             return;
@@ -152,30 +237,42 @@
 }
 
 -(void) observeValueForKeyPath: (NSString *) keyPath ofObject: (id) object
-                       change: (NSDictionary *) change context: (void *) context
+                        change: (NSDictionary *) change context: (void *) context
 {
     NSArray * objectWrapper = [NSArray arrayWithObject: object];
     SEL action;
+    DDObserverDispatchOption dispatchOption;
     @synchronized (self)
     {
         NSMutableDictionary * actionsByKeyPath;
         actionsByKeyPath = [_keyPathsByObject objectForKey: objectWrapper];
         if (actionsByKeyPath == nil)
             return;
-    
-        NSValue * actionValue = [actionsByKeyPath objectForKey: keyPath];
-        if (actionValue == nil)
+        
+        DDObserverDispatcherEntry * entry = [actionsByKeyPath objectForKey: keyPath];
+        if (entry == nil)
             return;
         
-        action = [actionValue pointerValue];
+        action = [entry action];
+        if ([entry hasDispatchOption])
+            dispatchOption = [entry dispatchOption];
+        else
+            dispatchOption = _defaultDispatchOption;
     }
-
-    if (_dispatchOption == DDObserverDispatchOnMainThreadAndWait)
-        [_target performSelectorOnMainThread: action withObject: object waitUntilDone: YES];
-    else if (_dispatchOption == DDObserverDispatchOnMainThread)
-        [_target performSelectorOnMainThread: action withObject: object waitUntilDone: NO];
-    else // (_dispatchOption == DDObserverDispatchOnCallingThread)
-        [_target performSelector: action withObject: object];
+    
+    NSDictionary * userInfo =
+        [NSDictionary dictionaryWithObjectsAndKeys:
+         keyPath, DDObserverDispatcherKeyPathKey,
+         object, DDObserverDispatcherObjectKey,
+         change, DDObserverDispatcherChangeKey,
+         nil];
+    
+    if (dispatchOption == DDObserverDispatchOnMainThreadAndWait)
+        [_target performSelectorOnMainThread: action withObject: userInfo waitUntilDone: YES];
+    else if (dispatchOption == DDObserverDispatchOnMainThread)
+        [_target performSelectorOnMainThread: action withObject: userInfo waitUntilDone: NO];
+    else // (dispatchOption == DDObserverDispatchOnCallingThread)
+        [_target performSelector: action withObject: userInfo];
 }
 
 @end
@@ -191,6 +288,36 @@
     while (keyPath = [e nextObject])
     {
         [object removeObserver: self forKeyPath: keyPath];
+    }
+}
+
+- (void) setDispatchEntry: (DDObserverDispatcherEntry *) entry
+               forKeyPath: (NSString *) keyPath
+                 ofObject: (NSObject *) object;
+{
+    @synchronized (self)
+    {
+        NSArray * objectWrapper = [NSArray arrayWithObject: object];
+        NSMutableDictionary * actionsByKeyPath =
+        [_keyPathsByObject objectForKey: objectWrapper];
+        
+        // Create if it does not yet exist
+        if (actionsByKeyPath == nil)
+        {
+            actionsByKeyPath = [NSMutableDictionary dictionary];
+            [_keyPathsByObject setObject: actionsByKeyPath forKey: objectWrapper];
+        }
+        
+        if ([actionsByKeyPath objectForKey: keyPath] == nil)
+        {
+            [actionsByKeyPath setObject: entry forKey: keyPath];
+            [object addObserver: self
+                     forKeyPath: keyPath
+                        options: NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                        context: NULL];
+        }
+        else
+            [actionsByKeyPath setObject: entry forKey: keyPath];
     }
 }
 
