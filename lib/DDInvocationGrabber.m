@@ -125,7 +125,6 @@
     [self setInvocation:ioInvocation];
     if (_forwardInvokesOnMainThread)
     {
-        NSLog(@"Forwarding performSelectorOnMainThread");
         [[self invocation] performSelectorOnMainThread:@selector(invoke)
                                             withObject:nil
                                          waitUntilDone:_waitUntilDone];
