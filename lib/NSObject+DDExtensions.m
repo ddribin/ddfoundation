@@ -36,7 +36,7 @@
 {
     DDInvocationGrabber * grabber = [DDInvocationGrabber invocationGrabber];
     [grabber setForwardInvokesOnMainThread:YES];
-    [grabber setWaitUntilDone:YES];
+    [grabber setWaitUntilDone:waitUntilDone];
     return [grabber prepareWithInvocationTarget:self];
 }
 
