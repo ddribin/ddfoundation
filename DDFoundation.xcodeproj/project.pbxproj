@@ -463,6 +463,7 @@
 					Cocoa,
 					"-framework",
 					SenTestingKit,
+					"-ObjC",
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = UnitTests;
@@ -489,6 +490,7 @@
 					Cocoa,
 					"-framework",
 					SenTestingKit,
+					"-ObjC",
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = UnitTests;

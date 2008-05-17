@@ -24,6 +24,7 @@
 
 #import "DDInvocationGrabberTest.h"
 #import "DDInvocationGrabber.h"
+#import "NSObject+DDExtensions.h"
 
 
 @implementation DDInvocationGrabberTest
@@ -60,10 +61,66 @@
 	}
     @catch (NSException *localException)
 	{
+        // Expected
 	}
-    @finally
-	{
-	}
+}
+
+- (int)incrementByInt:(int)count
+{
+    NSLog(@"increemntBy:%d", count);
+    _count += count;
+    return _count;
+}
+
+- (void)backgroundMethod:(NSNumber *)waitUntilDoneNumber
+{
+    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    
+    BOOL wait = [waitUntilDoneNumber boolValue];
+
+    id grabber = 
+        [self dd_invokeOnMainThreadAndWaitUntilDone:wait];
+    [grabber incrementByInt:10];
+    
+    if (wait)
+        [[grabber invocation] getReturnValue:&_result];
+    
+    _done = YES;
+    [pool release];
+}
+
+- (void)testForwardInvokesOnMainThreadWait
+{
+    _count = 0;
+    _result = 0;
+    _done = NO;
+
+    [self performSelectorInBackground:@selector(backgroundMethod:)
+                           withObject:[NSNumber numberWithBool:YES]];
+    while (!_done)
+    {
+        [[NSRunLoop currentRunLoop] runMode: NSDefaultRunLoopMode
+                                 beforeDate: [NSDate date]];
+    }
+    STAssertEquals(_count, 10, nil);
+    STAssertEquals(_result, 10, nil);
+}
+
+
+- (void)testForwardInvokesOnMainThreadNoWait
+{
+    _count = 0;
+    _result = 0;
+    _done = NO;
+    
+    [self performSelectorInBackground:@selector(backgroundMethod:)
+                           withObject:[NSNumber numberWithBool:NO]];
+    while (!_done)
+    {
+        [[NSRunLoop currentRunLoop] runMode: NSDefaultRunLoopMode
+                                 beforeDate: [NSDate date]];
+    }
+    STAssertEquals(_count, 10, nil);
 }
 
 @end

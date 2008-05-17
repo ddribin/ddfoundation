@@ -25,9 +25,11 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "DDTestCase.h"
 
-@interface DDInvocationGrabberTest : DDTestCase {
-    NSThread * _thread;
-    NSCondition * _condition;
+@interface DDInvocationGrabberTest : DDTestCase
+{
+    int _count;
+    BOOL _done;
+    int _result;
 }
 
 @end
