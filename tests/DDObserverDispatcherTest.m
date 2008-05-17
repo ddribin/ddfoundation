@@ -147,7 +147,6 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
 - (void) countNotification: (NSNotification *) note;
 {
     _notificationCount++;
-    NSLog(@"My thread 2: %@", [[NSThread currentThread] name]);
     self.lastThreadName = [NSThread currentThread].name;
 }
 

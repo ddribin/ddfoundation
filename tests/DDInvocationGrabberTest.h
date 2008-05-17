@@ -27,9 +27,6 @@
 
 @interface DDInvocationGrabberTest : DDTestCase
 {
-    int _count;
-    BOOL _done;
-    int _result;
 }
 
 @end
