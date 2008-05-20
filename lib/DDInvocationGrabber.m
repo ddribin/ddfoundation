@@ -114,9 +114,7 @@
     {
         theMethodSignature = [[self target] methodSignatureForSelector:inSelector];
     }
-	
-    
-    return(theMethodSignature);
+    return theMethodSignature;
 }
 
 - (void)forwardInvocation:(NSInvocation *)ioInvocation
@@ -125,9 +123,11 @@
     [self setInvocation:ioInvocation];
     if (_forwardInvokesOnMainThread)
     {
-        [[self invocation] performSelectorOnMainThread:@selector(invoke)
-                                            withObject:nil
-                                         waitUntilDone:_waitUntilDone];
+        if (!_waitUntilDone)
+            [_invocation retainArguments];
+        [_invocation performSelectorOnMainThread:@selector(invoke)
+                                      withObject:nil
+                                   waitUntilDone:_waitUntilDone];
     }
 }
 
