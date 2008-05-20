@@ -74,4 +74,41 @@
     STAssertEquals(_count, 10, nil);
 }
 
+- (void)mainThreadMethod:(NSNumber *)number;
+{
+    // If arguments were not retained, this will dereference a released
+    // object, and cause a crash.
+    _count = [number intValue];
+    self.invoked = YES;
+}
+
+- (void)backgroundMethodWithObject
+{
+    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    
+    NSNumber * number = [NSNumber numberWithInt:42];
+    
+    [[self dd_invokeOnMainThreadAndWaitUntilDone:NO] mainThreadMethod:number];
+    
+    self.done = YES;
+    [pool release];
+}
+
+- (void)testForwardNoWaitRetainsArguments
+{
+    _count = 0;
+    _result = 0;
+    self.done = NO;
+    self.invoked = NO;
+    
+    [self performSelectorInBackground:@selector(backgroundMethodWithObject)
+                           withObject:nil];
+    while (!self.invoked)
+    {
+        [[NSRunLoop currentRunLoop] runMode: NSDefaultRunLoopMode
+                                 beforeDate: [NSDate date]];
+    }
+    STAssertEquals(_count, 42, nil);
+}
+
 @end
