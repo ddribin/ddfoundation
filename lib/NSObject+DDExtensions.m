@@ -29,7 +29,7 @@
 
 - (id)dd_invokeOnMainThread;
 {
-    return [self dd_invokeOnMainThreadAndWaitUntilDone:YES];
+    return [self dd_invokeOnMainThreadAndWaitUntilDone:NO];
 }
 
 - (id)dd_invokeOnMainThreadAndWaitUntilDone:(BOOL)waitUntilDone;
