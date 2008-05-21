@@ -75,7 +75,7 @@
  NSInvocation *theInvocation = [theGrabber invocation];
  
  */
-@interface DDInvocationGrabber : NSObject
+@interface DDInvocationGrabber : NSProxy
 {
 	id _target;
 	NSInvocation * _invocation;

@@ -34,10 +34,6 @@
 
 - (id)init
 {
-    self = [super init];
-    if (self == nil)
-        return nil;
-    
     _target = nil;
     _invocation = nil;
     _forwardInvokesOnMainThread = NO;
@@ -106,15 +102,9 @@
 
 #pragma mark -
 
-- (NSMethodSignature *)methodSignatureForSelector:(SEL)inSelector
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
 {
-    /* Let's see if our super class has a signature for this selector. */
-    NSMethodSignature *theMethodSignature = [super methodSignatureForSelector:inSelector];
-    if (theMethodSignature == NULL)
-    {
-        theMethodSignature = [[self target] methodSignatureForSelector:inSelector];
-    }
-    return theMethodSignature;
+    return [[self target] methodSignatureForSelector:selector];
 }
 
 - (void)forwardInvocation:(NSInvocation *)ioInvocation
