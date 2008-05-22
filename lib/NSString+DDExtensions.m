@@ -41,6 +41,11 @@ NSString * DDMimeTypeForExtension(NSString * extension)
     return mime;
 }
 
+NSString * DDNSStringFromBOOL(BOOL b)
+{
+    return b ? @"YES" : @"NO";
+}
+
 @implementation NSString (DDExtensions)
 
 - (NSString *) dd_pathMimeType;

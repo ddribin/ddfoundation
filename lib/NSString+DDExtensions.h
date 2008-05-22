@@ -26,6 +26,7 @@
 
 
 NSString * DDMimeTypeForExtension(NSString * extension);
+NSString * DDNSStringFromBOOL(BOOL b);
 
 @interface NSString (DDExtensions)
 
