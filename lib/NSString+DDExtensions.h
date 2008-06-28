@@ -33,3 +33,5 @@ NSString * DDNSStringFromBOOL(BOOL b);
 - (NSString *) dd_pathMimeType;
 
 @end
+
+#define ddsprintf(FORMAT, ARGS... )  [NSString stringWithFormat: (FORMAT), ARGS]
