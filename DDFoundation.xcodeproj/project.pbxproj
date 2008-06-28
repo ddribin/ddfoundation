@@ -35,6 +35,7 @@
 		55EA07380DDE5E610087B37B /* NSObject+DDExtensionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 55EA07370DDE5E610087B37B /* NSObject+DDExtensionsTest.m */; };
 		55EF2AA10E17021900B465BE /* NSArray+DDExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 55EF2A9F0E17021900B465BE /* NSArray+DDExtensions.h */; };
 		55EF2AA20E17021900B465BE /* NSArray+DDExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55EF2AA00E17021900B465BE /* NSArray+DDExtensions.m */; };
+		55EF2AA90E17039500B465BE /* DDFoundation.h in Headers */ = {isa = PBXBuildFile; fileRef = 55EF2AA80E17039500B465BE /* DDFoundation.h */; };
 		55F7D4C90DDAA4BC00FD433C /* NSObject+DDExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F7D4C70DDAA4BC00FD433C /* NSObject+DDExtensions.h */; };
 		55F7D4CA0DDAA4BC00FD433C /* NSObject+DDExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F7D4C80DDAA4BC00FD433C /* NSObject+DDExtensions.m */; };
 		55F7D4CF0DDAA4F000FD433C /* DDInvocationGrabber.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F7D4CD0DDAA4F000FD433C /* DDInvocationGrabber.h */; };
@@ -91,6 +92,7 @@
 		55EA07370DDE5E610087B37B /* NSObject+DDExtensionsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+DDExtensionsTest.m"; sourceTree = "<group>"; };
 		55EF2A9F0E17021900B465BE /* NSArray+DDExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+DDExtensions.h"; sourceTree = "<group>"; };
 		55EF2AA00E17021900B465BE /* NSArray+DDExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+DDExtensions.m"; sourceTree = "<group>"; };
+		55EF2AA80E17039500B465BE /* DDFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFoundation.h; sourceTree = "<group>"; };
 		55F7D4C70DDAA4BC00FD433C /* NSObject+DDExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+DDExtensions.h"; sourceTree = "<group>"; };
 		55F7D4C80DDAA4BC00FD433C /* NSObject+DDExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+DDExtensions.m"; sourceTree = "<group>"; };
 		55F7D4CD0DDAA4F000FD433C /* DDInvocationGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDInvocationGrabber.h; sourceTree = "<group>"; };
@@ -154,24 +156,25 @@
 		08FB77AEFE84172EC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				55CA85890D454F3F004492E9 /* DDTemporaryDirectory.h */,
-				55CA858A0D454F3F004492E9 /* DDTemporaryDirectory.m */,
-				55CA858B0D454F3F004492E9 /* DDTemporaryFile.h */,
-				55CA858C0D454F3F004492E9 /* DDTemporaryFile.m */,
+				55F7D4CD0DDAA4F000FD433C /* DDInvocationGrabber.h */,
+				55F7D4CE0DDAA4F000FD433C /* DDInvocationGrabber.m */,
 				555D37230D48F512001A5533 /* DDObserverDispatcher.h */,
 				555D37240D48F512001A5533 /* DDObserverDispatcher.m */,
 				55BC33300D52E80C0030033C /* DDSequenceComparator.h */,
 				55BC33310D52E80C0030033C /* DDSequenceComparator.m */,
-				55F7D4CD0DDAA4F000FD433C /* DDInvocationGrabber.h */,
-				55F7D4CE0DDAA4F000FD433C /* DDInvocationGrabber.m */,
-				55CA858D0D454F3F004492E9 /* NSData+DDExtensions.h */,
-				55CA858E0D454F3F004492E9 /* NSData+DDExtensions.m */,
-				55CA858F0D454F3F004492E9 /* NSString+DDExtensions.h */,
-				55CA85900D454F3F004492E9 /* NSString+DDExtensions.m */,
-				55F7D4C70DDAA4BC00FD433C /* NSObject+DDExtensions.h */,
-				55F7D4C80DDAA4BC00FD433C /* NSObject+DDExtensions.m */,
+				55CA85890D454F3F004492E9 /* DDTemporaryDirectory.h */,
+				55CA858A0D454F3F004492E9 /* DDTemporaryDirectory.m */,
+				55CA858B0D454F3F004492E9 /* DDTemporaryFile.h */,
+				55CA858C0D454F3F004492E9 /* DDTemporaryFile.m */,
 				55EF2A9F0E17021900B465BE /* NSArray+DDExtensions.h */,
 				55EF2AA00E17021900B465BE /* NSArray+DDExtensions.m */,
+				55CA858D0D454F3F004492E9 /* NSData+DDExtensions.h */,
+				55CA858E0D454F3F004492E9 /* NSData+DDExtensions.m */,
+				55F7D4C70DDAA4BC00FD433C /* NSObject+DDExtensions.h */,
+				55F7D4C80DDAA4BC00FD433C /* NSObject+DDExtensions.m */,
+				55CA858F0D454F3F004492E9 /* NSString+DDExtensions.h */,
+				55CA85900D454F3F004492E9 /* NSString+DDExtensions.m */,
+				55EF2AA80E17039500B465BE /* DDFoundation.h */,
 			);
 			name = Source;
 			path = lib;
@@ -272,6 +275,7 @@
 				55F7D4C90DDAA4BC00FD433C /* NSObject+DDExtensions.h in Headers */,
 				55F7D4CF0DDAA4F000FD433C /* DDInvocationGrabber.h in Headers */,
 				55EF2AA10E17021900B465BE /* NSArray+DDExtensions.h in Headers */,
+				55EF2AA90E17039500B465BE /* DDFoundation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
