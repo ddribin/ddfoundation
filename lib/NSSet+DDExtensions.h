@@ -22,12 +22,12 @@
  * SOFTWARE.
  */
 
-#import "DDInvocationGrabber.h"
-#import "DDObserverDispatcher.h"
-#import "DDSequenceComparator.h"
-#import "DDTemporaryDirectory.h"
-#import "NSArray+DDExtensions.h"
-#import "NSSet+DDExtensions.h"
-#import "NSData+DDExtensions.h"
-#import "NSObject+DDExtensions.h"
-#import "NSString+DDExtensions.h"
+#import <Foundation/Foundation.h>
+
+
+#define ddset(OBJS...)     ({id objs[]={OBJS}; \
+    [NSSet setWithObjects: objs count: sizeof(objs)/sizeof(id)];})
+
+#define ddmset(OBJS...)    ({id objs[]={OBJS}; \
+    [NSMutableSet setWithObjects: objs count: sizeof(objs)/sizeof(id)];})
+
