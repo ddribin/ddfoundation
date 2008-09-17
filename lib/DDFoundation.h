@@ -31,3 +31,4 @@
 #import "NSData+DDExtensions.h"
 #import "NSObject+DDExtensions.h"
 #import "NSString+DDExtensions.h"
+#import "NSSortDescriptor+DDExtensions.h"
