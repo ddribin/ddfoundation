@@ -22,15 +22,24 @@
  * SOFTWARE.
  */
 
-#import "DDInvocationGrabber.h"
-#import "DDObserverDispatcher.h"
-#import "DDRunLoopPoker.h"
-#import "DDSequenceComparator.h"
-#import "DDTemporaryDirectory.h"
+#import <Foundation/Foundation.h>
 
-#import "NSArray+DDExtensions.h"
-#import "NSSet+DDExtensions.h"
-#import "NSData+DDExtensions.h"
-#import "NSObject+DDExtensions.h"
-#import "NSString+DDExtensions.h"
-#import "NSSortDescriptor+DDExtensions.h"
+
+@interface DDRunLoopPoker : NSObject
+{
+    NSRunLoop * _runLoop;
+    NSPort * _pokerPort;
+    NSPortMessage * _pokeMessage;
+}
+
++ (id)pokerWithRunLoop:(NSRunLoop *)runLoop;
+
+- (id)init;
+
+- (id)initWithRunLoop:(NSRunLoop *)runLoop;
+
+- (void)dispose;
+
+- (void)pokeRunLoop;
+
+@end
