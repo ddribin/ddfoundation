@@ -27,7 +27,7 @@
 
 @implementation DDRunLoopCondition
 
-- (id)initWithCondition:(NSInteger)condition onRunLoop:(NSRunLoop *)runLoop;
+- (id)initWithCondition:(int)condition onRunLoop:(NSRunLoop *)runLoop;
 {
     self = [super init];
     if (self == nil)
@@ -39,7 +39,7 @@
     return self;
 }
 
-- (id)initWithCondition:(NSInteger)condition;
+- (id)initWithCondition:(int)condition;
 {
     return [self initWithCondition:condition onRunLoop:[NSRunLoop currentRunLoop]];
 }
@@ -61,22 +61,22 @@
     _poker = nil;
 }
 
-- (NSInteger)condition;
+- (int)condition;
 {
     return _condition;
 }
 
-- (void)setCondition:(NSInteger)condition;
+- (void)setCondition:(int)condition;
 {
     _condition = condition;
 }
 
-- (void)waitForCondition:(NSInteger)condition;
+- (void)waitForCondition:(int)condition;
 {
     [self waitForCondition:condition beforeDate:[NSDate distantFuture]];
 }
 
-- (BOOL)waitForCondition:(NSInteger)condition beforeDate:(NSDate *)endDate;
+- (BOOL)waitForCondition:(int)condition beforeDate:(NSDate *)endDate;
 {
     while(_condition != condition)
     {
@@ -91,7 +91,7 @@
     return YES;
 }
 
-- (void)signalWithCondition:(NSInteger)condition;
+- (void)signalWithCondition:(int)condition;
 {
     _condition = condition;
     [_poker pokeRunLoop];

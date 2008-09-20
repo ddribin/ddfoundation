@@ -29,20 +29,20 @@
 @interface DDRunLoopCondition : NSObject
 {
     DDRunLoopPoker * _poker;
-    NSInteger _condition;
+    int _condition;
 }
 
-- (id)initWithCondition:(NSInteger)condition onRunLoop:(NSRunLoop *)runLoop;
-- (id)initWithCondition:(NSInteger)condition;
+- (id)initWithCondition:(int)condition onRunLoop:(NSRunLoop *)runLoop;
+- (id)initWithCondition:(int)condition;
 
 - (void)dispose;
 
-- (NSInteger)condition;
-- (void)setCondition:(NSInteger)condition;
+- (int)condition;
+- (void)setCondition:(int)condition;
 
-- (void)waitForCondition:(NSInteger)condition;
-- (BOOL)waitForCondition:(NSInteger)condition beforeDate:(NSDate *)endDate;
+- (void)waitForCondition:(int)condition;
+- (BOOL)waitForCondition:(int)condition beforeDate:(NSDate *)endDate;
 
-- (void)signalWithCondition:(NSInteger)condition;
+- (void)signalWithCondition:(int)condition;
 
 @end
