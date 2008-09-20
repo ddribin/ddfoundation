@@ -29,7 +29,6 @@
 {
     NSRunLoop * _runLoop;
     NSPort * _pokerPort;
-    NSPortMessage * _pokeMessage;
 }
 
 + (id)pokerWithRunLoop:(NSRunLoop *)runLoop;

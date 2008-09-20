@@ -50,11 +50,6 @@ static const uint32_t kPokeMessage = 100;
     [_runLoop addPort:_pokerPort forMode:NSDefaultRunLoopMode];
     [_runLoop addPort:_pokerPort forMode:NSModalPanelRunLoopMode];
     
-    _pokeMessage = [[NSPortMessage alloc] initWithSendPort:_pokerPort
-                                               receivePort:nil
-                                                components:nil];
-    [_pokeMessage setMsgid:kPokeMessage];
-     
     return self;
 }
 
@@ -74,9 +69,6 @@ static const uint32_t kPokeMessage = 100;
 
 - (void)dispose;
 {
-    [_pokeMessage release];
-    _pokeMessage = nil;
-    
     if (_pokerPort != nil)
     {
         [_runLoop removePort:_pokerPort forMode:NSModalPanelRunLoopMode];
@@ -92,7 +84,13 @@ static const uint32_t kPokeMessage = 100;
 
 - (void)pokeRunLoop;
 {
-    [_pokeMessage sendBeforeDate:[NSDate date]];
+    NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:_pokerPort
+                                                          receivePort:nil
+                                                           components:nil];
+    [message autorelease];
+    
+    [message setMsgid:kPokeMessage];
+    [message sendBeforeDate:[NSDate date]];
 }
 
 @end
