@@ -22,16 +22,27 @@
  * SOFTWARE.
  */
 
-#import "DDInvocationGrabber.h"
-#import "DDObserverDispatcher.h"
-#import "DDRunLoopPoker.h"
-#import "DDRunLoopCondition.h"
-#import "DDSequenceComparator.h"
-#import "DDTemporaryDirectory.h"
+#import <Foundation/Foundation.h>
 
-#import "NSArray+DDExtensions.h"
-#import "NSSet+DDExtensions.h"
-#import "NSData+DDExtensions.h"
-#import "NSObject+DDExtensions.h"
-#import "NSString+DDExtensions.h"
-#import "NSSortDescriptor+DDExtensions.h"
+@class DDRunLoopPoker;
+
+@interface DDRunLoopCondition : NSObject
+{
+    DDRunLoopPoker * _poker;
+    NSInteger _condition;
+}
+
+- (id)initWithCondition:(NSInteger)condition onRunLoop:(NSRunLoop *)runLoop;
+- (id)initWithCondition:(NSInteger)condition;
+
+- (void)dispose;
+
+- (NSInteger)condition;
+- (void)setCondition:(NSInteger)condition;
+
+- (void)waitForCondition:(NSInteger)condition;
+- (BOOL)waitForCondition:(NSInteger)condition beforeDate:(NSDate *)endDate;
+
+- (void)signalWithCondition:(NSInteger)condition;
+
+@end
