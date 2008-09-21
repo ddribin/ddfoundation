@@ -130,8 +130,8 @@
         _threadDone = YES;
         [_condition signal];
         [_condition unlock];
-        [pool drain];
     }
+    [pool drain];
 }
 
 @end
