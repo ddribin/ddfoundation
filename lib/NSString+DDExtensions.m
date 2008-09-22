@@ -53,4 +53,44 @@ NSString * DDNSStringFromBOOL(BOOL b)
     return DDMimeTypeForExtension([self pathExtension]);
 }
 
+NSString * DDToStringFromTypeAndValue(const char * typeCode, void * value)
+{
+    if (strcmp(typeCode, @encode(NSPoint)) == 0)
+    {
+        return NSStringFromPoint(*(NSPoint *)value);
+    }
+    else if (strcmp(typeCode, @encode(NSSize)) == 0)
+    {
+        return NSStringFromSize(*(NSSize *)value);
+    }
+    else if (strcmp(typeCode, @encode(NSRect)) == 0)
+    {
+        return NSStringFromRect(*(NSRect *)value);
+    }
+    else if (strcmp(typeCode, @encode(Class)) == 0)
+    {
+        return NSStringFromClass(*(Class *)value);
+    }
+#if 0
+    else if (strcmp(typeCode, @encode(Protocol *)) == 0)
+    {
+        return NSStringFromProtocol(*(Protocol **)value);
+    }
+#endif
+    else if (strcmp(typeCode, @encode(SEL)) == 0)
+    {
+        return NSStringFromSelector(*(SEL *)value);
+    }
+    else if (strcmp(typeCode, @encode(NSRange)) == 0)
+    {
+        return NSStringFromRange(*(NSRange *)value);
+    }
+    else if (strcmp(typeCode, @encode(id)) == 0)
+    {
+        return ddsprintf(@"%@", *(id *)value);
+    }
+        
+    return ddsprintf(@"? <%s>", typeCode);
+}
+
 @end

@@ -35,3 +35,9 @@ NSString * DDNSStringFromBOOL(BOOL b);
 @end
 
 #define ddsprintf(FORMAT, ARGS... )  [NSString stringWithFormat: (FORMAT), ARGS]
+
+NSString * DDToStringFromTypeAndValue(const char * typeCode, void * value);
+
+#define DDToNString(_X_) ({typeof(_X_) _Y_ = _X_;\
+    DDToStringFromTypeAndValue(@encode(typeof(_X_)), &_Y_);})
+

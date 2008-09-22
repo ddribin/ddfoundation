@@ -45,4 +45,69 @@
     STAssertEqualObjects([@"foo" dd_pathMimeType], @"application/octet-stream", nil);
 }
 
+- (void)testNSPointToString
+{
+    STAssertEqualObjects(DDToNString(NSMakePoint(5, 10)),
+                         NSStringFromPoint(NSMakePoint(5, 10)),
+                         nil);
+}
+
+- (void)testNSSizeToString
+{
+    STAssertEqualObjects(DDToNString(NSMakeSize(15, 20)),
+                         NSStringFromSize(NSMakeSize(15, 20)),
+                         nil);
+}
+
+- (void)testNSRectToString
+{
+    STAssertEqualObjects(DDToNString(NSMakeRect(5, 10, 15, 20)),
+                         NSStringFromRect(NSMakeRect(5, 10, 15, 20)),
+                         nil);
+}
+
+- (void)testClassToString
+{
+    STAssertEqualObjects(DDToNString([NSString class]),
+                         NSStringFromClass([NSString class]),
+                         nil);
+}
+
+#if 0
+- (void)testProtocolToString
+{
+    STAssertEqualObjects(DDToNString(@protocol(NSObject)),
+                         NSStringFromProtocol(@protocol(NSObject)),
+                         nil);
+}
+#endif
+
+- (void)testSelectorToString
+{
+    STAssertEqualObjects(DDToNString(@selector(init)),
+                         NSStringFromSelector(@selector(init)),
+                         nil);
+}
+
+- (void)testNSRangeToString
+{
+    STAssertEqualObjects(DDToNString(NSMakeRange(5, 10)),
+                         NSStringFromRange(NSMakeRange(5, 10)),
+                         nil);
+}
+
+- (void)testIdToString
+{
+    STAssertEqualObjects(DDToNString(@"foo"),
+                         ddsprintf(@"%@", @"foo"),
+                         nil);
+}
+
+- (void)testExpression
+{
+    STAssertEqualObjects(@"foo",
+                         ({int x = 5; NSLog(@"%d", x); @"foo";}),
+                         nil);
+}
+
 @end
