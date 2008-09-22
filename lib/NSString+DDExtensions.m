@@ -71,7 +71,7 @@ NSString * DDToStringFromTypeAndValue(const char * typeCode, void * value)
     {
         return NSStringFromClass(*(Class *)value);
     }
-#if 0
+#if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
     else if (strcmp(typeCode, @encode(Protocol *)) == 0)
     {
         return NSStringFromProtocol(*(Protocol **)value);

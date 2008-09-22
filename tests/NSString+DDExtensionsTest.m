@@ -73,15 +73,6 @@
                          nil);
 }
 
-#if 0
-- (void)testProtocolToString
-{
-    STAssertEqualObjects(DDToNString(@protocol(NSObject)),
-                         NSStringFromProtocol(@protocol(NSObject)),
-                         nil);
-}
-#endif
-
 - (void)testSelectorToString
 {
     STAssertEqualObjects(DDToNString(@selector(init)),
