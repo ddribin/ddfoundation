@@ -94,11 +94,4 @@
                          nil);
 }
 
-- (void)testExpression
-{
-    STAssertEqualObjects(@"foo",
-                         ({int x = 5; NSLog(@"%d", x); @"foo";}),
-                         nil);
-}
-
 @end
