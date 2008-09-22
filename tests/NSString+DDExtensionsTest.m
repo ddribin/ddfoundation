@@ -45,6 +45,14 @@
     STAssertEqualObjects([@"foo" dd_pathMimeType], @"application/octet-stream", nil);
 }
 
+- (void)testNSPointToStringWithTemp
+{
+    NSPoint point = NSMakePoint(5, 10);
+    STAssertEqualObjects(DDToNString(point),
+                         NSStringFromPoint(point),
+                         nil);
+}
+
 - (void)testNSPointToString
 {
     STAssertEqualObjects(DDToNString(NSMakePoint(5, 10)),
