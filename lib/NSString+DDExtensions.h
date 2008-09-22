@@ -38,6 +38,6 @@ NSString * DDNSStringFromBOOL(BOOL b);
 
 NSString * DDToStringFromTypeAndValue(const char * typeCode, void * value);
 
-#define DDToNString(_X_) ({typeof(_X_) _Y_ = _X_;\
+#define DDToNString(_X_) ({typeof(_X_) _Y_ = (_X_);\
     DDToStringFromTypeAndValue(@encode(typeof(_X_)), &_Y_);})
 
