@@ -94,4 +94,11 @@
                          nil);
 }
 
+- (void)testBOOLToString
+{
+    STAssertEqualObjects(DDToNString(YES),
+                         DDNSStringFromBOOL(YES),
+                         nil);
+}
+
 @end

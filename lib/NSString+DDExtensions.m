@@ -89,6 +89,10 @@ NSString * DDToStringFromTypeAndValue(const char * typeCode, void * value)
     {
         return ddsprintf(@"%@", *(id *)value);
     }
+    else if (strcmp(typeCode, @encode(BOOL)) == 0)
+    {
+        return DDNSStringFromBOOL(*(BOOL *)value);
+    }
         
     return ddsprintf(@"? <%s>", typeCode);
 }
