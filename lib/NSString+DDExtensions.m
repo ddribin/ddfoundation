@@ -71,12 +71,6 @@ NSString * DDToStringFromTypeAndValue(const char * typeCode, void * value)
     {
         return NSStringFromClass(*(Class *)value);
     }
-#if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-    else if (strcmp(typeCode, @encode(Protocol *)) == 0)
-    {
-        return NSStringFromProtocol(*(Protocol **)value);
-    }
-#endif
     else if (strcmp(typeCode, @encode(SEL)) == 0)
     {
         return NSStringFromSelector(*(SEL *)value);
