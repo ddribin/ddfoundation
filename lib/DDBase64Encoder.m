@@ -55,6 +55,11 @@ enum state
     uint32_t value;
     switch (_state)
     {
+        case BYTE_0:
+            // xxxxxxxx xxxxxxxx xxxxxxxx
+            // Buffer is empty
+            break;
+            
         case BYTE_1:
             // 00000000 xxxxxxxx xxxxxxxx
             //       ee eeee    
@@ -80,8 +85,8 @@ enum state
     switch (_state)
     {
         case BYTE_0:
-            // 00000000 xxxxxxxxx xxxxxxxx
-            // eeeeee
+            // 0000-0000 xxxx-xxxxx xxxx-xxxx
+            // eeee-ee
             _buffer = 0;
             _buffer |= (byte << 16);
             
@@ -92,8 +97,8 @@ enum state
             break;
             
         case BYTE_1:
-            // 00000000 11111111 xxxxxxxx
-            //       ee eeee    
+            // 0000-0000 1111-1111 xxxx-xxxx
+            //        ee eeee    
             _buffer |= (byte << 8);
             
             value = (_buffer >> 12) & 0x3F;
@@ -103,9 +108,10 @@ enum state
             break;
             
         case BYTE_2:
-            // 00000000 11111111 22222222
-            //              eeee eeEEEEEE
+            // 0000-0000 1111-1111 2222-2222
+            //                eeee eeE-EEEEE
             _buffer |= (byte);
+            
             value = (_buffer >> 6) & 0x3F;
             [_output appendFormat:@"%c", encodingTable[value]];
             value = (_buffer) & 0x3F;
