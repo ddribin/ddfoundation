@@ -23,6 +23,7 @@
  */
 
 #import "NSData+DDExtensions.h"
+#import "DDBase64Encoder.h"
 
 
 enum state
@@ -44,103 +45,7 @@ enum state
 
 - (NSString *)dd_encodeBase64;
 {
-    static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
-	if ([self length] == 0)
-		return @"";
-    
-    unsigned size = ((([self length] + 2) / 3)  * 4);
-    NSMutableString * output = [NSMutableString stringWithCapacity:size];
-    
-    const uint8_t * bytes = [self bytes];
-    unsigned myLength = [self length] - 1;
-    int state = BYTE_0_NORMAL;
-	
-	unsigned i = 0;
-    uint32_t buffer = 0;
-    uint8_t value;
-	while (state != END)
-	{
-        switch (state)
-        {
-            case BYTE_0_NORMAL:
-                // 00000000 xxxxxxxxx xxxxxxxx
-                // eeeeee
-                buffer = 0;
-                buffer |= (bytes[i] << 16);
-                
-                value = (buffer >> 18) & 0x3F;
-                [output appendFormat:@"%c", encodingTable[value]];
-                
-                if (i < myLength)
-                {
-                    i++;
-                    state = BYTE_1_NORMAL;
-                }
-                else
-                {
-                    state = BYTE_1_END;
-                }
-                break;
-                
-            case BYTE_1_NORMAL:
-                // 00000000 11111111 xxxxxxxx
-                //       ee eeee    
-                buffer |= (bytes[i] << 8);
-                
-                value = (buffer >> 12) & 0x3F;
-                [output appendFormat:@"%c", encodingTable[value]];
-                
-                if (i < myLength)
-                {
-                    i++;
-                    state = BYTE_2_NORMAL;
-                }
-                else
-                {
-                    state = BYTE_2_END;
-                }
-                break;
-                
-            case BYTE_2_NORMAL:
-                // 00000000 11111111 22222222
-                //              eeee eeEEEEEE
-                buffer |= (bytes[i]);
-                value = (buffer >> 6) & 0x3F;
-                [output appendFormat:@"%c", encodingTable[value]];
-                value = (buffer) & 0x3F;
-                [output appendFormat:@"%c", encodingTable[value]];
-                
-                if (i < myLength)
-                {
-                    i++;
-                    state = BYTE_0_NORMAL;
-                }
-                else
-                {
-                    state = END;
-                }
-                break;
-                
-            case BYTE_1_END:
-                // 00000000 xxxxxxxx xxxxxxxx
-                //       ee eeee    
-                value = (buffer >> 12) & 0x3F;
-                [output appendFormat:@"%c==", encodingTable[value]];
-                state = END;
-                break;
-                
-            case BYTE_2_END:
-                // 00000000 11111111 xxxxxxxx
-                //              eeee ee
-                value = (buffer >> 6) & 0x3F;
-                [output appendFormat:@"%c=", encodingTable[value]];
-                state = END;
-                break;
-        }
-    }
-    
-    return output;
+    return [DDBase64Encoder encodeData:self];
 }
 
 - (NSString *)dd_encodeBase32
