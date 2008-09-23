@@ -16,6 +16,9 @@
 		5529B5880E897E6500ED5C34 /* DDBase32EncoderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B5870E897E6500ED5C34 /* DDBase32EncoderTest.m */; };
 		5529B5B90E89829100ED5C34 /* DDAbstractBaseEncoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 5529B5B70E89829100ED5C34 /* DDAbstractBaseEncoder.h */; };
 		5529B5BA0E89829100ED5C34 /* DDAbstractBaseEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B5B80E89829100ED5C34 /* DDAbstractBaseEncoder.m */; };
+		5529B6790E89AA5D00ED5C34 /* base32.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B6780E89AA5D00ED5C34 /* base32.m */; };
+		5529B6800E89AB6D00ED5C34 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5529B67F0E89AB6D00ED5C34 /* Foundation.framework */; };
+		5529B6830E89AB7400ED5C34 /* libDDFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC07E0554694100DB518D /* libDDFoundation.a */; };
 		555D37250D48F512001A5533 /* DDObserverDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 555D37230D48F512001A5533 /* DDObserverDispatcher.h */; };
 		555D37260D48F512001A5533 /* DDObserverDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 555D37240D48F512001A5533 /* DDObserverDispatcher.m */; };
 		555D373A0D48F8E0001A5533 /* DDObserverDispatcherTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 555D372A0D48F687001A5533 /* DDObserverDispatcherTest.m */; };
@@ -62,6 +65,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5529B6760E89AA4B00ED5C34 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D /* DDFoundation */;
+			remoteInfo = DDFoundation;
+		};
 		55CA87000D455115004492E9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -86,6 +96,9 @@
 		5529B5870E897E6500ED5C34 /* DDBase32EncoderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDBase32EncoderTest.m; sourceTree = "<group>"; };
 		5529B5B70E89829100ED5C34 /* DDAbstractBaseEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDAbstractBaseEncoder.h; sourceTree = "<group>"; };
 		5529B5B80E89829100ED5C34 /* DDAbstractBaseEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDAbstractBaseEncoder.m; sourceTree = "<group>"; };
+		5529B6720E89AA3F00ED5C34 /* base32 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = base32; sourceTree = BUILT_PRODUCTS_DIR; };
+		5529B6780E89AA5D00ED5C34 /* base32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = base32.m; sourceTree = "<group>"; };
+		5529B67F0E89AB6D00ED5C34 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		555D37230D48F512001A5533 /* DDObserverDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDObserverDispatcher.h; sourceTree = "<group>"; };
 		555D37240D48F512001A5533 /* DDObserverDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDObserverDispatcher.m; sourceTree = "<group>"; };
 		555D37290D48F687001A5533 /* DDObserverDispatcherTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDObserverDispatcherTest.h; sourceTree = "<group>"; };
@@ -143,6 +156,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5529B6700E89AA3F00ED5C34 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5529B6800E89AB6D00ED5C34 /* Foundation.framework in Frameworks */,
+				5529B6830E89AB7400ED5C34 /* libDDFoundation.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		55CA86F70D455108004492E9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -167,6 +189,7 @@
 			children = (
 				55CA86FA0D455108004492E9 /* UnitTests.octest */,
 				D2AAC07E0554694100DB518D /* libDDFoundation.a */,
+				5529B6720E89AA3F00ED5C34 /* base32 */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -176,10 +199,12 @@
 			children = (
 				08FB77AEFE84172EC02AAC07 /* Source */,
 				55CA87050D455141004492E9 /* Tests */,
+				5529B66E0E89A9AF00ED5C34 /* Examples */,
 				55CA859E0D454FE9004492E9 /* vendor */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				034768DFFF38A50411DB9C8B /* Products */,
+				5529B67F0E89AB6D00ED5C34 /* Foundation.framework */,
 			);
 			name = DDFoundation;
 			sourceTree = "<group>";
@@ -255,6 +280,15 @@
 				32DBCF5E0370ADEE00C91783 /* DDFoundation_Prefix.pch */,
 			);
 			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		5529B66E0E89A9AF00ED5C34 /* Examples */ = {
+			isa = PBXGroup;
+			children = (
+				5529B6780E89AA5D00ED5C34 /* base32.m */,
+			);
+			name = Examples;
+			path = examples;
 			sourceTree = "<group>";
 		};
 		55CA859E0D454FE9004492E9 /* vendor */ = {
@@ -351,6 +385,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		5529B6710E89AA3F00ED5C34 /* base32 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5529B67A0E89AA5D00ED5C34 /* Build configuration list for PBXNativeTarget "base32" */;
+			buildPhases = (
+				5529B66F0E89AA3F00ED5C34 /* Sources */,
+				5529B6700E89AA3F00ED5C34 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5529B6770E89AA4B00ED5C34 /* PBXTargetDependency */,
+			);
+			name = base32;
+			productName = base32;
+			productReference = 5529B6720E89AA3F00ED5C34 /* base32 */;
+			productType = "com.apple.product-type.tool";
+		};
 		55CA86F90D455108004492E9 /* UnitTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55CA86FF0D455109004492E9 /* Build configuration list for PBXNativeTarget "UnitTests" */;
@@ -402,6 +453,7 @@
 			targets = (
 				55CA86F90D455108004492E9 /* UnitTests */,
 				D2AAC07D0554694100DB518D /* DDFoundation */,
+				5529B6710E89AA3F00ED5C34 /* base32 */,
 			);
 		};
 /* End PBXProject section */
@@ -435,6 +487,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5529B66F0E89AA3F00ED5C34 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5529B6790E89AA5D00ED5C34 /* base32.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		55CA86F60D455108004492E9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -482,6 +542,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5529B6770E89AA4B00ED5C34 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2AAC07D0554694100DB518D /* DDFoundation */;
+			targetProxy = 5529B6760E89AA4B00ED5C34 /* PBXContainerItemProxy */;
+		};
 		55CA87010D455115004492E9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D2AAC07D0554694100DB518D /* DDFoundation */;
@@ -549,6 +614,54 @@
 					"-Wextra",
 					"-Wno-unused-parameter",
 				);
+			};
+			name = Release;
+		};
+		5529B6740E89AA3F00ED5C34 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INSTALL_PATH = /usr/local/bin;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = base32;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+			};
+			name = Debug;
+		};
+		5529B6750E89AA3F00ED5C34 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INSTALL_PATH = /usr/local/bin;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = base32;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
@@ -625,6 +738,15 @@
 			buildConfigurations = (
 				1DEB922308733DC00010E9CD /* Debug */,
 				1DEB922408733DC00010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5529B67A0E89AA5D00ED5C34 /* Build configuration list for PBXNativeTarget "base32" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5529B6740E89AA3F00ED5C34 /* Debug */,
+				5529B6750E89AA3F00ED5C34 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
