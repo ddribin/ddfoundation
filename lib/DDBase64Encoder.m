@@ -17,6 +17,14 @@ enum state
     BYTE_2,
 };
 
+@interface DDBase64Encoder ()
+
+- (void)appendCharacter:(char)character;
+- (void)appendCharacters:(const char *)characters;
+
+@end
+
+
 @implementation DDBase64Encoder
 
 + (NSString *)encodeData:(NSData *)data;
@@ -26,11 +34,27 @@ enum state
     return [encoder finishEncoding];
 }
 
-- (id)init
++ (NSString *)encodeData:(NSData *)data options:(DDBase64EncoderOptions)options;
+{
+    DDBase64Encoder * encoder = [[[self alloc] initWithOptions:options] autorelease];
+    [encoder encodeData:data];
+    return [encoder finishEncoding];
+}
+
+
+- (id)init;
+{
+    return [self initWithOptions:0];
+}
+
+- (id)initWithOptions:(DDBase64EncoderOptions)options;
 {
     self = [super init];
     if (self == nil)
         return nil;
+    
+    _addPadding = ((options & DDBase64EncoderOptionNoPadding) == 0);
+    _addLineBreaks = ((options & DDBase64EncoderOptionAddLineBreaks) != 0);
     
     [self reset];
     
@@ -48,6 +72,7 @@ enum state
     [_output release];
     _output = [[NSMutableString alloc ]init];
     _state = BYTE_0;
+    _buffer = 0;
 }
 
 - (NSString *)finishEncoding;
@@ -56,22 +81,28 @@ enum state
     switch (_state)
     {
         case BYTE_0:
-            // xxxxxxxx xxxxxxxx xxxxxxxx
+            // xxxx-xxxxx xxxx-xxxxx xxxx-xxxx
             // Buffer is empty
             break;
             
         case BYTE_1:
-            // 00000000 xxxxxxxx xxxxxxxx
-            //       ee eeee    
+            // 0000-0000 1111-1111 xxxx-xxxx
+            //        ee eeee    
             value = (_buffer >> 12) & 0x3F;
-            [_output appendFormat:@"%c==", encodingTable[value]];
+            [self appendCharacter:encodingTable[value]];
+            if (_addPadding)
+                [self appendCharacters:"=="];
+            
+            
             break;
             
         case BYTE_2:
-            // 00000000 11111111 xxxxxxxx
-            //              eeee ee
+            // 0000-0000 1111-1111 xxxx-xxxx
+            //                eeee ee
             value = (_buffer >> 6) & 0x3F;
-            [_output appendFormat:@"%c=", encodingTable[value]];
+            [_output appendFormat:@"%c", encodingTable[value]];
+            if (_addPadding)
+                [self appendCharacter:'='];
             break;
     }
 
@@ -85,39 +116,40 @@ enum state
     switch (_state)
     {
         case BYTE_0:
-            // 0000-0000 xxxx-xxxxx xxxx-xxxx
-            // eeee-ee
-            _buffer = 0;
             _buffer |= (byte << 16);
             
+            // 0000-0000 xxxx-xxxxx xxxx-xxxx
+            // eeee-ee
             value = (_buffer >> 18) & 0x3F;
-            [_output appendFormat:@"%c", encodingTable[value]];
+            [self appendCharacter:encodingTable[value]];
             
             _state = BYTE_1;
             break;
             
         case BYTE_1:
-            // 0000-0000 1111-1111 xxxx-xxxx
-            //        ee eeee    
             _buffer |= (byte << 8);
             
+            // 0000-0000 1111-1111 xxxx-xxxx
+            //        ee eeee    
             value = (_buffer >> 12) & 0x3F;
-            [_output appendFormat:@"%c", encodingTable[value]];
+            [self appendCharacter:encodingTable[value]];
             
             _state = BYTE_2;
             break;
             
         case BYTE_2:
+            _buffer |= byte;
+
             // 0000-0000 1111-1111 2222-2222
             //                eeee eeE-EEEEE
-            _buffer |= (byte);
-            
             value = (_buffer >> 6) & 0x3F;
-            [_output appendFormat:@"%c", encodingTable[value]];
-            value = (_buffer) & 0x3F;
-            [_output appendFormat:@"%c", encodingTable[value]];
+            [self appendCharacter:encodingTable[value]];
+            
+            value = _buffer & 0x3F;
+            [self appendCharacter:encodingTable[value]];
             
             _state = BYTE_0;
+            _buffer = 0;
             break;
     }
 }
@@ -130,6 +162,26 @@ enum state
     for (i = 0; i < length; i++)
     {
         [self encodeByte:bytes[i]];
+    }
+}
+
+- (void)appendCharacters:(const char *)characters;
+{
+    while (*characters != 0)
+    {
+        [self appendCharacter:*characters];
+        characters++;
+    }
+}
+
+- (void)appendCharacter:(char)ch;
+{
+    [_output appendFormat:@"%c", ch];
+    _currentLineLength++;
+    if (_addLineBreaks && (_currentLineLength >= 64))
+    {
+        [_output appendString:@"\n"];
+        _currentLineLength = 0;
     }
 }
 
