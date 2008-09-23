@@ -15,6 +15,8 @@
 
 @end
 
+static const int kMaxByteIndex = 2;
+static const int kMaxGroupIndex = 3;
 
 @implementation DDBase64Encoder
 
@@ -42,20 +44,20 @@
     if (_byteIndex == 0)
     {
         [self encodeGroup:0];
-        
-        _byteIndex = 1;
     }
     else if (_byteIndex == 1)
     {
         [self encodeGroup:1];
-        
-        _byteIndex = 2;
     }
     else if (_byteIndex == 2)
     {
         [self encodeGroup:2];
         [self encodeGroup:3];
-        
+    }
+    
+    _byteIndex++;
+    if (_byteIndex > kMaxByteIndex)
+    {
         _byteIndex = 0;
         _buffer = 0;
     }
@@ -80,7 +82,7 @@
 
 - (void)addByteToBuffer:(uint8_t)byte;
 {
-    int bitsToShift = (2 - _byteIndex) * 8;
+    int bitsToShift = (kMaxByteIndex - _byteIndex) * 8;
     _buffer |= (byte << bitsToShift);
 }
 
@@ -88,7 +90,7 @@
 {
     static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     
-    unsigned bitsToShift = (3 - group) * 6;
+    unsigned bitsToShift = (kMaxGroupIndex - group) * 6;
     uint8_t value = (_buffer >> bitsToShift) & 0x3F;
     [self appendCharacter:encodingTable[value]];
 }
