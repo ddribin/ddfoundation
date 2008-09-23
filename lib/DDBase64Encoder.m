@@ -118,8 +118,8 @@
 
 - (void)addByteToBuffer:(uint8_t)byte;
 {
-    int bytesToShift = (2 - _byteIndex);
-    _buffer |= (byte << (bytesToShift * 8));
+    int bitsToShift = (2 - _byteIndex) * 8;
+    _buffer |= (byte << bitsToShift);
 }
 
 - (void)encodeGroup:(int)group
