@@ -6,7 +6,7 @@
 //  Copyright 2008 Bit Maki, Inc.. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 enum {
     DDBase64EncoderOptionNoPadding = 0x01,
