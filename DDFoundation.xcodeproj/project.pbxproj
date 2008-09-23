@@ -14,6 +14,8 @@
 		5529B57F0E897CD700ED5C34 /* DDBase32Encoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 5529B57D0E897CD700ED5C34 /* DDBase32Encoder.h */; };
 		5529B5800E897CD700ED5C34 /* DDBase32Encoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B57E0E897CD700ED5C34 /* DDBase32Encoder.m */; };
 		5529B5880E897E6500ED5C34 /* DDBase32EncoderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B5870E897E6500ED5C34 /* DDBase32EncoderTest.m */; };
+		5529B5B90E89829100ED5C34 /* DDAbstractBaseEncoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 5529B5B70E89829100ED5C34 /* DDAbstractBaseEncoder.h */; };
+		5529B5BA0E89829100ED5C34 /* DDAbstractBaseEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B5B80E89829100ED5C34 /* DDAbstractBaseEncoder.m */; };
 		555D37250D48F512001A5533 /* DDObserverDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 555D37230D48F512001A5533 /* DDObserverDispatcher.h */; };
 		555D37260D48F512001A5533 /* DDObserverDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 555D37240D48F512001A5533 /* DDObserverDispatcher.m */; };
 		555D373A0D48F8E0001A5533 /* DDObserverDispatcherTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 555D372A0D48F687001A5533 /* DDObserverDispatcherTest.m */; };
@@ -82,6 +84,8 @@
 		5529B57E0E897CD700ED5C34 /* DDBase32Encoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDBase32Encoder.m; sourceTree = "<group>"; };
 		5529B5860E897E6500ED5C34 /* DDBase32EncoderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDBase32EncoderTest.h; sourceTree = "<group>"; };
 		5529B5870E897E6500ED5C34 /* DDBase32EncoderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDBase32EncoderTest.m; sourceTree = "<group>"; };
+		5529B5B70E89829100ED5C34 /* DDAbstractBaseEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDAbstractBaseEncoder.h; sourceTree = "<group>"; };
+		5529B5B80E89829100ED5C34 /* DDAbstractBaseEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDAbstractBaseEncoder.m; sourceTree = "<group>"; };
 		555D37230D48F512001A5533 /* DDObserverDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDObserverDispatcher.h; sourceTree = "<group>"; };
 		555D37240D48F512001A5533 /* DDObserverDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDObserverDispatcher.m; sourceTree = "<group>"; };
 		555D37290D48F687001A5533 /* DDObserverDispatcherTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDObserverDispatcherTest.h; sourceTree = "<group>"; };
@@ -206,6 +210,8 @@
 				55CA858A0D454F3F004492E9 /* DDTemporaryDirectory.m */,
 				55CA858B0D454F3F004492E9 /* DDTemporaryFile.h */,
 				55CA858C0D454F3F004492E9 /* DDTemporaryFile.m */,
+				5529B5B70E89829100ED5C34 /* DDAbstractBaseEncoder.h */,
+				5529B5B80E89829100ED5C34 /* DDAbstractBaseEncoder.m */,
 				5529B4570E89601A00ED5C34 /* DDBase64Encoder.h */,
 				5529B4580E89601A00ED5C34 /* DDBase64Encoder.m */,
 				5529B57D0E897CD700ED5C34 /* DDBase32Encoder.h */,
@@ -338,6 +344,7 @@
 				55EA25D90E852DBE0051E267 /* NSSortDescriptor+DDExtensions.h in Headers */,
 				5529B4590E89601A00ED5C34 /* DDBase64Encoder.h in Headers */,
 				5529B57F0E897CD700ED5C34 /* DDBase32Encoder.h in Headers */,
+				5529B5B90E89829100ED5C34 /* DDAbstractBaseEncoder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,6 +475,7 @@
 				55EA25DA0E852DBE0051E267 /* NSSortDescriptor+DDExtensions.m in Sources */,
 				5529B45A0E89601A00ED5C34 /* DDBase64Encoder.m in Sources */,
 				5529B5800E897CD700ED5C34 /* DDBase32Encoder.m in Sources */,
+				5529B5BA0E89829100ED5C34 /* DDAbstractBaseEncoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

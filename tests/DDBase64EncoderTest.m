@@ -34,15 +34,15 @@
 {
     STAssertEqualObjects(@"Zg",
                          [DDBase64Encoder encodeData:dddata('f')
-                                             options:DDBase64EncoderOptionNoPadding],
+                                             options:DDBaseEncoderOptionNoPadding],
                          nil);
     STAssertEqualObjects(@"ZgA",
                          [DDBase64Encoder encodeData:dddata('f', 0)
-                                             options:DDBase64EncoderOptionNoPadding],
+                                             options:DDBaseEncoderOptionNoPadding],
                          nil);
     STAssertEqualObjects(@"ZgAA",
                          [DDBase64Encoder encodeData:dddata('f', 0, 0)
-                                             options:DDBase64EncoderOptionNoPadding],
+                                             options:DDBaseEncoderOptionNoPadding],
                          nil);
 }
 
@@ -55,7 +55,7 @@
     STAssertEqualObjects(@"TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2lj\n"
                          "aW5nAA==",
                          [DDBase64Encoder encodeData:dddata("Lorem ipsum dolor sit amet, consectetur adipisicing")
-                                             options:DDBase64EncoderOptionAddLineBreaks],
+                                             options:DDBaseEncoderOptionAddLineBreaks],
                          nil);
 }
 

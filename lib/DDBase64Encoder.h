@@ -7,39 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-
-enum {
-    DDBase64EncoderOptionNoPadding = 0x01,
-    DDBase64EncoderOptionAddLineBreaks = 0x02,
-};
-typedef unsigned DDBase64EncoderOptions;
+#import "DDAbstractBaseEncoder.h"
 
 
-@interface DDBase64Encoder : NSObject
+@interface DDBase64Encoder : DDAbstractBaseEncoder
 {
-    int _byteIndex;
-    NSMutableString * _output;
     // A 24-bit buffer. Holds 3 octest and 4 groups.
     uint32_t _buffer;
-    BOOL _addPadding;
-    BOOL _addLineBreaks;
-    unsigned _currentLineLength;
 }
-
-+ (NSString *)encodeData:(NSData *)data;
-
-+ (NSString *)encodeData:(NSData *)data options:(DDBase64EncoderOptions)options;
-
-- (id)init;
-
-- (id)initWithOptions:(DDBase64EncoderOptions)options;
-
-- (void)reset;
-
-- (NSString *)finishEncoding;
-
-- (void)encodeByte:(uint8_t)byte;
-
-- (void)encodeData:(NSData *)data;
 
 @end

@@ -9,39 +9,12 @@
 #import <Cocoa/Cocoa.h>
 
 #import <Foundation/Foundation.h>
+#import "DDAbstractBaseEncoder.h"
 
-enum {
-    DDBase32EncoderOptionNoPadding = 0x01,
-    DDBase32EncoderOptionAddLineBreaks = 0x02,
-};
-typedef unsigned DDBase32EncoderOptions;
-
-
-@interface DDBase32Encoder : NSObject
+@interface DDBase32Encoder : DDAbstractBaseEncoder
 {
-    int _byteIndex;
-    NSMutableString * _output;
     // A 40-bit buffer. Holds 5 bytes and 8 5-bit groups.
     uint64_t _buffer;
-    BOOL _addPadding;
-    BOOL _addLineBreaks;
-    unsigned _currentLineLength;
 }
-
-+ (NSString *)encodeData:(NSData *)data;
-
-+ (NSString *)encodeData:(NSData *)data options:(DDBase32EncoderOptions)options;
-
-- (id)init;
-
-- (id)initWithOptions:(DDBase32EncoderOptions)options;
-
-- (void)reset;
-
-- (NSString *)finishEncoding;
-
-- (void)encodeByte:(uint8_t)byte;
-
-- (void)encodeData:(NSData *)data;
 
 @end

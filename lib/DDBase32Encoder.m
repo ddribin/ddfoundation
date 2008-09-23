@@ -12,71 +12,16 @@
 
 - (void)addByteToBuffer:(uint8_t)byte;
 - (void)encodeGroup:(int)group;
-- (void)appendPadCharacters:(int)count;
-- (void)appendCharacter:(char)character;
 
 @end
 
 
 @implementation DDBase32Encoder
 
-+ (NSString *)encodeData:(NSData *)data;
-{
-    DDBase32Encoder * encoder = [[[self alloc] init] autorelease];
-    [encoder encodeData:data];
-    return [encoder finishEncoding];
-}
-
-+ (NSString *)encodeData:(NSData *)data options:(DDBase32EncoderOptions)options;
-{
-    DDBase32Encoder * encoder = [[[self alloc] initWithOptions:options] autorelease];
-    [encoder encodeData:data];
-    return [encoder finishEncoding];
-}
-
-
-- (id)init;
-{
-    return [self initWithOptions:0];
-}
-
-- (id)initWithOptions:(DDBase32EncoderOptions)options;
-{
-    self = [super init];
-    if (self == nil)
-        return nil;
-    
-    _addPadding = ((options & DDBase32EncoderOptionNoPadding) == 0);
-    _addLineBreaks = ((options & DDBase32EncoderOptionAddLineBreaks) != 0);
-    
-    [self reset];
-    
-    return self;
-}
-
-- (void)dealloc
-{
-    [_output release];
-    [super dealloc];
-}
-
 - (void)reset;
 {
-    [_output release];
-    _output = [[NSMutableString alloc ]init];
-    _byteIndex = 0;
+    [super reset];
     _buffer = 0;
-}
-
-- (void)encodeData:(NSData *)data;
-{
-    const uint8_t * bytes = [data bytes];
-    unsigned length = [data length];
-    unsigned i;
-    for (i = 0; i < length; i++)
-    {
-        [self encodeByte:bytes[i]];
-    }
 }
 
 - (void)encodeByte:(uint8_t)byte;
@@ -165,29 +110,6 @@
     
     return _output;
     [self reset];
-}
-
-- (void)appendPadCharacters:(int)count;
-{
-    if (!_addPadding)
-        return;
-    
-    int i;
-    for (i = 0; i < count; i++)
-    {
-        [self appendCharacter:'='];
-    }
-}
-
-- (void)appendCharacter:(char)ch;
-{
-    [_output appendFormat:@"%c", ch];
-    _currentLineLength++;
-    if (_addLineBreaks && (_currentLineLength >= 64))
-    {
-        [_output appendString:@"\n"];
-        _currentLineLength = 0;
-    }
 }
 
 @end
