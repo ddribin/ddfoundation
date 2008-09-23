@@ -17,7 +17,7 @@ typedef unsigned DDBase64EncoderOptions;
 
 @interface DDBase64Encoder : NSObject
 {
-    int _state;
+    int _byteIndex;
     NSMutableString * _output;
     uint32_t _buffer;
     BOOL _addPadding;

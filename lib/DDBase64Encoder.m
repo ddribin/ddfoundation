@@ -10,15 +10,10 @@
 
 static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-enum state
-{
-    BYTE_0,
-    BYTE_1,
-    BYTE_2,
-};
-
 @interface DDBase64Encoder ()
 
+- (void)addByteToBuffer:(uint8_t)byte;
+- (void)encodeGroup:(int)group;
 - (void)appendCharacter:(char)character;
 - (void)appendCharacters:(const char *)characters;
 
@@ -71,87 +66,8 @@ enum state
 {
     [_output release];
     _output = [[NSMutableString alloc ]init];
-    _state = BYTE_0;
+    _byteIndex = 0;
     _buffer = 0;
-}
-
-- (NSString *)finishEncoding;
-{
-    uint32_t value;
-    switch (_state)
-    {
-        case BYTE_0:
-            // xxxx-xxxxx xxxx-xxxxx xxxx-xxxx
-            // Buffer is empty
-            break;
-            
-        case BYTE_1:
-            // 0000-0000 1111-1111 xxxx-xxxx
-            //        ee eeee    
-            value = (_buffer >> 12) & 0x3F;
-            [self appendCharacter:encodingTable[value]];
-            if (_addPadding)
-                [self appendCharacters:"=="];
-            
-            
-            break;
-            
-        case BYTE_2:
-            // 0000-0000 1111-1111 xxxx-xxxx
-            //                eeee ee
-            value = (_buffer >> 6) & 0x3F;
-            [_output appendFormat:@"%c", encodingTable[value]];
-            if (_addPadding)
-                [self appendCharacter:'='];
-            break;
-    }
-
-    return _output;
-    [self reset];
-}
-
-- (void)encodeByte:(uint8_t)byte;
-{
-    uint32_t value;
-    switch (_state)
-    {
-        case BYTE_0:
-            _buffer |= (byte << 16);
-            
-            // 0000-0000 xxxx-xxxxx xxxx-xxxx
-            // eeee-ee
-            value = (_buffer >> 18) & 0x3F;
-            [self appendCharacter:encodingTable[value]];
-            
-            _state = BYTE_1;
-            break;
-            
-        case BYTE_1:
-            _buffer |= (byte << 8);
-            
-            // 0000-0000 1111-1111 xxxx-xxxx
-            //        ee eeee    
-            value = (_buffer >> 12) & 0x3F;
-            [self appendCharacter:encodingTable[value]];
-            
-            _state = BYTE_2;
-            break;
-            
-        case BYTE_2:
-            _buffer |= byte;
-
-            // 0000-0000 1111-1111 2222-2222
-            //                eeee eeE-EEEEE
-            value = (_buffer >> 6) & 0x3F;
-            [self appendCharacter:encodingTable[value]];
-            
-            value = _buffer & 0x3F;
-            [self appendCharacter:encodingTable[value]];
-            
-            _state = BYTE_0;
-            _buffer = 0;
-            break;
-    }
 }
 
 - (void)encodeData:(NSData *)data;
@@ -163,6 +79,73 @@ enum state
     {
         [self encodeByte:bytes[i]];
     }
+}
+
+- (void)encodeByte:(uint8_t)byte;
+{
+    [self addByteToBuffer:byte];
+    if (_byteIndex == 0)
+    {
+        [self encodeGroup:0];
+        
+        _byteIndex = 1;
+    }
+    else if (_byteIndex == 1)
+    {
+        [self encodeGroup:1];
+        
+        _byteIndex = 2;
+    }
+    else if (_byteIndex == 2)
+    {
+        [self encodeGroup:2];
+        [self encodeGroup:3];
+        
+        _byteIndex = 0;
+        _buffer = 0;
+    }
+}
+
+- (void)addByteToBuffer:(uint8_t)byte;
+{
+    int bytesToShift = (2 - _byteIndex);
+    _buffer |= (byte << (bytesToShift * 8));
+}
+
+- (NSString *)finishEncoding;
+{
+    if (_byteIndex == 1)
+    {
+        [self encodeGroup:1];
+        if (_addPadding)
+            [self appendCharacters:"=="];
+    }
+    else if (_byteIndex == 2)
+    {
+        [self encodeGroup:2];
+        if (_addPadding)
+            [self appendCharacter:'='];
+    }
+    
+    return _output;
+    [self reset];
+}
+
+- (void)encodeGroup:(int)group
+{
+    /*
+            2                   1                   0 
+      3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
+     +----byte 2-----+-----byte 1----+----byte 0-----+
+     |7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|
+     +-----------+---+-------+-------+---+-----------+
+     |5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|
+     +--group 3--+--group 2--+--group 1--+--group 0--+
+     */
+
+    unsigned bitsToShift = (3 - group) * 6;
+    uint8_t value = (_buffer >> bitsToShift) & 0x3F;
+    [self appendCharacter:encodingTable[value]];
 }
 
 - (void)appendCharacters:(const char *)characters;
