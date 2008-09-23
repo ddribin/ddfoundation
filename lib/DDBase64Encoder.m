@@ -8,8 +8,6 @@
 
 #import "DDBase64Encoder.h"
 
-static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
 @interface DDBase64Encoder ()
 
 - (void)addByteToBuffer:(uint8_t)byte;
@@ -106,10 +104,31 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     }
 }
 
+/*
+ The 24-bit buffer:
+ 
+  2     2                   1                   0 
+  3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
+ +----byte 0-----+-----byte 1----+----byte 2-----+
+ |7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|
+ +-----------+---+-------+-------+---+-----------+
+ |5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|
+ +--group 0--+--group 1--+--group 2--+--group 3--+
+ */
+
 - (void)addByteToBuffer:(uint8_t)byte;
 {
     int bytesToShift = (2 - _byteIndex);
     _buffer |= (byte << (bytesToShift * 8));
+}
+
+- (void)encodeGroup:(int)group
+{
+    static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    
+    unsigned bitsToShift = (3 - group) * 6;
+    uint8_t value = (_buffer >> bitsToShift) & 0x3F;
+    [self appendCharacter:encodingTable[value]];
 }
 
 - (NSString *)finishEncoding;
@@ -129,23 +148,6 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     
     return _output;
     [self reset];
-}
-
-- (void)encodeGroup:(int)group
-{
-    /*
-            2                   1                   0 
-      3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
-     +----byte 2-----+-----byte 1----+----byte 0-----+
-     |7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|
-     +-----------+---+-------+-------+---+-----------+
-     |5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|
-     +--group 3--+--group 2--+--group 1--+--group 0--+
-     */
-
-    unsigned bitsToShift = (3 - group) * 6;
-    uint8_t value = (_buffer >> bitsToShift) & 0x3F;
-    [self appendCharacter:encodingTable[value]];
 }
 
 - (void)appendCharacters:(const char *)characters;

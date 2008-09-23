@@ -19,6 +19,7 @@ typedef unsigned DDBase64EncoderOptions;
 {
     int _byteIndex;
     NSMutableString * _output;
+    // A 24-bit buffer. Holds 3 octest and 4 groups.
     uint32_t _buffer;
     BOOL _addPadding;
     BOOL _addLineBreaks;
