@@ -18,7 +18,39 @@
 static const int kMaxByteIndex = 4;
 static const int kMaxGroupIndex = 7;
 
+static const char kRfc4648EncodingTable[] =   "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+static const char kCrockfordEncodingTable[] = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+
 @implementation DDBase32Encoder
+
++ (NSString *)crockfordEncodeData:(NSData *)data;
+{
+    DDAbstractBaseEncoder * encoder = [[self alloc] initWithOptions:DDBaseEncoderOptionNoPadding
+                                                  useCrockfordTable:YES];
+    [encoder autorelease];
+    [encoder encodeData:data];
+    return [encoder finishEncoding];
+}
+
+- (id)initWithOptions:(DDBaseEncoderOptions)options
+{
+    return [self initWithOptions:options useCrockfordTable:NO];
+}
+
+- (id)initWithOptions:(DDBaseEncoderOptions)options
+    useCrockfordTable:(BOOL)useCrockfordTable;
+{
+    self = [super initWithOptions:options];
+    if (self == nil)
+        return nil;
+    
+    if (useCrockfordTable)
+        _encodeTable = kCrockfordEncodingTable;
+    else
+        _encodeTable = kRfc4648EncodingTable;
+    
+    return self;
+}
 
 - (void)reset;
 {
@@ -108,11 +140,9 @@ static const int kMaxGroupIndex = 7;
 
 - (void)encodeGroup:(int)group
 {
-    static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ23456789+/";
-    
     unsigned bitsToShift = (kMaxGroupIndex - group) * 5;
     uint8_t value = (_buffer >> bitsToShift) & 0x1F;
-    [self appendCharacter:encodingTable[value]];
+    [self appendCharacter:_encodeTable[value]];
 }
 
 @end

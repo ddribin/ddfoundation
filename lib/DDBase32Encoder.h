@@ -15,6 +15,12 @@
 {
     // A 40-bit buffer. Holds 5 bytes and 8 5-bit groups.
     uint64_t _buffer;
+    const char * _encodeTable;
 }
+
++ (NSString *)crockfordEncodeData:(NSData *)data;
+
+- (id)initWithOptions:(DDBaseEncoderOptions)options useCrockfordTable:(BOOL)crockford;
+
 
 @end

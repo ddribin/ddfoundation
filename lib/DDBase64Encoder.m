@@ -18,6 +18,9 @@
 static const int kMaxByteIndex = 2;
 static const int kMaxGroupIndex = 3;
 
+static const char kRfc4648EncodingTable[] =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
 @implementation DDBase64Encoder
 
 - (void)reset;
@@ -88,11 +91,9 @@ static const int kMaxGroupIndex = 3;
 
 - (void)encodeGroup:(int)group
 {
-    static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    
     unsigned bitsToShift = (kMaxGroupIndex - group) * 6;
     uint8_t value = (_buffer >> bitsToShift) & 0x3F;
-    [self appendCharacter:encodingTable[value]];
+    [self appendCharacter:kRfc4648EncodingTable[value]];
 }
 
 @end

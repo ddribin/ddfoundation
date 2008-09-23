@@ -18,6 +18,11 @@ static NSString * encode32(NSData * data)
     return [DDBase32Encoder encodeData:data];
 }
 
+static NSString * crockfordEncode32(NSData * data)
+{
+    return [DDBase32Encoder crockfordEncodeData:data];
+}
+
 - (void)testEncodeBase32
 {
     STAssertEqualObjects(@"", encode32(dddata()), nil);
@@ -28,6 +33,11 @@ static NSString * encode32(NSData * data)
     STAssertEqualObjects(@"MZXW6YTB", encode32(dddata('f', 'o', 'o', 'b', 'a')), nil);
     STAssertEqualObjects(@"MZXW6YTBOI======",
                          encode32(dddata('f', 'o', 'o', 'b', 'a', 'r')), nil);
+}
+
+- (void)testEncodeBase32Crockford
+{
+    STAssertEqualObjects(@"CSQPYRK1E800", crockfordEncode32(dddata("foobar")), nil);
 }
 
 @end
