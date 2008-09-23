@@ -24,6 +24,15 @@
 
 #import <Foundation/Foundation.h>
 
+#define dddata(_BYTES_...) ({ uint8_t _Y_[] = {_BYTES_};\
+    [NSData dataWithBytesNoCopy:_Y_ length:sizeof(_Y_) freeWhenDone:NO]; })
+
+@interface NSData (DDExtensions)
+
+- (NSString *)dd_encodeBase64;
+- (NSString *)dd_encodeBase32;
+
+@end
 
 @interface NSMutableData (DDExtensions)
 

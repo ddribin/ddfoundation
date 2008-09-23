@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5529B3CA0E89417F00ED5C34 /* NSData+DDExtensionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B3C90E89417F00ED5C34 /* NSData+DDExtensionsTest.m */; };
 		555D37250D48F512001A5533 /* DDObserverDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 555D37230D48F512001A5533 /* DDObserverDispatcher.h */; };
 		555D37260D48F512001A5533 /* DDObserverDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 555D37240D48F512001A5533 /* DDObserverDispatcher.m */; };
 		555D373A0D48F8E0001A5533 /* DDObserverDispatcherTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 555D372A0D48F687001A5533 /* DDObserverDispatcherTest.m */; };
@@ -65,6 +66,8 @@
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32DBCF5E0370ADEE00C91783 /* DDFoundation_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFoundation_Prefix.pch; sourceTree = "<group>"; };
+		5529B3C80E89417F00ED5C34 /* NSData+DDExtensionsTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+DDExtensionsTest.h"; sourceTree = "<group>"; };
+		5529B3C90E89417F00ED5C34 /* NSData+DDExtensionsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+DDExtensionsTest.m"; sourceTree = "<group>"; };
 		555D37230D48F512001A5533 /* DDObserverDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDObserverDispatcher.h; sourceTree = "<group>"; };
 		555D37240D48F512001A5533 /* DDObserverDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDObserverDispatcher.m; sourceTree = "<group>"; };
 		555D37290D48F687001A5533 /* DDObserverDispatcherTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDObserverDispatcherTest.h; sourceTree = "<group>"; };
@@ -266,6 +269,8 @@
 				55CA870B0D455141004492E9 /* NSString+DDExtensionsTest.m */,
 				55EA07360DDE5E610087B37B /* NSObject+DDExtensionsTest.h */,
 				55EA07370DDE5E610087B37B /* NSObject+DDExtensionsTest.m */,
+				5529B3C80E89417F00ED5C34 /* NSData+DDExtensionsTest.h */,
+				5529B3C90E89417F00ED5C34 /* NSData+DDExtensionsTest.m */,
 				55B6698F0D47F91E006A4FB3 /* DDTestCase.h */,
 				55B669900D47F91E006A4FB3 /* DDTestCase.m */,
 				55B669990D47FA31006A4FB3 /* DDTestCaseTest.h */,
@@ -413,6 +418,7 @@
 				55F7D4E00DDAA88B00FD433C /* DDInvocationGrabberTest.m in Sources */,
 				55EA07380DDE5E610087B37B /* NSObject+DDExtensionsTest.m in Sources */,
 				55EA25E50E852E760051E267 /* DDRunLoopPokerTest.m in Sources */,
+				5529B3CA0E89417F00ED5C34 /* NSData+DDExtensionsTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,8 +485,10 @@
 		1DEB922308733DC00010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ONLY_ACTIVE_ARCH_PRE_XCODE_3_1)";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH_PRE_XCODE_3_1 = "$(NATIVE_ARCH)";
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				WARNING_CFLAGS = (
@@ -494,10 +502,8 @@
 		1DEB922408733DC00010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
