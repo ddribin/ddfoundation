@@ -24,6 +24,18 @@
     _buffer = 0;
 }
 
+/*
+ The 24-bit buffer:
+ 
+  2     2                   1                   0 
+  3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
+ +----byte 0-----+-----byte 1----+----byte 2-----+
+ |7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|
+ +-----------+---+-------+-------+---+-----------+
+ |5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|
+ +--group 0--+--group 1--+--group 2--+--group 3--+
+ */
+
 - (void)encodeByte:(uint8_t)byte;
 {
     [self addByteToBuffer:byte];
@@ -49,33 +61,6 @@
     }
 }
 
-/*
- The 24-bit buffer:
- 
-  2     2                   1                   0 
-  3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
- +----byte 0-----+-----byte 1----+----byte 2-----+
- |7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|
- +-----------+---+-------+-------+---+-----------+
- |5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|
- +--group 0--+--group 1--+--group 2--+--group 3--+
- */
-
-- (void)addByteToBuffer:(uint8_t)byte;
-{
-    int bitsToShift = (2 - _byteIndex) * 8;
-    _buffer |= (byte << bitsToShift);
-}
-
-- (void)encodeGroup:(int)group
-{
-    static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    
-    unsigned bitsToShift = (3 - group) * 6;
-    uint8_t value = (_buffer >> bitsToShift) & 0x3F;
-    [self appendCharacter:encodingTable[value]];
-}
-
 - (NSString *)finishEncoding;
 {
     if (_byteIndex == 1)
@@ -91,6 +76,21 @@
     
     return _output;
     [self reset];
+}
+
+- (void)addByteToBuffer:(uint8_t)byte;
+{
+    int bitsToShift = (2 - _byteIndex) * 8;
+    _buffer |= (byte << bitsToShift);
+}
+
+- (void)encodeGroup:(int)group
+{
+    static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    
+    unsigned bitsToShift = (3 - group) * 6;
+    uint8_t value = (_buffer >> bitsToShift) & 0x3F;
+    [self appendCharacter:encodingTable[value]];
 }
 
 @end

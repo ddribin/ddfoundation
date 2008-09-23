@@ -24,6 +24,18 @@
     _buffer = 0;
 }
 
+/*
+ The 40-bit buffer layout:
+ 
+  3                 3                   2                   1                   0
+  9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
+ +----byte 0-----+-----byte 1----+----byte 2-----+----byte 3-----+----byte 4-----+
+ |7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|
+ +---------+-----+---+-----------+-------+-------+-+---------+---+-----+---------+
+ |4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|
+ +-group 0-+-group 1-+-group 2-+-group 3-+-group 4-+-group 5-+-group 6-+-group 7-+
+ */
+
 - (void)encodeByte:(uint8_t)byte;
 {
     [self addByteToBuffer:byte];
@@ -58,33 +70,6 @@
     }
 }
 
-/*
- The 40-bit buffer layout:
- 
-  3                 3                   2                   1                   0
-  9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
- +----byte 0-----+-----byte 1----+----byte 2-----+----byte 3-----+----byte 4-----+
- |7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|
- +---------+-----+---+-----------+-------+-------+-+---------+---+-----+---------+
- |4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|
- +-group 0-+-group 1-+-group 2-+-group 3-+-group 4-+-group 5-+-group 6-+-group 7-+
- */
-
-- (void)addByteToBuffer:(uint8_t)byte;
-{
-    int bitsToShift = (4 - _byteIndex) * 8;
-    _buffer |= (((uint64_t)byte) << bitsToShift);
-}
-
-- (void)encodeGroup:(int)group
-{
-    static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ23456789+/";
-    
-    unsigned bitsToShift = (7 - group) * 5;
-    uint8_t value = (_buffer >> bitsToShift) & 0x1F;
-    [self appendCharacter:encodingTable[value]];
-}
-
 - (NSString *)finishEncoding;
 {
     if (_byteIndex == 1)
@@ -110,6 +95,21 @@
     
     return _output;
     [self reset];
+}
+
+- (void)addByteToBuffer:(uint8_t)byte;
+{
+    int bitsToShift = (4 - _byteIndex) * 8;
+    _buffer |= (((uint64_t)byte) << bitsToShift);
+}
+
+- (void)encodeGroup:(int)group
+{
+    static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ23456789+/";
+    
+    unsigned bitsToShift = (7 - group) * 5;
+    uint8_t value = (_buffer >> bitsToShift) & 0x1F;
+    [self appendCharacter:encodingTable[value]];
 }
 
 @end

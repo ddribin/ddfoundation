@@ -12,7 +12,7 @@
 
 @interface DDBase64Encoder : DDAbstractBaseEncoder
 {
-    // A 24-bit buffer. Holds 3 octest and 4 groups.
+    // A 24-bit buffer. Holds 3 bytes and 4 6-bit groups.
     uint32_t _buffer;
 }
 
