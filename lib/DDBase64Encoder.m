@@ -12,6 +12,7 @@
 
 - (void)addByteToBuffer:(uint8_t)byte;
 - (void)encodeGroup:(int)group;
+- (void)advanceByteIndex;
 
 @end
 
@@ -44,6 +45,7 @@ static const char kRfc4648EncodingTable[] =
 - (void)encodeByte:(uint8_t)byte;
 {
     [self addByteToBuffer:byte];
+    
     if (_byteIndex == 0)
     {
         [self encodeGroup:0];
@@ -58,12 +60,7 @@ static const char kRfc4648EncodingTable[] =
         [self encodeGroup:3];
     }
     
-    _byteIndex++;
-    if (_byteIndex > kMaxByteIndex)
-    {
-        _byteIndex = 0;
-        _buffer = 0;
-    }
+    [self advanceByteIndex];
 }
 
 - (NSString *)finishEncoding;
@@ -95,6 +92,16 @@ static const char kRfc4648EncodingTable[] =
     unsigned bitsToShift = (kMaxGroupIndex - group) * 6;
     uint8_t value = (_buffer >> bitsToShift) & 0x3F;
     [self appendCharacter:kRfc4648EncodingTable[value]];
+}
+
+- (void)advanceByteIndex;
+{
+    _byteIndex++;
+    if (_byteIndex > kMaxByteIndex)
+    {
+        _byteIndex = 0;
+        _buffer = 0;
+    }
 }
 
 @end
