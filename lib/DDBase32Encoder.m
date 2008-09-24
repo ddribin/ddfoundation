@@ -76,7 +76,7 @@ typedef struct
     int encodeGroup1;
     int encodeGroup2;
     int finishGroup;
-    int padBytes;
+    int padCharacters;
 } DDBase32EncoderEntry;
 
 #define X -1
@@ -105,7 +105,7 @@ static DDBase32EncoderEntry kBase32EncoderTable[] = {
 {
     DDBase32EncoderEntry * entry = &kBase32EncoderTable[_byteIndex];
     [self encodeGroup:entry->finishGroup];
-    [self appendPadCharacters:entry->padBytes];
+    [self appendPadCharacters:entry->padCharacters];
     
     NSString * output = [[_output retain] autorelease];
     [self reset];
