@@ -11,6 +11,7 @@
 @interface DDBase32Encoder ()
 
 - (void)addByteToBuffer:(uint8_t)byte;
+- (void)encodeUpToGroup:(int)group;
 - (void)encodeGroup:(int)group;
 - (void)advanceByteIndex;
 
@@ -71,41 +72,38 @@ static const char kCrockfordEncodingTable[] = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
  +-group 0-+-group 1-+-group 2-+-group 3-+-group 4-+-group 5-+-group 6-+-group 7-+
  */
 
-typedef struct
-{
-    int encodeGroup1;
-    int encodeGroup2;
-    int finishGroup;
-    int padCharacters;
-} DDBase32EncoderEntry;
-
-#define X -1
-static DDBase32EncoderEntry kBase32EncoderTable[] = {
-//   E1 E2 F  P
-    {0, X, X, X},    // byteIndex = 0
-    {1, 2, 1, 6},    // byteIndex = 1
-    {3, X, 3, 4},    // byteIndex = 2
-    {4, 5, 4, 3},    // byteIndex = 3
-    {6, 7, 6, 1},    // byteIndex = 4
-};
-#undef X
-
 - (void)encodeByte:(uint8_t)byte
 {
     [self addByteToBuffer:byte];
 
-    DDBase32EncoderEntry * entry = &kBase32EncoderTable[_byteIndex];
-    [self encodeGroup:entry->encodeGroup1];
-    [self encodeGroup:entry->encodeGroup2];
+    BOOL bufferIsFull = (_byteIndex == kMaxByteIndex);
+    if (bufferIsFull)
+        [self encodeUpToGroup:kMaxGroupIndex];
 
     [self advanceByteIndex];
 }
 
 - (NSString *)finishEncoding;
 {
-    DDBase32EncoderEntry * entry = &kBase32EncoderTable[_byteIndex];
-    [self encodeGroup:entry->finishGroup];
-    [self appendPadCharacters:entry->padCharacters];
+    switch (_byteIndex)
+    {
+        case 1:
+            [self encodeUpToGroup:1];
+            [self appendPadCharacters:6];
+            break;
+        case 2:
+            [self encodeUpToGroup:3];
+            [self appendPadCharacters:4];
+            break;
+        case 3:
+            [self encodeUpToGroup:4];
+            [self appendPadCharacters:3];
+            break;
+        case 4:
+            [self encodeUpToGroup:6];
+            [self appendPadCharacters:1];
+            break;
+    }
     
     NSString * output = [[_output retain] autorelease];
     [self reset];
@@ -116,6 +114,15 @@ static DDBase32EncoderEntry kBase32EncoderTable[] = {
 {
     int bitsToShift = (kMaxByteIndex - _byteIndex) * 8;
     _buffer |= (((uint64_t)byte) << bitsToShift);
+}
+
+- (void)encodeUpToGroup:(int)group;
+{
+    int i;
+    for (i = 0; i <= group; i++)
+    {
+        [self encodeGroup:i];
+    }
 }
 
 - (void)encodeGroup:(int)group
