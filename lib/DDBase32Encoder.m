@@ -12,6 +12,7 @@
 
 - (void)addByteToBuffer:(uint8_t)byte;
 - (void)encodeGroup:(int)group;
+- (void)advanceByteIndex;
 
 @end
 
@@ -70,64 +71,41 @@ static const char kCrockfordEncodingTable[] = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
  +-group 0-+-group 1-+-group 2-+-group 3-+-group 4-+-group 5-+-group 6-+-group 7-+
  */
 
-- (void)encodeByte:(uint8_t)byte;
+typedef struct
+{
+    int encodeGroup1;
+    int encodeGroup2;
+    int finishGroup;
+    int padBytes;
+} DDBase32EncoderEntry;
+
+#define X -1
+static DDBase32EncoderEntry kBase32EncoderTable[] = {
+//   E1 E2 F  P
+    {0, X, X, X},    // byteIndex = 0
+    {1, 2, 1, 6},    // byteIndex = 1
+    {3, X, 3, 4},    // byteIndex = 2
+    {4, 5, 4, 3},    // byteIndex = 3
+    {6, 7, 6, 1},    // byteIndex = 4
+};
+#undef X
+
+- (void)encodeByte:(uint8_t)byte
 {
     [self addByteToBuffer:byte];
-    if (_byteIndex == 0)
-    {
-        [self encodeGroup:0];
-    }
-    else if (_byteIndex == 1)
-    {
-        [self encodeGroup:1];
-        [self encodeGroup:2];
-    }
-    else if (_byteIndex == 2)
-    {
-        [self encodeGroup:3];
-    }
-    else if (_byteIndex == 3)
-    {
-        [self encodeGroup:4];
-        [self encodeGroup:5];
-    }
-    else if (_byteIndex == 4)
-    {
-        [self encodeGroup:6];
-        [self encodeGroup:7];
-    }
-    
-    _byteIndex++;
-    if (_byteIndex > kMaxByteIndex)
-    {
-        _byteIndex = 0;
-        _buffer = 0;
-    }
+
+    DDBase32EncoderEntry * entry = &kBase32EncoderTable[_byteIndex];
+    [self encodeGroup:entry->encodeGroup1];
+    [self encodeGroup:entry->encodeGroup2];
+
+    [self advanceByteIndex];
 }
 
 - (NSString *)finishEncoding;
 {
-    if (_byteIndex == 1)
-    {
-        [self encodeGroup:1];
-        [self appendPadCharacters:6];
-    }
-    else if (_byteIndex == 2)
-    {
-        [self encodeGroup:3];
-        [self appendPadCharacters:4];
-    }
-    else if (_byteIndex == 3)
-    {
-        [self encodeGroup:4];
-        [self appendPadCharacters:3];
-    }
-    else if (_byteIndex == 4)
-    {
-        [self encodeGroup:6];
-        [self appendPadCharacters:1];
-    }
-    
+    DDBase32EncoderEntry * entry = &kBase32EncoderTable[_byteIndex];
+    [self encodeGroup:entry->finishGroup];
+    [self appendPadCharacters:entry->padBytes];
     return _output;
     [self reset];
 }
@@ -140,9 +118,22 @@ static const char kCrockfordEncodingTable[] = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 
 - (void)encodeGroup:(int)group
 {
+    if (group == -1)
+        return;
+    
     unsigned bitsToShift = (kMaxGroupIndex - group) * 5;
     uint8_t value = (_buffer >> bitsToShift) & 0x1F;
     [self appendCharacter:_encodeTable[value]];
+}
+
+- (void)advanceByteIndex;
+{
+    _byteIndex++;
+    if (_byteIndex > kMaxByteIndex)
+    {
+        _byteIndex = 0;
+        _buffer = 0;
+    }
 }
 
 @end
