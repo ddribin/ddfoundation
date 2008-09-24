@@ -11,7 +11,7 @@
 @interface DDBase32Encoder ()
 
 - (void)addByteToBuffer:(uint8_t)byte;
-- (void)encodeUpToGroup:(int)group;
+- (void)encodeUpToAndIncludingGroup:(int)group;
 - (void)encodeGroup:(int)group;
 - (void)advanceByteIndex;
 
@@ -102,7 +102,7 @@ static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769"
 
     BOOL bufferIsFull = (_byteIndex == kMaxByteIndex);
     if (bufferIsFull)
-        [self encodeUpToGroup:kMaxGroupIndex];
+        [self encodeUpToAndIncludingGroup:kMaxGroupIndex];
 
     [self advanceByteIndex];
 }
@@ -111,22 +111,22 @@ static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769"
 {
     if (_byteIndex == 1)
     {
-        [self encodeUpToGroup:1];
+        [self encodeUpToAndIncludingGroup:1];
         [self appendPadCharacters:6];
     }
     else if (_byteIndex == 2)
     {
-        [self encodeUpToGroup:3];
+        [self encodeUpToAndIncludingGroup:3];
         [self appendPadCharacters:4];
     }
     else if (_byteIndex == 3)
     {
-        [self encodeUpToGroup:4];
+        [self encodeUpToAndIncludingGroup:4];
         [self appendPadCharacters:3];
     }
     else if (_byteIndex == 4)
     {
-        [self encodeUpToGroup:6];
+        [self encodeUpToAndIncludingGroup:6];
         [self appendPadCharacters:1];
     }
     
@@ -141,7 +141,7 @@ static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769"
     _buffer |= (((uint64_t)byte) << bitsToShift);
 }
 
-- (void)encodeUpToGroup:(int)group;
+- (void)encodeUpToAndIncludingGroup:(int)group;
 {
     int i;
     for (i = 0; i <= group; i++)
