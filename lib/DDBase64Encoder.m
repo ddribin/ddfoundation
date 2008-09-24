@@ -79,8 +79,9 @@ static const char kRfc4648EncodingTable[] =
         [self appendPadCharacters:1];
     }
     
-    return _output;
+    NSString * output = [[_output retain] autorelease];
     [self reset];
+    return output;
 }
 
 - (void)addByteToBuffer:(uint8_t)byte;

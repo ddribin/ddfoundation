@@ -106,8 +106,10 @@ static DDBase32EncoderEntry kBase32EncoderTable[] = {
     DDBase32EncoderEntry * entry = &kBase32EncoderTable[_byteIndex];
     [self encodeGroup:entry->finishGroup];
     [self appendPadCharacters:entry->padBytes];
-    return _output;
+    
+    NSString * output = [[_output retain] autorelease];
     [self reset];
+    return output;
 }
 
 - (void)addByteToBuffer:(uint8_t)byte;
