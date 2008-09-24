@@ -66,4 +66,13 @@
     STAssertEqualObjects(@"MZXW6YTBOI======", [dddata('f', 'o', 'o', 'b', 'a', 'r') dd_encodeBase32], nil);
 }
 
+- (void)testRandomData
+{
+    NSData * randomData1 = [NSData dd_randomDataOfLength:10];
+    NSData * randomData2 = [NSData dd_randomDataOfLength:10];
+    STAssertEquals([randomData1 length], 10U, nil);
+    STAssertEquals([randomData2 length], 10U, nil);
+    STAssertFalse([randomData1 isEqualToData:randomData2], nil);
+}
+
 @end

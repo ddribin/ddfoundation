@@ -19,7 +19,9 @@ int main(int argc, char * argv[])
     {
         NSData * input = [standardInput readDataToEndOfFile];
         NSString * encoded = [DDBase32Encoder crockfordEncodeData:input];
-        printf("%s\n", [encoded UTF8String]);
+        printf("c: %s\n", [encoded UTF8String]);
+        encoded = [DDBase32Encoder zbase32EncodeData:input];
+        printf("z: %s\n", [encoded UTF8String]);
     }
     
     NSProcessInfo * processInfo = [NSProcessInfo processInfo];
@@ -29,7 +31,9 @@ int main(int argc, char * argv[])
     {
         NSData * argumentData = [argument dataUsingEncoding:NSUTF8StringEncoding];
         NSString * encoded = [DDBase32Encoder crockfordEncodeData:argumentData];
-        printf("%s\n", [encoded UTF8String]);
+        printf("c: %s\n", [encoded UTF8String]);
+        encoded = [DDBase32Encoder zbase32EncodeData:argumentData];
+        printf("z: %s\n", [encoded UTF8String]);
     }
     
     [pool release];

@@ -29,6 +29,8 @@
 
 @interface NSData (DDExtensions)
 
++ (NSData *)dd_randomDataOfLength:(unsigned)length;
+
 - (NSString *)dd_encodeBase64;
 - (NSString *)dd_encodeBase32;
 

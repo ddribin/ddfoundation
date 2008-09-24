@@ -29,6 +29,12 @@
 
 @implementation NSData (DDExtensions)
 
++ (NSData *)dd_randomDataOfLength:(unsigned)length;
+{
+    return [[NSFileHandle fileHandleForReadingAtPath:@"/dev/random"]
+            readDataOfLength:length];
+}
+
 - (NSString *)dd_encodeBase64;
 {
     return [DDBase64Encoder encodeData:self];
