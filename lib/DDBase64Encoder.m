@@ -12,6 +12,7 @@
 
 - (void)addByteToBuffer:(uint8_t)byte;
 - (void)encodeGroup:(int)group;
+- (void)encodeUpToGroup:(int)group;
 - (void)advanceByteIndex;
 
 @end
@@ -46,19 +47,9 @@ static const char kRfc4648EncodingTable[] =
 {
     [self addByteToBuffer:byte];
     
-    if (_byteIndex == 0)
-    {
-        [self encodeGroup:0];
-    }
-    else if (_byteIndex == 1)
-    {
-        [self encodeGroup:1];
-    }
-    else if (_byteIndex == 2)
-    {
-        [self encodeGroup:2];
-        [self encodeGroup:3];
-    }
+    BOOL bufferIsFull = (_byteIndex == kMaxByteIndex);
+    if (bufferIsFull)
+        [self encodeUpToGroup:kMaxGroupIndex];
     
     [self advanceByteIndex];
 }
@@ -67,12 +58,12 @@ static const char kRfc4648EncodingTable[] =
 {
     if (_byteIndex == 1)
     {
-        [self encodeGroup:1];
+        [self encodeUpToGroup:1];
         [self appendPadCharacters:2];
     }
     else if (_byteIndex == 2)
     {
-        [self encodeGroup:2];
+        [self encodeUpToGroup:2];
         [self appendPadCharacters:1];
     }
     
@@ -85,6 +76,15 @@ static const char kRfc4648EncodingTable[] =
 {
     int bitsToShift = (kMaxByteIndex - _byteIndex) * 8;
     _buffer |= (byte << bitsToShift);
+}
+
+- (void)encodeUpToGroup:(int)group;
+{
+    int i;
+    for (i = 0; i <= group; i++)
+    {
+        [self encodeGroup:i];
+    }
 }
 
 - (void)encodeGroup:(int)group
