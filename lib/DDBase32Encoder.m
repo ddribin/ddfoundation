@@ -85,24 +85,25 @@ static const char kCrockfordEncodingTable[] = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 
 - (NSString *)finishEncoding;
 {
-    switch (_byteIndex)
+    if (_byteIndex == 1)
     {
-        case 1:
-            [self encodeUpToGroup:1];
-            [self appendPadCharacters:6];
-            break;
-        case 2:
-            [self encodeUpToGroup:3];
-            [self appendPadCharacters:4];
-            break;
-        case 3:
-            [self encodeUpToGroup:4];
-            [self appendPadCharacters:3];
-            break;
-        case 4:
-            [self encodeUpToGroup:6];
-            [self appendPadCharacters:1];
-            break;
+        [self encodeUpToGroup:1];
+        [self appendPadCharacters:6];
+    }
+    else if (_byteIndex == 2)
+    {
+        [self encodeUpToGroup:3];
+        [self appendPadCharacters:4];
+    }
+    else if (_byteIndex == 3)
+    {
+        [self encodeUpToGroup:4];
+        [self appendPadCharacters:3];
+    }
+    else if (_byteIndex == 4)
+    {
+        [self encodeUpToGroup:6];
+        [self appendPadCharacters:1];
     }
     
     NSString * output = [[_output retain] autorelease];
