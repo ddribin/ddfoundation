@@ -22,13 +22,35 @@ static const int kMaxGroupIndex = 7;
 
 static const char kRfc4648EncodingTable[] =   "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 static const char kCrockfordEncodingTable[] = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769";
 
 @implementation DDBase32Encoder
 
 + (NSString *)crockfordEncodeData:(NSData *)data;
 {
+    DDAbstractBaseEncoder * encoder =
+        [[self alloc] initWithOptions:DDBaseEncoderOptionNoPadding
+                             alphabet:DDBase32EncoderAlphabetCrockford];
+    [encoder autorelease];
+    [encoder encodeData:data];
+    return [encoder finishEncoding];
+}
+
++ (NSString *)zbase32EncodeData:(NSData *)data;
+{
+    DDAbstractBaseEncoder * encoder =
+        [[self alloc] initWithOptions:DDBaseEncoderOptionNoPadding
+                             alphabet:DDBase32EncoderAlphabetZBase32];
+    [encoder autorelease];
+    [encoder encodeData:data];
+    return [encoder finishEncoding];
+}
+
++ (NSString *)encodeData:(NSData *)data
+                alphabet:(DDBase32EncoderAlphabet)alphabet;
+{
     DDAbstractBaseEncoder * encoder = [[self alloc] initWithOptions:DDBaseEncoderOptionNoPadding
-                                                  useCrockfordTable:YES];
+                                                           alphabet:alphabet];
     [encoder autorelease];
     [encoder encodeData:data];
     return [encoder finishEncoding];
@@ -36,18 +58,20 @@ static const char kCrockfordEncodingTable[] = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 
 - (id)initWithOptions:(DDBaseEncoderOptions)options
 {
-    return [self initWithOptions:options useCrockfordTable:NO];
+    return [self initWithOptions:options alphabet:DDBase32EncoderAlphabetRfc];
 }
 
 - (id)initWithOptions:(DDBaseEncoderOptions)options
-    useCrockfordTable:(BOOL)useCrockfordTable;
+             alphabet:(DDBase32EncoderAlphabet)alphabet;
 {
     self = [super initWithOptions:options];
     if (self == nil)
         return nil;
     
-    if (useCrockfordTable)
+    if (alphabet == DDBase32EncoderAlphabetCrockford)
         _encodeTable = kCrockfordEncodingTable;
+    else if (alphabet == DDBase32EncoderAlphabetZBase32)
+        _encodeTable = kZBase32EncodingTable;
     else
         _encodeTable = kRfc4648EncodingTable;
     
