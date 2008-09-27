@@ -39,6 +39,9 @@
 		555D37260D48F512001A5533 /* DDObserverDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 555D37240D48F512001A5533 /* DDObserverDispatcher.m */; };
 		555D373A0D48F8E0001A5533 /* DDObserverDispatcherTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 555D372A0D48F687001A5533 /* DDObserverDispatcherTest.m */; };
 		555D39DE0D494858001A5533 /* hello.txt in Resources */ = {isa = PBXBuildFile; fileRef = 555D39DD0D494858001A5533 /* hello.txt */; };
+		5586CC700E8E9AAF00599103 /* DDDisposable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5586CC6E0E8E9AAF00599103 /* DDDisposable.h */; };
+		5586CC930E8E9EB700599103 /* DDDisposableTest.h in Headers */ = {isa = PBXBuildFile; fileRef = 5586CC910E8E9EB700599103 /* DDDisposableTest.h */; };
+		5586CC940E8E9EB700599103 /* DDDisposableTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586CC920E8E9EB700599103 /* DDDisposableTest.m */; };
 		55B669910D47F91E006A4FB3 /* DDTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B669900D47F91E006A4FB3 /* DDTestCase.m */; };
 		55B6699B0D47FA31006A4FB3 /* DDTestCaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B6699A0D47FA31006A4FB3 /* DDTestCaseTest.m */; };
 		55B669C30D47FC93006A4FB3 /* test.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55B669C20D47FC93006A4FB3 /* test.plist */; };
@@ -92,21 +95,21 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 55CA86F90D455108004492E9 /* UnitTests */;
+			remoteGlobalIDString = 55CA86F90D455108004492E9;
 			remoteInfo = UnitTests;
 		};
 		55BC3BDA0E89EEA500CD6798 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D /* DDFoundation */;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = DDFoundation;
 		};
 		55BC3BDC0E89EEA500CD6798 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 5529B6710E89AA3F00ED5C34 /* base32 */;
+			remoteGlobalIDString = 5529B6710E89AA3F00ED5C34;
 			remoteInfo = base32;
 		};
 		55CA87000D455115004492E9 /* PBXContainerItemProxy */ = {
@@ -141,6 +144,9 @@
 		555D37290D48F687001A5533 /* DDObserverDispatcherTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDObserverDispatcherTest.h; sourceTree = "<group>"; };
 		555D372A0D48F687001A5533 /* DDObserverDispatcherTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDObserverDispatcherTest.m; sourceTree = "<group>"; };
 		555D39DD0D494858001A5533 /* hello.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hello.txt; sourceTree = "<group>"; };
+		5586CC6E0E8E9AAF00599103 /* DDDisposable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDDisposable.h; sourceTree = "<group>"; };
+		5586CC910E8E9EB700599103 /* DDDisposableTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDDisposableTest.h; sourceTree = "<group>"; };
+		5586CC920E8E9EB700599103 /* DDDisposableTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDDisposableTest.m; sourceTree = "<group>"; };
 		55B6698F0D47F91E006A4FB3 /* DDTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTestCase.h; sourceTree = "<group>"; };
 		55B669900D47F91E006A4FB3 /* DDTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTestCase.m; sourceTree = "<group>"; };
 		55B669990D47FA31006A4FB3 /* DDTestCaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTestCaseTest.h; sourceTree = "<group>"; };
@@ -278,6 +284,7 @@
 				5529B4580E89601A00ED5C34 /* DDBase64Encoder.m */,
 				5529B57D0E897CD700ED5C34 /* DDBase32Encoder.h */,
 				5529B57E0E897CD700ED5C34 /* DDBase32Encoder.m */,
+				5586CC6E0E8E9AAF00599103 /* DDDisposable.h */,
 				55EF2A9F0E17021900B465BE /* NSArray+DDExtensions.h */,
 				55EF2AA00E17021900B465BE /* NSArray+DDExtensions.m */,
 				55CA858D0D454F3F004492E9 /* NSData+DDExtensions.h */,
@@ -360,6 +367,8 @@
 				55BC33370D52EA490030033C /* DDSequenceComparatorTest.m */,
 				55F7D4DE0DDAA88B00FD433C /* DDInvocationGrabberTest.h */,
 				55F7D4DF0DDAA88B00FD433C /* DDInvocationGrabberTest.m */,
+				5586CC910E8E9EB700599103 /* DDDisposableTest.h */,
+				5586CC920E8E9EB700599103 /* DDDisposableTest.m */,
 				5529B4650E89623000ED5C34 /* DDBase64EncoderTest.h */,
 				5529B4660E89623000ED5C34 /* DDBase64EncoderTest.m */,
 				5529B5860E897E6500ED5C34 /* DDBase32EncoderTest.h */,
@@ -416,6 +425,8 @@
 				5529B4590E89601A00ED5C34 /* DDBase64Encoder.h in Headers */,
 				5529B57F0E897CD700ED5C34 /* DDBase32Encoder.h in Headers */,
 				5529B5B90E89829100ED5C34 /* DDAbstractBaseEncoder.h in Headers */,
+				5586CC700E8E9AAF00599103 /* DDDisposable.h in Headers */,
+				5586CC930E8E9EB700599103 /* DDDisposableTest.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -574,6 +585,7 @@
 				5529B45A0E89601A00ED5C34 /* DDBase64Encoder.m in Sources */,
 				5529B5800E897CD700ED5C34 /* DDBase32Encoder.m in Sources */,
 				5529B5BA0E89829100ED5C34 /* DDAbstractBaseEncoder.m in Sources */,
+				5586CC940E8E9EB700599103 /* DDDisposableTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
