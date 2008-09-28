@@ -24,8 +24,7 @@
 
 /* Begin PBXBuildFile section */
 		5529B3CA0E89417F00ED5C34 /* NSData+DDExtensionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B3C90E89417F00ED5C34 /* NSData+DDExtensionsTest.m */; };
-		5529B4670E89623000ED5C34 /* DDBase64EncoderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B4660E89623000ED5C34 /* DDBase64EncoderTest.m */; };
-		5529B5880E897E6500ED5C34 /* DDBase32EncoderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B5870E897E6500ED5C34 /* DDBase32EncoderTest.m */; };
+		5529B4670E89623000ED5C34 /* DDBaseXEncoderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B4660E89623000ED5C34 /* DDBaseXEncoderTest.m */; };
 		5529B5B90E89829100ED5C34 /* DDBaseXEncoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 5529B5B70E89829100ED5C34 /* DDBaseXEncoder.h */; };
 		5529B5BA0E89829100ED5C34 /* DDBaseXEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B5B80E89829100ED5C34 /* DDBaseXEncoder.m */; };
 		5529B6790E89AA5D00ED5C34 /* base32.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B6780E89AA5D00ED5C34 /* base32.m */; };
@@ -126,10 +125,8 @@
 		32DBCF5E0370ADEE00C91783 /* DDFoundation_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFoundation_Prefix.pch; sourceTree = "<group>"; };
 		5529B3C80E89417F00ED5C34 /* NSData+DDExtensionsTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+DDExtensionsTest.h"; sourceTree = "<group>"; };
 		5529B3C90E89417F00ED5C34 /* NSData+DDExtensionsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+DDExtensionsTest.m"; sourceTree = "<group>"; };
-		5529B4650E89623000ED5C34 /* DDBase64EncoderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDBase64EncoderTest.h; sourceTree = "<group>"; };
-		5529B4660E89623000ED5C34 /* DDBase64EncoderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDBase64EncoderTest.m; sourceTree = "<group>"; };
-		5529B5860E897E6500ED5C34 /* DDBase32EncoderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDBase32EncoderTest.h; sourceTree = "<group>"; };
-		5529B5870E897E6500ED5C34 /* DDBase32EncoderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDBase32EncoderTest.m; sourceTree = "<group>"; };
+		5529B4650E89623000ED5C34 /* DDBaseXEncoderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDBaseXEncoderTest.h; sourceTree = "<group>"; };
+		5529B4660E89623000ED5C34 /* DDBaseXEncoderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDBaseXEncoderTest.m; sourceTree = "<group>"; };
 		5529B5B70E89829100ED5C34 /* DDBaseXEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDBaseXEncoder.h; sourceTree = "<group>"; };
 		5529B5B80E89829100ED5C34 /* DDBaseXEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDBaseXEncoder.m; sourceTree = "<group>"; };
 		5529B6720E89AA3F00ED5C34 /* base32 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = base32; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -278,12 +275,7 @@
 				55CA858A0D454F3F004492E9 /* DDTemporaryDirectory.m */,
 				55CA858B0D454F3F004492E9 /* DDTemporaryFile.h */,
 				55CA858C0D454F3F004492E9 /* DDTemporaryFile.m */,
-				5586CCB80E8F444700599103 /* DDBaseXInputBuffer.h */,
-				5586CCB90E8F444700599103 /* DDBaseXInputBuffer.m */,
-				5586CDBD0E8FC3DD00599103 /* DDBaseXOutputBuffer.h */,
-				5586CDBE0E8FC3DD00599103 /* DDBaseXOutputBuffer.m */,
-				5529B5B70E89829100ED5C34 /* DDBaseXEncoder.h */,
-				5529B5B80E89829100ED5C34 /* DDBaseXEncoder.m */,
+				5586CF6A0E8FE0CE00599103 /* BaseX Encoding */,
 				5586CC6E0E8E9AAF00599103 /* DDDisposable.h */,
 				55EF2A9F0E17021900B465BE /* NSArray+DDExtensions.h */,
 				55EF2AA00E17021900B465BE /* NSArray+DDExtensions.m */,
@@ -335,6 +327,19 @@
 			path = examples;
 			sourceTree = "<group>";
 		};
+		5586CF6A0E8FE0CE00599103 /* BaseX Encoding */ = {
+			isa = PBXGroup;
+			children = (
+				5529B5B70E89829100ED5C34 /* DDBaseXEncoder.h */,
+				5529B5B80E89829100ED5C34 /* DDBaseXEncoder.m */,
+				5586CCB80E8F444700599103 /* DDBaseXInputBuffer.h */,
+				5586CCB90E8F444700599103 /* DDBaseXInputBuffer.m */,
+				5586CDBD0E8FC3DD00599103 /* DDBaseXOutputBuffer.h */,
+				5586CDBE0E8FC3DD00599103 /* DDBaseXOutputBuffer.m */,
+			);
+			name = "BaseX Encoding";
+			sourceTree = "<group>";
+		};
 		55CA859E0D454FE9004492E9 /* vendor */ = {
 			isa = PBXGroup;
 			children = (
@@ -369,10 +374,8 @@
 				55F7D4DF0DDAA88B00FD433C /* DDInvocationGrabberTest.m */,
 				5586CC910E8E9EB700599103 /* DDDisposableTest.h */,
 				5586CC920E8E9EB700599103 /* DDDisposableTest.m */,
-				5529B4650E89623000ED5C34 /* DDBase64EncoderTest.h */,
-				5529B4660E89623000ED5C34 /* DDBase64EncoderTest.m */,
-				5529B5860E897E6500ED5C34 /* DDBase32EncoderTest.h */,
-				5529B5870E897E6500ED5C34 /* DDBase32EncoderTest.m */,
+				5529B4650E89623000ED5C34 /* DDBaseXEncoderTest.h */,
+				5529B4660E89623000ED5C34 /* DDBaseXEncoderTest.m */,
 				55CA870A0D455141004492E9 /* NSString+DDExtensionsTest.h */,
 				55CA870B0D455141004492E9 /* NSString+DDExtensionsTest.m */,
 				55EA07360DDE5E610087B37B /* NSObject+DDExtensionsTest.h */,
@@ -559,8 +562,7 @@
 				55EA07380DDE5E610087B37B /* NSObject+DDExtensionsTest.m in Sources */,
 				55EA25E50E852E760051E267 /* DDRunLoopPokerTest.m in Sources */,
 				5529B3CA0E89417F00ED5C34 /* NSData+DDExtensionsTest.m in Sources */,
-				5529B4670E89623000ED5C34 /* DDBase64EncoderTest.m in Sources */,
-				5529B5880E897E6500ED5C34 /* DDBase32EncoderTest.m in Sources */,
+				5529B4670E89623000ED5C34 /* DDBaseXEncoderTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
