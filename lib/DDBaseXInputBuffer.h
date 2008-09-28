@@ -21,6 +21,8 @@
 
 + (id)base64InputBuffer;
 
++ (id)base32InputBuffer;
+
 - (id)initWithCapacity:(unsigned)capacity bitsPerGroup:(unsigned)bitsPerGroup;
 
 - (unsigned)length;

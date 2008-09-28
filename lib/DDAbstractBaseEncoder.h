@@ -14,6 +14,14 @@ enum {
 };
 typedef unsigned DDBaseEncoderOptions;
 
+enum
+{
+    DDBase32EncoderAlphabetRfc,
+    DDBase32EncoderAlphabetCrockford,
+    DDBase32EncoderAlphabetZBase32,
+};
+typedef unsigned DDBase32EncoderAlphabet;
+
 @class DDBaseXInputBuffer;
 @class DDBaseXOutputBuffer;
 
@@ -32,6 +40,23 @@ typedef unsigned DDBaseEncoderOptions;
 + (NSString *)base64EncodeData:(NSData *)data options:(DDBaseEncoderOptions)options;
 
 + (id)base64EncoderWithOptions:(DDBaseEncoderOptions)options;
+
++ (NSString *)base32EncodeData:(NSData *)data;
+
++ (NSString *)crockfordBase32EncodeData:(NSData *)data;
+
++ (NSString *)zbase32EncodeData:(NSData *)data;
+
++ (NSString *)base32EncodeData:(NSData *)data
+                       options:(DDBaseEncoderOptions)options;
+
++ (NSString *)base32EncodeData:(NSData *)data
+                       options:(DDBaseEncoderOptions)options
+                      alphabet:(DDBase32EncoderAlphabet)alphabet;
+
++ (id)base32EncoderWithOptions:(DDBaseEncoderOptions)options
+                      alphabet:(DDBase32EncoderAlphabet)alphabet;
+
 
 + (NSString *)encodeData:(NSData *)data;
 

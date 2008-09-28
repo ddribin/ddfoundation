@@ -15,19 +15,17 @@
 
 static NSString * encode32(NSData * data)
 {
-    return [DDBase32Encoder encodeData:data];
+    return [DDAbstractBaseEncoder base32EncodeData:data];
 }
 
 static NSString * crockfordEncode32(NSData * data)
 {
-    return [DDBase32Encoder encodeData:data
-                              alphabet:DDBase32EncoderAlphabetCrockford];
+    return [DDAbstractBaseEncoder crockfordBase32EncodeData:data];
 }
 
 static NSString * zbase32Encode32(NSData * data)
 {
-    return [DDBase32Encoder encodeData:data
-                              alphabet:DDBase32EncoderAlphabetZBase32];
+    return [DDAbstractBaseEncoder zbase32EncodeData:data];
 }
 
 - (void)testEncodeBase32

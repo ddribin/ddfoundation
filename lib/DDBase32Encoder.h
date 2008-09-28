@@ -11,15 +11,6 @@
 #import <Foundation/Foundation.h>
 #import "DDAbstractBaseEncoder.h"
 
-enum
-{
-    DDBase32EncoderAlphabetRfc,
-    DDBase32EncoderAlphabetCrockford,
-    DDBase32EncoderAlphabetZBase32,
-};
-
-typedef unsigned DDBase32EncoderAlphabet;
-
 @interface DDBase32Encoder : DDAbstractBaseEncoder
 {
     // A 40-bit buffer. Holds 5 bytes and 8 5-bit groups.

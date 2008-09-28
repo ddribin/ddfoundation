@@ -13,6 +13,10 @@
 static const char kBase64Rfc4648Alphabet[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
+static const char kRfc4648EncodingTable[] =   "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+static const char kCrockfordEncodingTable[] = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769";
+
 @interface DDAbstractBaseEncoder ()
 
 - (id)initWithOptions:(DDBaseEncoderOptions)options
@@ -42,6 +46,53 @@ static const char kBase64Rfc4648Alphabet[] =
     DDAbstractBaseEncoder * encoder = [[self alloc] initWithOptions:options
                                                         inputBuffer:[DDBaseXInputBuffer base64InputBuffer]
                                                            alphabet:kBase64Rfc4648Alphabet];
+    return [encoder autorelease];
+}
+
++ (NSString *)base32EncodeData:(NSData *)data;
+{
+    return [self base32EncodeData:data options:0 alphabet:DDBase32EncoderAlphabetRfc];
+}
+
++ (NSString *)crockfordBase32EncodeData:(NSData *)data;
+{
+    return [self base32EncodeData:data options:DDBaseEncoderOptionNoPadding alphabet:DDBase32EncoderAlphabetCrockford];
+}
+
++ (NSString *)zbase32EncodeData:(NSData *)data;
+{
+    return [self base32EncodeData:data options:DDBaseEncoderOptionNoPadding alphabet:DDBase32EncoderAlphabetZBase32];
+}
+
++ (NSString *)base32EncodeData:(NSData *)data
+                       options:(DDBaseEncoderOptions)options;
+{
+    return [self base32EncodeData:data options:options alphabet:DDBase32EncoderAlphabetRfc];
+}
+
++ (NSString *)base32EncodeData:(NSData *)data
+                       options:(DDBaseEncoderOptions)options
+                      alphabet:(DDBase32EncoderAlphabet)alphabet;
+{
+    DDAbstractBaseEncoder * encoder = [self base32EncoderWithOptions:options
+                                                            alphabet:alphabet];
+    return [encoder encodeDataAndFinish:data];
+}
+
++ (id)base32EncoderWithOptions:(DDBaseEncoderOptions)options
+                      alphabet:(DDBase32EncoderAlphabet)alphabet;
+{
+    const char * alphabetTable;
+    if (alphabet == DDBase32EncoderAlphabetCrockford)
+        alphabetTable = kCrockfordEncodingTable;
+    else if (alphabet == DDBase32EncoderAlphabetZBase32)
+        alphabetTable = kZBase32EncodingTable;
+    else
+        alphabetTable = kRfc4648EncodingTable;
+    
+    DDAbstractBaseEncoder * encoder = [[self alloc] initWithOptions:options
+                                                        inputBuffer:[DDBaseXInputBuffer base32InputBuffer]
+                                                           alphabet:alphabetTable];
     return [encoder autorelease];
 }
 
