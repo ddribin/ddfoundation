@@ -8,6 +8,7 @@
 
 #import "DDBase64Encoder.h"
 #import "DDBaseXInputBuffer.h"
+#import "DDBaseXOutputBuffer.h"
 
 @interface DDBase64Encoder ()
 
@@ -76,8 +77,7 @@ static const char kRfc4648EncodingTable[] =
     if (numberOfFilledGroups > 0)
         [self appendPadCharacters:[_inputBuffer numberOfGroups] - numberOfFilledGroups];
     
-    NSString * output = [[_output retain] autorelease];
-    [self reset];
+    NSString * output = [_outputBuffer finalStringAndReset];
     return output;
 }
 

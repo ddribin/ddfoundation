@@ -7,6 +7,7 @@
 //
 
 #import "DDBase32Encoder.h"
+#import "DDBaseXOutputBuffer.h"
 
 @interface DDBase32Encoder ()
 
@@ -130,8 +131,7 @@ static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769"
         [self appendPadCharacters:1];
     }
     
-    NSString * output = [[_output retain] autorelease];
-    [self reset];
+    NSString * output = [_outputBuffer finalStringAndReset];
     return output;
 }
 

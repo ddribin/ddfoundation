@@ -14,15 +14,14 @@ enum {
 };
 typedef unsigned DDBaseEncoderOptions;
 
+@class DDBaseXOutputBuffer;
+
 
 @interface DDAbstractBaseEncoder : NSObject
 {
   @protected
     int _byteIndex;
-    NSMutableString * _output;
-    BOOL _addPadding;
-    BOOL _addLineBreaks;
-    unsigned _currentLineLength;
+    DDBaseXOutputBuffer * _outputBuffer;
 }
 
 + (NSString *)encodeData:(NSData *)data;

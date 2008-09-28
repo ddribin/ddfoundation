@@ -7,6 +7,7 @@
 //
 
 #import "DDAbstractBaseEncoder.h"
+#import "DDBaseXOutputBuffer.h"
 
 
 @implementation DDAbstractBaseEncoder
@@ -37,8 +38,10 @@
     if (self == nil)
         return nil;
     
-    _addPadding = ((options & DDBaseEncoderOptionNoPadding) == 0);
-    _addLineBreaks = ((options & DDBaseEncoderOptionAddLineBreaks) != 0);
+    BOOL addPadding = ((options & DDBaseEncoderOptionNoPadding) == 0);
+    BOOL addLineBreaks = ((options & DDBaseEncoderOptionAddLineBreaks) != 0);
+    _outputBuffer = [[DDBaseXOutputBuffer alloc] initWithAddPadding:addPadding
+                                                      addLineBreaks:addLineBreaks];
     
     [self reset];
     
@@ -47,14 +50,13 @@
 
 - (void)dealloc
 {
-    [_output release];
+    [_outputBuffer release];
     [super dealloc];
 }
 
 - (void)reset;
 {
-    [_output release];
-    _output = [[NSMutableString alloc ]init];
+    [_outputBuffer reset];
     _byteIndex = 0;
 }
 
@@ -91,25 +93,12 @@
 
 - (void)appendPadCharacters:(int)count;
 {
-    if (!_addPadding)
-        return;
-    
-    int i;
-    for (i = 0; i < count; i++)
-    {
-        [self appendCharacter:'='];
-    }
+    [_outputBuffer appendPadCharacters:count];
 }
 
 - (void)appendCharacter:(char)ch;
 {
-    [_output appendFormat:@"%c", ch];
-    _currentLineLength++;
-    if (_addLineBreaks && (_currentLineLength >= 64))
-    {
-        [_output appendString:@"\n"];
-        _currentLineLength = 0;
-    }
+    [_outputBuffer appendCharacter:ch];
 }
 
 @end
