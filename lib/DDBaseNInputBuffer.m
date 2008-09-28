@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#import "DDBaseXInputBuffer.h"
+#import "DDBaseNInputBuffer.h"
 
 
 static int ceildiv(int x, int y)
@@ -30,7 +30,7 @@ static int ceildiv(int x, int y)
     return (x + y - 1)/y;
 }
 
-@implementation DDBaseXInputBuffer
+@implementation DDBaseNInputBuffer
 
 - (id)initWithCapacityInBits:(unsigned)capacityInBits
                 bitsPerGroup:(unsigned)bitsPerGroup;

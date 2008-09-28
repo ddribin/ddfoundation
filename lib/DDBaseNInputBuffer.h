@@ -25,20 +25,29 @@
 #import <Foundation/Foundation.h>
 
 
-@interface DDBaseXOutputBuffer : NSObject
+@interface DDBaseNInputBuffer : NSObject
 {
-    NSMutableString * _output;
-    BOOL _addPadding;
-    BOOL _addLineBreaks;
-    unsigned _currentLineLength;
+    uint64_t _byteBuffer;
+    unsigned _capacityInBits;
+    unsigned _lengthInBits;
+    unsigned _bitsPerGroup;
+    unsigned _numberOfGroups;
+    uint8_t _groupBitMask;
 }
 
-- (id)initWithAddPadding:(BOOL)addPadding addLineBreaks:(BOOL)addLineBreaks;
+- (id)initWithCapacityInBits:(unsigned)capacityInBits
+                bitsPerGroup:(unsigned)bitsPerGroup;
+
+- (unsigned)numberOfGroups;
+
+- (unsigned)numberOfFilledGroups;
+
+- (BOOL)isFull;
+
+- (void)addByte:(uint8_t)byte;
 
 - (void)reset;
 
-- (void)appendCharacter:(char)ch;
-- (void)appendPadCharacters:(int)count;
-- (NSString *)finalStringAndReset;
+- (uint8_t)valueAtGroupIndex:(unsigned)groupIndex;
 
 @end

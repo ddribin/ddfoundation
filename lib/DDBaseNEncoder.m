@@ -22,21 +22,21 @@
  * SOFTWARE.
  */
 
-#import "DDBaseXEncoder.h"
-#import "DDBaseXInputBuffer.h"
-#import "DDBaseXOutputBuffer.h"
+#import "DDBaseNEncoder.h"
+#import "DDBaseNInputBuffer.h"
+#import "DDBaseNOutputBuffer.h"
 
 static const char kBase64Rfc4648Alphabet[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-@interface DDBaseXEncoder ()
+@interface DDBaseNEncoder ()
 
 - (void)encodeValueAtGroupIndex:(int)group;
 - (void)encodeNumberOfGroups:(int)group;
 
 @end
 
-@implementation DDBaseXEncoder
+@implementation DDBaseNEncoder
 
 - (id)init;
 {
@@ -44,7 +44,7 @@ static const char kBase64Rfc4648Alphabet[] =
 }
 
 - (id)initWithOptions:(DDBaseEncoderOptions)options
-          inputBuffer:(DDBaseXInputBuffer *)inputBuffer
+          inputBuffer:(DDBaseNInputBuffer *)inputBuffer
              alphabet:(const char *)alphabet;
 {
     self = [super init];
@@ -55,7 +55,7 @@ static const char kBase64Rfc4648Alphabet[] =
     
     BOOL addPadding = ((options & DDBaseEncoderOptionNoPadding) == 0);
     BOOL addLineBreaks = ((options & DDBaseEncoderOptionAddLineBreaks) != 0);
-    _outputBuffer = [[DDBaseXOutputBuffer alloc] initWithAddPadding:addPadding
+    _outputBuffer = [[DDBaseNOutputBuffer alloc] initWithAddPadding:addPadding
                                                       addLineBreaks:addLineBreaks];
     
     _alphabet = alphabet;

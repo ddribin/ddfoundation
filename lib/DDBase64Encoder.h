@@ -23,10 +23,10 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "DDBaseXEncoder.h"
-#import "DDBaseXInputBuffer.h"
+#import "DDBaseNEncoder.h"
+#import "DDBaseNInputBuffer.h"
 
-@interface DDBase64Encoder : DDBaseXEncoder
+@interface DDBase64Encoder : DDBaseNEncoder
 {
 }
 
@@ -41,7 +41,7 @@
 @end
 
 
-@interface DDBaseXInputBuffer (DDBase64Encoder)
+@interface DDBaseNInputBuffer (DDBase64Encoder)
 
 + (id)base64InputBuffer;
 

@@ -23,7 +23,7 @@
  */
 
 #import "DDBase32Encoder.h"
-#import "DDBaseXInputBuffer.h"
+#import "DDBaseNInputBuffer.h"
 
 static const char kBase32Rfc4648Alphabet[] =   "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 static const char kBase32CrockfordAlphabet[] = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
@@ -56,7 +56,7 @@ static const char kBase32ZBase32Alphabet[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769
                        options:(DDBaseEncoderOptions)options
                       alphabet:(DDBase32EncoderAlphabet)alphabet;
 {
-    DDBaseXEncoder * encoder = [self base32EncoderWithOptions:options
+    DDBaseNEncoder * encoder = [self base32EncoderWithOptions:options
                                                      alphabet:alphabet];
     return [encoder encodeDataAndFinish:data];
 }
@@ -64,7 +64,7 @@ static const char kBase32ZBase32Alphabet[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769
 + (id)base32EncoderWithOptions:(DDBaseEncoderOptions)options
                       alphabet:(DDBase32EncoderAlphabet)alphabet;
 {
-    DDBaseXEncoder * encoder = [[self alloc] initWithOptions:options alphabet:alphabet];
+    DDBaseNEncoder * encoder = [[self alloc] initWithOptions:options alphabet:alphabet];
     return [encoder autorelease];
 }
 
@@ -80,14 +80,14 @@ static const char kBase32ZBase32Alphabet[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769
         alphabetTable = kBase32Rfc4648Alphabet;
     
     return [super initWithOptions:options
-                      inputBuffer:[DDBaseXInputBuffer base32InputBuffer]
+                      inputBuffer:[DDBaseNInputBuffer base32InputBuffer]
                          alphabet:alphabetTable];
 }
 
 @end
 
 
-@implementation DDBaseXInputBuffer (DDBase32Encoder)
+@implementation DDBaseNInputBuffer (DDBase32Encoder)
 
 /*
  The 40-bit buffer layout:

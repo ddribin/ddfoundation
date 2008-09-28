@@ -22,41 +22,65 @@
  * SOFTWARE.
  */
 
-#import <Foundation/Foundation.h>
-
-enum {
-    DDBaseEncoderOptionNoPadding = 0x01,
-    DDBaseEncoderOptionAddLineBreaks = 0x02,
-};
-typedef unsigned DDBaseEncoderOptions;
-
-@class DDBaseXInputBuffer;
-@class DDBaseXOutputBuffer;
+#import "DDBaseNOutputBuffer.h"
 
 
-@interface DDBaseXEncoder : NSObject
+@implementation DDBaseNOutputBuffer
+
+- (id)initWithAddPadding:(BOOL)addPadding addLineBreaks:(BOOL)addLineBreaks;
 {
-  @protected
-    int _byteIndex;
-    DDBaseXInputBuffer * _inputBuffer;
-    DDBaseXOutputBuffer * _outputBuffer;
-    const char * _alphabet;
+    self = [super init];
+    if (self == nil)
+        return nil;
+    
+    _addPadding = addPadding;
+    _addLineBreaks = addLineBreaks;
+    [self reset];
+    
+    return self;
 }
 
-#pragma mark -
-
-- (id)initWithOptions:(DDBaseEncoderOptions)options
-          inputBuffer:(DDBaseXInputBuffer *)inputBuffer
-             alphabet:(const char *)alphabet;
+- (void)dealloc
+{
+    [_output release];
+    [super dealloc];
+}
 
 - (void)reset;
+{
+    [_output release];
+    _output = [[NSMutableString alloc ]init];
+    _currentLineLength = 0;
+}
 
-- (NSString *)encodeDataAndFinish:(NSData *)data;
+- (NSString *)finalStringAndReset
+{
+    NSString * finalString = [[_output retain] autorelease];
+    [self reset];
+    return finalString;
+}
 
-- (void)encodeByte:(uint8_t)byte;
+- (void)appendPadCharacters:(int)count;
+{
+    if (!_addPadding)
+        return;
+    
+    int i;
+    for (i = 0; i < count; i++)
+    {
+        [self appendCharacter:'='];
+    }
+}
 
-- (void)encodeData:(NSData *)data;
-
-- (NSString *)finishEncoding;
+- (void)appendCharacter:(char)ch;
+{
+    [_output appendFormat:@"%c", ch];
+    _currentLineLength++;
+    if (_addLineBreaks && (_currentLineLength >= 64))
+    {
+        [_output appendString:@"\n"];
+        _currentLineLength = 0;
+    }
+}
 
 @end

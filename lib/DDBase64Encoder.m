@@ -23,7 +23,7 @@
  */
 
 #import "DDBase64Encoder.h"
-#import "DDBaseXInputBuffer.h"
+#import "DDBaseNInputBuffer.h"
 
 static const char kBase64Rfc4648Alphabet[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -32,33 +32,33 @@ static const char kBase64Rfc4648Alphabet[] =
 
 + (NSString *)base64EncodeData:(NSData *)data;
 {
-    DDBaseXEncoder * encoder = [self base64EncoderWithOptions:0];
+    DDBaseNEncoder * encoder = [self base64EncoderWithOptions:0];
     return [encoder encodeDataAndFinish:data];
 }
 
 + (NSString *)base64EncodeData:(NSData *)data options:(DDBaseEncoderOptions)options;
 {
-    DDBaseXEncoder * encoder = [self base64EncoderWithOptions:options];
+    DDBaseNEncoder * encoder = [self base64EncoderWithOptions:options];
     return [encoder encodeDataAndFinish:data];
 }
 
 + (id)base64EncoderWithOptions:(DDBaseEncoderOptions)options;
 {
-    DDBaseXEncoder * encoder = [[self alloc] initWithOptions:options];
+    DDBaseNEncoder * encoder = [[self alloc] initWithOptions:options];
     return [encoder autorelease];
 }
 
 - (id)initWithOptions:(DDBaseEncoderOptions)options;
 {
     return [super initWithOptions:options
-                      inputBuffer:[DDBaseXInputBuffer base64InputBuffer]
+                      inputBuffer:[DDBaseNInputBuffer base64InputBuffer]
                          alphabet:kBase64Rfc4648Alphabet];
 }
 
 @end
 
 
-@implementation DDBaseXInputBuffer (DDBase64Encoder)
+@implementation DDBaseNInputBuffer (DDBase64Encoder)
 
 /*
  The 24-bit buffer:

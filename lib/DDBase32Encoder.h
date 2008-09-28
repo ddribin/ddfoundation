@@ -23,8 +23,8 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "DDBaseXEncoder.h"
-#import "DDBaseXInputBuffer.h"
+#import "DDBaseNEncoder.h"
+#import "DDBaseNInputBuffer.h"
 
 enum
 {
@@ -34,7 +34,7 @@ enum
 };
 typedef unsigned DDBase32EncoderAlphabet;
 
-@interface DDBase32Encoder : DDBaseXEncoder
+@interface DDBase32Encoder : DDBaseNEncoder
 {
 }
 
@@ -61,7 +61,7 @@ typedef unsigned DDBase32EncoderAlphabet;
 @end
 
 
-@interface DDBaseXInputBuffer (DDBase32Encoder)
+@interface DDBaseNInputBuffer (DDBase32Encoder)
 
 + (id)base32InputBuffer;
 
