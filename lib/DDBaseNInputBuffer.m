@@ -82,12 +82,11 @@ static int ceildiv(int x, int y)
 
 - (void)appendByte:(uint8_t)byte;
 {
-    NSAssert(![self isFull], @"Cannot insert into full buffer");
+    NSAssert((_capacityInBits - _lengthInBits) >= 8, @"No room to insert byt");
 
     [self setValueOfBitRange:NSMakeRange(_lengthInBits, 8) toValue:byte];
     _lengthInBits += 8;
 }
-
 
 - (uint8_t)valueAtGroupIndex:(unsigned)groupIndex;
 {
