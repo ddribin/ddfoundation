@@ -24,7 +24,14 @@ typedef unsigned DDBaseEncoderOptions;
     int _byteIndex;
     DDBaseXInputBuffer * _inputBuffer;
     DDBaseXOutputBuffer * _outputBuffer;
+    const char * _alphabet;
 }
+
++ (NSString *)base64EncodeData:(NSData *)data;
+
++ (NSString *)base64EncodeData:(NSData *)data options:(DDBaseEncoderOptions)options;
+
++ (id)base64EncoderWithOptions:(DDBaseEncoderOptions)options;
 
 + (NSString *)encodeData:(NSData *)data;
 
@@ -38,10 +45,12 @@ typedef unsigned DDBaseEncoderOptions;
 
 - (void)reset;
 
-- (NSString *)finishEncoding;
-
 - (void)encodeByte:(uint8_t)byte;
 
 - (void)encodeData:(NSData *)data;
+
+- (NSString *)finishEncoding;
+
+- (NSString *)encodeDataAndFinish:(NSData *)data;
 
 @end

@@ -19,6 +19,8 @@
     uint8_t _groupBitMask;
 }
 
++ (id)base64InputBuffer;
+
 - (id)initWithCapacity:(unsigned)capacity bitsPerGroup:(unsigned)bitsPerGroup;
 
 - (unsigned)length;

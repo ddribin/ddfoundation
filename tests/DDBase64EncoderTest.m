@@ -12,50 +12,62 @@
 
 @implementation DDBase64EncoderTest
 
-- (void)testEncodeBase64
+static NSString * encode64(NSData * data)
 {
-    STAssertEqualObjects(@"",
-                         [DDBase64Encoder encodeData:dddata()], nil);
-    STAssertEqualObjects(@"Zg==",
-                         [DDBase64Encoder encodeData:dddata('f')], nil);
-    STAssertEqualObjects(@"Zm8=",
-                         [DDBase64Encoder encodeData:dddata('f', 'o')], nil);
-    STAssertEqualObjects(@"Zm9v",
-                         [DDBase64Encoder encodeData:dddata('f', 'o', 'o')], nil);
-    STAssertEqualObjects(@"Zm9vYg==",
-                         [DDBase64Encoder encodeData:dddata('f', 'o', 'o', 'b')], nil);
-    STAssertEqualObjects(@"Zm9vYmE=",
-                         [DDBase64Encoder encodeData:dddata('f', 'o', 'o', 'b', 'a')], nil);
-    STAssertEqualObjects(@"Zm9vYmFy",
-                         [DDBase64Encoder encodeData:dddata('f', 'o', 'o', 'b', 'a', 'r')], nil);
+    return [DDBase64Encoder base64EncodeData:data];
 }
 
-- (void)testNoPadding
+static NSString * encode64NoPadding(NSData * data)
 {
-    STAssertEqualObjects(@"Zg",
-                         [DDBase64Encoder encodeData:dddata('f')
-                                             options:DDBaseEncoderOptionNoPadding],
-                         nil);
-    STAssertEqualObjects(@"ZgA",
-                         [DDBase64Encoder encodeData:dddata('f', 0)
-                                             options:DDBaseEncoderOptionNoPadding],
-                         nil);
-    STAssertEqualObjects(@"ZgAA",
-                         [DDBase64Encoder encodeData:dddata('f', 0, 0)
-                                             options:DDBaseEncoderOptionNoPadding],
-                         nil);
+    return [DDBase64Encoder base64EncodeData:data
+                                     options:DDBaseEncoderOptionNoPadding];
 }
 
-- (void)testLineBreak
+static NSString * encode64WithLineBreaks(NSData * data)
 {
-    STAssertEqualObjects(@"TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2ljaW5nAA==",
-                         [DDBase64Encoder encodeData:dddata("Lorem ipsum dolor sit amet, consectetur adipisicing")],
+    return [DDBase64Encoder base64EncodeData:data
+                                     options:DDBaseEncoderOptionAddLineBreaks];
+}
+
+- (void)testBase64Encode
+{
+    STAssertEqualObjects(encode64(dddata()),
+                         @"", nil);
+    STAssertEqualObjects(encode64(dddata('f')),
+                         @"Zg==", nil);
+    STAssertEqualObjects(encode64(dddata('f', 'o')),
+                         @"Zm8=", nil);
+    STAssertEqualObjects(encode64(dddata('f', 'o', 'o')),
+                         @"Zm9v", nil);
+    STAssertEqualObjects(encode64(dddata('f', 'o', 'o', 'b')),
+                         @"Zm9vYg==", nil);
+    STAssertEqualObjects(encode64(dddata('f', 'o', 'o', 'b', 'a')),
+                         @"Zm9vYmE=", nil);
+    STAssertEqualObjects(encode64(dddata('f', 'o', 'o', 'b', 'a', 'r')),
+                         @"Zm9vYmFy", nil);
+}
+
+- (void)testBase64EncodeNoPadding
+{
+    STAssertEqualObjects(encode64NoPadding(dddata('f')),
+                         @"Zg", nil);
+    STAssertEqualObjects(encode64NoPadding(dddata('f', 0)),
+                         @"ZgA", nil);
+    STAssertEqualObjects(encode64NoPadding(dddata('f', 0, 0)),
+                         @"ZgAA", nil);
+}
+
+- (void)testBase64EncodeWithLineBreaks
+{
+    NSData * loremIpsum = dddata("Lorem ipsum dolor sit amet, consectetur adipisicing");
+    
+    STAssertEqualObjects(encode64(loremIpsum),
+                         @"TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2ljaW5nAA==",
                          nil);
                          
-    STAssertEqualObjects(@"TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2lj\n"
+    STAssertEqualObjects(encode64WithLineBreaks(loremIpsum),
+                         @"TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2lj\n"
                          "aW5nAA==",
-                         [DDBase64Encoder encodeData:dddata("Lorem ipsum dolor sit amet, consectetur adipisicing")
-                                             options:DDBaseEncoderOptionAddLineBreaks],
                          nil);
 }
 
