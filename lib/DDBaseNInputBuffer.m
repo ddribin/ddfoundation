@@ -96,9 +96,10 @@ static int ceildiv(int x, int y)
 
 - (uint64_t)valueOfBitRange:(NSRange)bitRange;
 {
-    uint64_t mask = (1 << bitRange.length) - 1;
     unsigned bitsToShift = _capacityInBits - bitRange.location - bitRange.length;
     uint64_t shiftedValue = (_byteBuffer >> bitsToShift);
+
+    uint64_t mask = (1 << bitRange.length) - 1;
     return shiftedValue & mask;
 }
 
@@ -106,6 +107,7 @@ static int ceildiv(int x, int y)
 {
     uint64_t mask = (1 << bitRange.length) - 1;
     value &= mask;
+
     unsigned bitsToShift = _capacityInBits - bitRange.location - bitRange.length;
     uint64_t shiftedValue = (value << bitsToShift);
     _byteBuffer |= shiftedValue;
