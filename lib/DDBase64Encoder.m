@@ -7,13 +7,12 @@
 //
 
 #import "DDBase64Encoder.h"
+#import "DDBaseXInputBuffer.h"
 
 @interface DDBase64Encoder ()
 
-- (void)addByteToBuffer:(uint8_t)byte;
 - (void)encodeGroup:(int)group;
-- (void)encodeUpToAndIncludingGroup:(int)group;
-- (void)advanceByteIndex;
+- (void)encodeNumberOfGroups:(int)group;
 
 @end
 
@@ -25,10 +24,27 @@ static const char kRfc4648EncodingTable[] =
 
 @implementation DDBase64Encoder
 
+- (id)initWithOptions:(DDBaseEncoderOptions)options;
+{
+    self = [super initWithOptions:options];
+    if (self == nil)
+        return nil;
+    
+    _inputBuffer = [[DDBaseXInputBuffer alloc] initWithCapacity:3 bitsPerGroup:6];
+    
+    return self;
+}
+
+- (void)dealloc
+{
+    [_inputBuffer release];
+    
+    [super dealloc];
+}
+
 - (void)reset;
 {
     [super reset];
-    _buffer = 0;
 }
 
 /*
@@ -45,43 +61,30 @@ static const char kRfc4648EncodingTable[] =
 
 - (void)encodeByte:(uint8_t)byte;
 {
-    [self addByteToBuffer:byte];
-    
-    BOOL bufferIsFull = (_byteIndex == kMaxByteIndex);
-    if (bufferIsFull)
-        [self encodeUpToAndIncludingGroup:kMaxGroupIndex];
-    
-    [self advanceByteIndex];
+    [_inputBuffer addByte:byte];
+    if ([_inputBuffer isFull])
+    {
+        [self encodeNumberOfGroups:[_inputBuffer numberOfGroups]];
+        [_inputBuffer reset];
+    }
 }
 
 - (NSString *)finishEncoding;
 {
-    if (_byteIndex == 1)
-    {
-        [self encodeUpToAndIncludingGroup:1];
-        [self appendPadCharacters:2];
-    }
-    else if (_byteIndex == 2)
-    {
-        [self encodeUpToAndIncludingGroup:2];
-        [self appendPadCharacters:1];
-    }
+    unsigned numberOfFilledGroups = [_inputBuffer numberOfFilledGroups];
+    [self encodeNumberOfGroups:numberOfFilledGroups];
+    if (numberOfFilledGroups > 0)
+        [self appendPadCharacters:[_inputBuffer numberOfGroups] - numberOfFilledGroups];
     
     NSString * output = [[_output retain] autorelease];
     [self reset];
     return output;
 }
 
-- (void)addByteToBuffer:(uint8_t)byte;
-{
-    int bitsToShift = (kMaxByteIndex - _byteIndex) * 8;
-    _buffer |= (byte << bitsToShift);
-}
-
-- (void)encodeUpToAndIncludingGroup:(int)group;
+- (void)encodeNumberOfGroups:(int)group;
 {
     int i;
-    for (i = 0; i <= group; i++)
+    for (i = 0; i < group; i++)
     {
         [self encodeGroup:i];
     }
@@ -89,19 +92,8 @@ static const char kRfc4648EncodingTable[] =
 
 - (void)encodeGroup:(int)group
 {
-    unsigned bitsToShift = (kMaxGroupIndex - group) * 6;
-    uint8_t value = (_buffer >> bitsToShift) & 0x3F;
+    uint8_t value = [_inputBuffer valueAtGroupIndex:group];
     [self appendCharacter:kRfc4648EncodingTable[value]];
-}
-
-- (void)advanceByteIndex;
-{
-    _byteIndex++;
-    if (_byteIndex > kMaxByteIndex)
-    {
-        _byteIndex = 0;
-        _buffer = 0;
-    }
 }
 
 @end

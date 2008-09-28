@@ -42,6 +42,8 @@
 		5586CC700E8E9AAF00599103 /* DDDisposable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5586CC6E0E8E9AAF00599103 /* DDDisposable.h */; };
 		5586CC930E8E9EB700599103 /* DDDisposableTest.h in Headers */ = {isa = PBXBuildFile; fileRef = 5586CC910E8E9EB700599103 /* DDDisposableTest.h */; };
 		5586CC940E8E9EB700599103 /* DDDisposableTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586CC920E8E9EB700599103 /* DDDisposableTest.m */; };
+		5586CCBA0E8F444700599103 /* DDBaseXInputBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 5586CCB80E8F444700599103 /* DDBaseXInputBuffer.h */; };
+		5586CCBB0E8F444700599103 /* DDBaseXInputBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586CCB90E8F444700599103 /* DDBaseXInputBuffer.m */; };
 		55B669910D47F91E006A4FB3 /* DDTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B669900D47F91E006A4FB3 /* DDTestCase.m */; };
 		55B6699B0D47FA31006A4FB3 /* DDTestCaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B6699A0D47FA31006A4FB3 /* DDTestCaseTest.m */; };
 		55B669C30D47FC93006A4FB3 /* test.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55B669C20D47FC93006A4FB3 /* test.plist */; };
@@ -147,6 +149,8 @@
 		5586CC6E0E8E9AAF00599103 /* DDDisposable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDDisposable.h; sourceTree = "<group>"; };
 		5586CC910E8E9EB700599103 /* DDDisposableTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDDisposableTest.h; sourceTree = "<group>"; };
 		5586CC920E8E9EB700599103 /* DDDisposableTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDDisposableTest.m; sourceTree = "<group>"; };
+		5586CCB80E8F444700599103 /* DDBaseXInputBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDBaseXInputBuffer.h; sourceTree = "<group>"; };
+		5586CCB90E8F444700599103 /* DDBaseXInputBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDBaseXInputBuffer.m; sourceTree = "<group>"; };
 		55B6698F0D47F91E006A4FB3 /* DDTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTestCase.h; sourceTree = "<group>"; };
 		55B669900D47F91E006A4FB3 /* DDTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTestCase.m; sourceTree = "<group>"; };
 		55B669990D47FA31006A4FB3 /* DDTestCaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTestCaseTest.h; sourceTree = "<group>"; };
@@ -278,6 +282,8 @@
 				55CA858A0D454F3F004492E9 /* DDTemporaryDirectory.m */,
 				55CA858B0D454F3F004492E9 /* DDTemporaryFile.h */,
 				55CA858C0D454F3F004492E9 /* DDTemporaryFile.m */,
+				5586CCB80E8F444700599103 /* DDBaseXInputBuffer.h */,
+				5586CCB90E8F444700599103 /* DDBaseXInputBuffer.m */,
 				5529B5B70E89829100ED5C34 /* DDAbstractBaseEncoder.h */,
 				5529B5B80E89829100ED5C34 /* DDAbstractBaseEncoder.m */,
 				5529B4570E89601A00ED5C34 /* DDBase64Encoder.h */,
@@ -427,6 +433,7 @@
 				5529B5B90E89829100ED5C34 /* DDAbstractBaseEncoder.h in Headers */,
 				5586CC700E8E9AAF00599103 /* DDDisposable.h in Headers */,
 				5586CC930E8E9EB700599103 /* DDDisposableTest.h in Headers */,
+				5586CCBA0E8F444700599103 /* DDBaseXInputBuffer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -586,6 +593,7 @@
 				5529B5800E897CD700ED5C34 /* DDBase32Encoder.m in Sources */,
 				5529B5BA0E89829100ED5C34 /* DDAbstractBaseEncoder.m in Sources */,
 				5586CC940E8E9EB700599103 /* DDDisposableTest.m in Sources */,
+				5586CCBB0E8F444700599103 /* DDBaseXInputBuffer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

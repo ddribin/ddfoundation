@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "DDAbstractBaseEncoder.h"
 
+@class DDBaseXInputBuffer;
 
 @interface DDBase64Encoder : DDAbstractBaseEncoder
 {
-    // A 24-bit buffer. Holds 3 bytes and 4 6-bit groups.
-    uint32_t _buffer;
+    DDBaseXInputBuffer * _inputBuffer;
 }
 
 @end
