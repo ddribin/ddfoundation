@@ -1,5 +1,5 @@
 //
-//  DDBase64EncoderTest.h
+//  DDBase32EncoderTest.h
 //  DDFoundation
 //
 //  Created by Dave Dribin on 9/23/08.
@@ -10,7 +10,7 @@
 #import "DDTestCase.h"
 
 
-@interface DDBaseXEncoderTest : DDTestCase {
+@interface DDBase32EncoderTest : DDTestCase {
 
 }
 

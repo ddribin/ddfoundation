@@ -6,15 +6,11 @@
 //  Copyright 2008 Bit Maki, Inc.. All rights reserved.
 //
 
-#import "DDBaseXEncoderTest.h"
+#import "DDBase64EncoderTest.h"
 #import "DDBase64Encoder.h"
-#import "DDBase32Encoder.h"
 #import "NSData+DDExtensions.h"
 
-@implementation DDBaseXEncoderTest
-
-#pragma mark -
-#pragma mark Base64 Tests
+@implementation DDBase64EncoderTest
 
 static NSString * encode64(NSData * data)
 {
@@ -73,46 +69,6 @@ static NSString * encode64WithLineBreaks(NSData * data)
                          @"TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2lj\n"
                          "aW5nAA==",
                          nil);
-}
-
-#pragma mark -
-#pragma mark Base64 Tests
-
-static NSString * encode32(NSData * data)
-{
-    return [DDBase32Encoder base32EncodeData:data];
-}
-
-static NSString * crockfordEncode32(NSData * data)
-{
-    return [DDBase32Encoder crockfordBase32EncodeData:data];
-}
-
-static NSString * zbase32Encode32(NSData * data)
-{
-    return [DDBase32Encoder zbase32EncodeData:data];
-}
-
-- (void)testEncodeBase32
-{
-    STAssertEqualObjects(@"", encode32(dddata()), nil);
-    STAssertEqualObjects(@"MY======", encode32(dddata('f')), nil);
-    STAssertEqualObjects(@"MZXQ====", encode32(dddata('f', 'o')), nil);
-    STAssertEqualObjects(@"MZXW6===", encode32(dddata('f', 'o', 'o')), nil);
-    STAssertEqualObjects(@"MZXW6YQ=", encode32(dddata('f', 'o', 'o', 'b')), nil);
-    STAssertEqualObjects(@"MZXW6YTB", encode32(dddata('f', 'o', 'o', 'b', 'a')), nil);
-    STAssertEqualObjects(@"MZXW6YTBOI======",
-                         encode32(dddata('f', 'o', 'o', 'b', 'a', 'r')), nil);
-}
-
-- (void)testEncodeBase32Crockford
-{
-    STAssertEqualObjects(@"CSQPYRK1E800", crockfordEncode32(dddata("foobar")), nil);
-}
-
-- (void)testEncodeBase32ZBase32
-{
-    STAssertEqualObjects(@"C3ZS6AUBQEYY", zbase32Encode32(dddata("foobar")), nil);
 }
 
 @end
