@@ -29,8 +29,7 @@
 #import "DDSequenceComparator.h"
 #import "DDTemporaryDirectory.h"
 
-#import "DDBase64Encoder.h"
-#import "DDBase32Encoder.h"
+#import "DDBaseXEncoder.h"
 
 #import "NSArray+DDExtensions.h"
 #import "NSSet+DDExtensions.h"
