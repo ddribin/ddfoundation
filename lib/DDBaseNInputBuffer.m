@@ -74,6 +74,11 @@ static int ceildiv(int x, int y)
     return (_lengthInBits == _capacityInBits);
 }
 
+- (unsigned)numberOfBitsAvailable;
+{
+    return _capacityInBits - _lengthInBits;
+}
+
 - (void)reset;
 {
     _byteBuffer = 0;
@@ -82,7 +87,7 @@ static int ceildiv(int x, int y)
 
 - (void)appendByte:(uint8_t)byte;
 {
-    NSAssert((_capacityInBits - _lengthInBits) >= 8, @"No room to insert byt");
+    NSAssert([self numberOfBitsAvailable] >= 8, @"No room to insert byte");
 
     [self setValueOfBitRange:NSMakeRange(_lengthInBits, 8) toValue:byte];
     _lengthInBits += 8;
@@ -92,6 +97,15 @@ static int ceildiv(int x, int y)
 {
     return [self valueOfBitRange:NSMakeRange(groupIndex*_bitsPerGroup, _bitsPerGroup)];
 }
+
+/*
+ * Bit range manipulation
+ *
+ * Bit range location is relative to most significant bit, thus
+ * bit 0 is the MSB of the byte buffer.  For example, the bit range with
+ * location 0, length 4 of a 24-bit byte buffer is bits 24 through 20 of the
+ * byte buffer.
+ */
 
 - (uint64_t)valueOfBitRange:(NSRange)bitRange;
 {

@@ -43,6 +43,8 @@
 
 - (BOOL)isFull;
 
+- (unsigned)numberOfBitsAvailable;
+
 - (void)reset;
 
 - (void)appendByte:(uint8_t)byte;
