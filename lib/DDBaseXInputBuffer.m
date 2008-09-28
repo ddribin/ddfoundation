@@ -9,6 +9,11 @@
 #import "DDBaseXInputBuffer.h"
 
 
+static int ceildiv(int x, int y)
+{
+    return (x + y - 1)/y;
+}
+
 @implementation DDBaseXInputBuffer
 
 - (id)initWithCapacity:(unsigned)capacity bitsPerGroup:(unsigned)bitsPerGroup;
@@ -44,7 +49,7 @@
 - (unsigned)numberOfFilledGroups;
 {
     unsigned numberOfFilledBits = 8 * _length;
-    return ceilf((float)numberOfFilledBits/(float)_bitsPerGroup);
+    return ceildiv(numberOfFilledBits, _bitsPerGroup);
 }
 
 - (BOOL)isFull;
