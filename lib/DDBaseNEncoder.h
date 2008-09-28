@@ -37,7 +37,6 @@ typedef unsigned DDBaseEncoderOptions;
 @interface DDBaseNEncoder : NSObject
 {
   @protected
-    int _byteIndex;
     DDBaseNInputBuffer * _inputBuffer;
     DDBaseNOutputBuffer * _outputBuffer;
     const char * _alphabet;

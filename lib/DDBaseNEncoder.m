@@ -26,13 +26,12 @@
 #import "DDBaseNInputBuffer.h"
 #import "DDBaseNOutputBuffer.h"
 
-static const char kBase64Rfc4648Alphabet[] =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
 @interface DDBaseNEncoder ()
 
-- (void)encodeValueAtGroupIndex:(int)group;
+- (void)encodeAllGroups;
 - (void)encodeNumberOfGroups:(int)group;
+- (void)encodeValueAtGroupIndex:(int)group;
+- (void)encodeFilledGroupsAndPad;
 
 @end
 
@@ -76,7 +75,6 @@ static const char kBase64Rfc4648Alphabet[] =
 {
     [_inputBuffer reset];
     [_outputBuffer reset];
-    _byteIndex = 0;
 }
 
 - (NSString *)encodeDataAndFinish:(NSData *)data;
@@ -98,23 +96,17 @@ static const char kBase64Rfc4648Alphabet[] =
 
 - (void)encodeByte:(uint8_t)byte;
 {
-    [_inputBuffer addByte:byte];
+    [_inputBuffer appendByte:byte];
     if ([_inputBuffer isFull])
     {
-        [self encodeNumberOfGroups:[_inputBuffer numberOfGroups]];
+        [self encodeAllGroups];
         [_inputBuffer reset];
     }
 }
 
-- (NSString *)finishEncoding;
+- (void)encodeAllGroups
 {
-    unsigned numberOfFilledGroups = [_inputBuffer numberOfFilledGroups];
-    [self encodeNumberOfGroups:numberOfFilledGroups];
-    if (numberOfFilledGroups > 0)
-        [_outputBuffer appendPadCharacters:[_inputBuffer numberOfGroups] - numberOfFilledGroups];
-    
-    NSString * output = [_outputBuffer finalStringAndReset];
-    return output;
+    [self encodeNumberOfGroups:[_inputBuffer numberOfGroups]];
 }
 
 - (void)encodeNumberOfGroups:(int)group;
@@ -129,7 +121,28 @@ static const char kBase64Rfc4648Alphabet[] =
 - (void)encodeValueAtGroupIndex:(int)groupIndex
 {
     uint8_t value = [_inputBuffer valueAtGroupIndex:groupIndex];
-    [_outputBuffer appendCharacter:_alphabet[value]];
+    char encodedValue = _alphabet[value];
+    [_outputBuffer appendCharacter:encodedValue];
+}
+
+
+- (NSString *)finishEncoding;
+{
+    [self encodeFilledGroupsAndPad];
+    NSString * output = [_outputBuffer finalStringAndReset];
+    return output;
+}
+
+- (void)encodeFilledGroupsAndPad
+{
+    unsigned numberOfFilledGroups = [_inputBuffer numberOfFilledGroups];
+    [self encodeNumberOfGroups:numberOfFilledGroups];
+    
+    if (numberOfFilledGroups > 0)
+    {
+        unsigned numberOfPadCharacters = [_inputBuffer numberOfGroups] - numberOfFilledGroups;
+        [_outputBuffer appendPadCharacters:numberOfPadCharacters];
+    }
 }
 
 @end

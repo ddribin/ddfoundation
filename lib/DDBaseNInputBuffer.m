@@ -68,7 +68,7 @@ static int ceildiv(int x, int y)
     return (_lengthInBits == _capacityInBits);
 }
 
-- (void)addByte:(uint8_t)byte;
+- (void)appendByte:(uint8_t)byte;
 {
     NSAssert(![self isFull], @"Cannot insert into full buffer");
 

@@ -44,7 +44,7 @@
 
 - (BOOL)isFull;
 
-- (void)addByte:(uint8_t)byte;
+- (void)appendByte:(uint8_t)byte;
 
 - (void)reset;
 
