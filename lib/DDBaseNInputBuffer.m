@@ -86,7 +86,8 @@ static int ceildiv(int x, int y)
 
 - (uint8_t)valueAtGroupIndex:(unsigned)groupIndex;
 {
-    unsigned bitsToShift = (_numberOfGroups - groupIndex - 1) * _bitsPerGroup;
+    unsigned groupNumber = _numberOfGroups - groupIndex - 1;
+    unsigned bitsToShift = groupNumber * _bitsPerGroup;
     uint8_t value = (_byteBuffer >> bitsToShift) & _groupBitMask;
     return value;
 }
