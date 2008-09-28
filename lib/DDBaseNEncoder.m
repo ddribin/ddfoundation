@@ -136,10 +136,9 @@
 - (void)encodeFilledGroupsAndPad
 {
     unsigned numberOfFilledGroups = [_inputBuffer numberOfFilledGroups];
-    [self encodeNumberOfGroups:numberOfFilledGroups];
-    
     if (numberOfFilledGroups > 0)
     {
+        [self encodeNumberOfGroups:numberOfFilledGroups];
         unsigned numberOfPadCharacters = [_inputBuffer numberOfGroups] - numberOfFilledGroups;
         [_outputBuffer appendPadCharacters:numberOfPadCharacters];
     }

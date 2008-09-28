@@ -32,7 +32,6 @@
     unsigned _lengthInBits;
     unsigned _bitsPerGroup;
     unsigned _numberOfGroups;
-    uint8_t _groupBitMask;
 }
 
 - (id)initWithCapacityInBits:(unsigned)capacityInBits

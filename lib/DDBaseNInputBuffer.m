@@ -23,6 +23,7 @@
  */
 
 #import "DDBaseNInputBuffer.h"
+#import "NSString+DDExtensions.h"
 
 
 static int ceildiv(int x, int y)
@@ -32,7 +33,8 @@ static int ceildiv(int x, int y)
 
 @interface DDBaseNInputBuffer ()
 
-- (unsigned)byteBufferBitFromInputBufferBit:(unsigned)inputBufferBit;
+- (uint64_t)valueOfBitRange:(NSRange)bitRange;
+- (void)setValueOfBitRange:(NSRange)bitRange toValue:(uint64_t)value;
 
 @end
 
@@ -50,8 +52,6 @@ static int ceildiv(int x, int y)
 
     _capacityInBits = capacityInBits;
     _bitsPerGroup = bitsPerGroup;
-    
-    _groupBitMask = (1 << _bitsPerGroup) - 1;
     _numberOfGroups = _capacityInBits / _bitsPerGroup;
     
     [self reset];
@@ -84,23 +84,31 @@ static int ceildiv(int x, int y)
 {
     NSAssert(![self isFull], @"Cannot insert into full buffer");
 
+    [self setValueOfBitRange:NSMakeRange(_lengthInBits, 8) toValue:byte];
     _lengthInBits += 8;
-    int bitsToShift = [self byteBufferBitFromInputBufferBit:_lengthInBits];
-    _byteBuffer |= ((uint64_t)byte << bitsToShift);
 }
+
 
 - (uint8_t)valueAtGroupIndex:(unsigned)groupIndex;
 {
-    unsigned numberOfBitsForGroupIndex = (groupIndex+1) * _bitsPerGroup;
-    unsigned bitsToShift = [self byteBufferBitFromInputBufferBit:numberOfBitsForGroupIndex];
-    uint8_t value = (_byteBuffer >> bitsToShift) & _groupBitMask;
-    return value;
+    return [self valueOfBitRange:NSMakeRange(groupIndex*_bitsPerGroup, _bitsPerGroup)];
 }
 
-- (unsigned)byteBufferBitFromInputBufferBit:(unsigned)inputBufferBit;
+- (uint64_t)valueOfBitRange:(NSRange)bitRange;
 {
-    // Input bit zero starts from the high order bit in the byte buffer
-    return _capacityInBits - inputBufferBit;
+    uint64_t mask = (1 << bitRange.length) - 1;
+    unsigned bitsToShift = _capacityInBits - bitRange.location - bitRange.length;
+    uint64_t shiftedValue = (_byteBuffer >> bitsToShift);
+    return shiftedValue & mask;
+}
+
+- (void)setValueOfBitRange:(NSRange)bitRange toValue:(uint64_t)value;
+{
+    uint64_t mask = (1 << bitRange.length) - 1;
+    value &= mask;
+    unsigned bitsToShift = _capacityInBits - bitRange.location - bitRange.length;
+    uint64_t shiftedValue = (value << bitsToShift);
+    _byteBuffer |= shiftedValue;
 }
 
 @end
