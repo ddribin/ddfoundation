@@ -88,17 +88,3 @@
 }
 
 @end
-
-@implementation DDAbstractBaseEncoder (Protected)
-
-- (void)appendPadCharacters:(int)count;
-{
-    [_outputBuffer appendPadCharacters:count];
-}
-
-- (void)appendCharacter:(char)ch;
-{
-    [_outputBuffer appendCharacter:ch];
-}
-
-@end

@@ -41,10 +41,3 @@ typedef unsigned DDBaseEncoderOptions;
 - (void)encodeData:(NSData *)data;
 
 @end
-
-@interface DDAbstractBaseEncoder (Protected)
-
-- (void)appendPadCharacters:(int)count;
-- (void)appendCharacter:(char)ch;
-
-@end

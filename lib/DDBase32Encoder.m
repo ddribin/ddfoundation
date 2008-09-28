@@ -113,22 +113,22 @@ static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769"
     if (_byteIndex == 1)
     {
         [self encodeUpToAndIncludingGroup:1];
-        [self appendPadCharacters:6];
+        [_outputBuffer appendPadCharacters:6];
     }
     else if (_byteIndex == 2)
     {
         [self encodeUpToAndIncludingGroup:3];
-        [self appendPadCharacters:4];
+        [_outputBuffer appendPadCharacters:4];
     }
     else if (_byteIndex == 3)
     {
         [self encodeUpToAndIncludingGroup:4];
-        [self appendPadCharacters:3];
+        [_outputBuffer appendPadCharacters:3];
     }
     else if (_byteIndex == 4)
     {
         [self encodeUpToAndIncludingGroup:6];
-        [self appendPadCharacters:1];
+        [_outputBuffer appendPadCharacters:1];
     }
     
     NSString * output = [_outputBuffer finalStringAndReset];
@@ -157,7 +157,7 @@ static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769"
     
     unsigned bitsToShift = (kMaxGroupIndex - group) * 5;
     uint8_t value = (_buffer >> bitsToShift) & 0x1F;
-    [self appendCharacter:_encodeTable[value]];
+    [_outputBuffer appendCharacter:_encodeTable[value]];
 }
 
 - (void)advanceByteIndex;

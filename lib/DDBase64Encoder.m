@@ -75,7 +75,7 @@ static const char kRfc4648EncodingTable[] =
     unsigned numberOfFilledGroups = [_inputBuffer numberOfFilledGroups];
     [self encodeNumberOfGroups:numberOfFilledGroups];
     if (numberOfFilledGroups > 0)
-        [self appendPadCharacters:[_inputBuffer numberOfGroups] - numberOfFilledGroups];
+        [_outputBuffer appendPadCharacters:[_inputBuffer numberOfGroups] - numberOfFilledGroups];
     
     NSString * output = [_outputBuffer finalStringAndReset];
     return output;
@@ -93,7 +93,7 @@ static const char kRfc4648EncodingTable[] =
 - (void)encodeGroup:(int)group
 {
     uint8_t value = [_inputBuffer valueAtGroupIndex:group];
-    [self appendCharacter:kRfc4648EncodingTable[value]];
+    [_outputBuffer appendCharacter:kRfc4648EncodingTable[value]];
 }
 
 @end
