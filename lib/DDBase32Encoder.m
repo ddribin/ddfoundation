@@ -87,7 +87,7 @@ static const char kBase32ZBase32Alphabet[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769
 
 + (id)base32InputBuffer;
 {
-    id inputBuffer = [[self alloc] initWithCapacity:5 bitsPerGroup:5];
+    id inputBuffer = [[self alloc] initWithCapacityInBits:40 bitsPerGroup:5];
     return [inputBuffer autorelease];
 }
 

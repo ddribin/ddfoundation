@@ -28,16 +28,15 @@
 @interface DDBaseXInputBuffer : NSObject
 {
     uint64_t _byteBuffer;
-    unsigned _capacity;
-    unsigned _length;
+    unsigned _capacityInBits;
+    unsigned _lengthInBits;
     unsigned _bitsPerGroup;
     unsigned _numberOfGroups;
     uint8_t _groupBitMask;
 }
 
-- (id)initWithCapacity:(unsigned)capacity bitsPerGroup:(unsigned)bitsPerGroup;
-
-- (unsigned)length;
+- (id)initWithCapacityInBits:(unsigned)capacityInBits
+                bitsPerGroup:(unsigned)bitsPerGroup;
 
 - (unsigned)numberOfGroups;
 

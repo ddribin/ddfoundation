@@ -58,7 +58,7 @@ static const char kBase64Rfc4648Alphabet[] =
 
 + (id)base64InputBuffer;
 {
-    id inputBuffer = [[self alloc] initWithCapacity:3 bitsPerGroup:6];
+    id inputBuffer = [[self alloc] initWithCapacityInBits:24 bitsPerGroup:6];
     return [inputBuffer autorelease];
 }
 

@@ -32,29 +32,25 @@ static int ceildiv(int x, int y)
 
 @implementation DDBaseXInputBuffer
 
-- (id)initWithCapacity:(unsigned)capacity bitsPerGroup:(unsigned)bitsPerGroup;
+- (id)initWithCapacityInBits:(unsigned)capacityInBits
+                bitsPerGroup:(unsigned)bitsPerGroup;
 {
     self = [super init];
     if (self == nil)
         return nil;
     
-    NSAssert(capacity <= 8, @"Maximum buffer is 8 bytes");
+    NSAssert(capacityInBits <= 64, @"Maximum buffer is 64 bits");
     NSAssert(bitsPerGroup <= 8, @"Maximum bits per buffer is 8 bits");
 
-    _capacity = capacity;
+    _capacityInBits = capacityInBits;
     _bitsPerGroup = bitsPerGroup;
     
     _groupBitMask = (1 << _bitsPerGroup) - 1;
-    _numberOfGroups = (_capacity * 8) / _bitsPerGroup;
+    _numberOfGroups = _capacityInBits / _bitsPerGroup;
     
     [self reset];
     
     return self;
-}
-
-- (unsigned)length;
-{
-    return _length;
 }
 
 - (unsigned)numberOfGroups;
@@ -64,28 +60,28 @@ static int ceildiv(int x, int y)
 
 - (unsigned)numberOfFilledGroups;
 {
-    unsigned numberOfFilledBits = 8 * _length;
-    return ceildiv(numberOfFilledBits, _bitsPerGroup);
+    return ceildiv(_lengthInBits, _bitsPerGroup);
 }
 
 - (BOOL)isFull;
 {
-    return (_length == _capacity);
+    return (_lengthInBits == _capacityInBits);
 }
 
 - (void)addByte:(uint8_t)byte;
 {
     NSAssert(![self isFull], @"Cannot insert into full buffer");
 
-    int bitsToShift = (_capacity - _length - 1) * 8;
+    int bitsAvailable = _capacityInBits - _lengthInBits;
+    int bitsToShift = bitsAvailable - 8;
     _byteBuffer |= ((uint64_t)byte << bitsToShift);
-    _length++;
+    _lengthInBits += 8;
 }
 
 - (void)reset;
 {
     _byteBuffer = 0;
-    _length = 0;
+    _lengthInBits = 0;
 }
 
 - (uint8_t)valueAtGroupIndex:(unsigned)groupIndex;

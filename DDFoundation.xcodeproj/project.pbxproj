@@ -341,16 +341,16 @@
 		5586CF6A0E8FE0CE00599103 /* BaseX Encoding */ = {
 			isa = PBXGroup;
 			children = (
+				5586CFAA0E8FE45700599103 /* DDBase64Encoder.h */,
+				5586CFAB0E8FE45700599103 /* DDBase64Encoder.m */,
+				5586CFCF0E8FE5FB00599103 /* DDBase32Encoder.h */,
+				5586CFD00E8FE5FB00599103 /* DDBase32Encoder.m */,
 				5529B5B70E89829100ED5C34 /* DDBaseXEncoder.h */,
 				5529B5B80E89829100ED5C34 /* DDBaseXEncoder.m */,
 				5586CCB80E8F444700599103 /* DDBaseXInputBuffer.h */,
 				5586CCB90E8F444700599103 /* DDBaseXInputBuffer.m */,
 				5586CDBD0E8FC3DD00599103 /* DDBaseXOutputBuffer.h */,
 				5586CDBE0E8FC3DD00599103 /* DDBaseXOutputBuffer.m */,
-				5586CFAA0E8FE45700599103 /* DDBase64Encoder.h */,
-				5586CFAB0E8FE45700599103 /* DDBase64Encoder.m */,
-				5586CFCF0E8FE5FB00599103 /* DDBase32Encoder.h */,
-				5586CFD00E8FE5FB00599103 /* DDBase32Encoder.m */,
 			);
 			name = "BaseX Encoding";
 			sourceTree = "<group>";
