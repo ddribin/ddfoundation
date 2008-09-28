@@ -26,8 +26,8 @@
 		5529B3CA0E89417F00ED5C34 /* NSData+DDExtensionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B3C90E89417F00ED5C34 /* NSData+DDExtensionsTest.m */; };
 		5529B4670E89623000ED5C34 /* DDBase64EncoderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B4660E89623000ED5C34 /* DDBase64EncoderTest.m */; };
 		5529B5880E897E6500ED5C34 /* DDBase32EncoderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B5870E897E6500ED5C34 /* DDBase32EncoderTest.m */; };
-		5529B5B90E89829100ED5C34 /* DDAbstractBaseEncoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 5529B5B70E89829100ED5C34 /* DDAbstractBaseEncoder.h */; };
-		5529B5BA0E89829100ED5C34 /* DDAbstractBaseEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B5B80E89829100ED5C34 /* DDAbstractBaseEncoder.m */; };
+		5529B5B90E89829100ED5C34 /* DDBaseXEncoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 5529B5B70E89829100ED5C34 /* DDBaseXEncoder.h */; };
+		5529B5BA0E89829100ED5C34 /* DDBaseXEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B5B80E89829100ED5C34 /* DDBaseXEncoder.m */; };
 		5529B6790E89AA5D00ED5C34 /* base32.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B6780E89AA5D00ED5C34 /* base32.m */; };
 		5529B6800E89AB6D00ED5C34 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5529B67F0E89AB6D00ED5C34 /* Foundation.framework */; };
 		5529B6830E89AB7400ED5C34 /* libDDFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC07E0554694100DB518D /* libDDFoundation.a */; };
@@ -130,8 +130,8 @@
 		5529B4660E89623000ED5C34 /* DDBase64EncoderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDBase64EncoderTest.m; sourceTree = "<group>"; };
 		5529B5860E897E6500ED5C34 /* DDBase32EncoderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDBase32EncoderTest.h; sourceTree = "<group>"; };
 		5529B5870E897E6500ED5C34 /* DDBase32EncoderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDBase32EncoderTest.m; sourceTree = "<group>"; };
-		5529B5B70E89829100ED5C34 /* DDAbstractBaseEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDAbstractBaseEncoder.h; sourceTree = "<group>"; };
-		5529B5B80E89829100ED5C34 /* DDAbstractBaseEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDAbstractBaseEncoder.m; sourceTree = "<group>"; };
+		5529B5B70E89829100ED5C34 /* DDBaseXEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDBaseXEncoder.h; sourceTree = "<group>"; };
+		5529B5B80E89829100ED5C34 /* DDBaseXEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDBaseXEncoder.m; sourceTree = "<group>"; };
 		5529B6720E89AA3F00ED5C34 /* base32 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = base32; sourceTree = BUILT_PRODUCTS_DIR; };
 		5529B6780E89AA5D00ED5C34 /* base32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = base32.m; sourceTree = "<group>"; };
 		5529B67F0E89AB6D00ED5C34 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -282,8 +282,8 @@
 				5586CCB90E8F444700599103 /* DDBaseXInputBuffer.m */,
 				5586CDBD0E8FC3DD00599103 /* DDBaseXOutputBuffer.h */,
 				5586CDBE0E8FC3DD00599103 /* DDBaseXOutputBuffer.m */,
-				5529B5B70E89829100ED5C34 /* DDAbstractBaseEncoder.h */,
-				5529B5B80E89829100ED5C34 /* DDAbstractBaseEncoder.m */,
+				5529B5B70E89829100ED5C34 /* DDBaseXEncoder.h */,
+				5529B5B80E89829100ED5C34 /* DDBaseXEncoder.m */,
 				5586CC6E0E8E9AAF00599103 /* DDDisposable.h */,
 				55EF2A9F0E17021900B465BE /* NSArray+DDExtensions.h */,
 				55EF2AA00E17021900B465BE /* NSArray+DDExtensions.m */,
@@ -422,7 +422,7 @@
 				55EA25D50E852DBE0051E267 /* DDRunLoopPoker.h in Headers */,
 				55EA25D70E852DBE0051E267 /* NSSet+DDExtensions.h in Headers */,
 				55EA25D90E852DBE0051E267 /* NSSortDescriptor+DDExtensions.h in Headers */,
-				5529B5B90E89829100ED5C34 /* DDAbstractBaseEncoder.h in Headers */,
+				5529B5B90E89829100ED5C34 /* DDBaseXEncoder.h in Headers */,
 				5586CC700E8E9AAF00599103 /* DDDisposable.h in Headers */,
 				5586CC930E8E9EB700599103 /* DDDisposableTest.h in Headers */,
 				5586CCBA0E8F444700599103 /* DDBaseXInputBuffer.h in Headers */,
@@ -582,7 +582,7 @@
 				55EA25D60E852DBE0051E267 /* DDRunLoopPoker.m in Sources */,
 				55EA25D80E852DBE0051E267 /* NSSet+DDExtensions.m in Sources */,
 				55EA25DA0E852DBE0051E267 /* NSSortDescriptor+DDExtensions.m in Sources */,
-				5529B5BA0E89829100ED5C34 /* DDAbstractBaseEncoder.m in Sources */,
+				5529B5BA0E89829100ED5C34 /* DDBaseXEncoder.m in Sources */,
 				5586CC940E8E9EB700599103 /* DDDisposableTest.m in Sources */,
 				5586CCBB0E8F444700599103 /* DDBaseXInputBuffer.m in Sources */,
 				5586CDC00E8FC3DD00599103 /* DDBaseXOutputBuffer.m in Sources */,

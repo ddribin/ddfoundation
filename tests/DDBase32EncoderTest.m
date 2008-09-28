@@ -7,7 +7,7 @@
 //
 
 #import "DDBase32EncoderTest.h"
-#import "DDBase32Encoder.h"
+#import "DDBaseXEncoder.h"
 #import "NSData+DDExtensions.h"
 
 
@@ -15,17 +15,17 @@
 
 static NSString * encode32(NSData * data)
 {
-    return [DDAbstractBaseEncoder base32EncodeData:data];
+    return [DDBaseXEncoder base32EncodeData:data];
 }
 
 static NSString * crockfordEncode32(NSData * data)
 {
-    return [DDAbstractBaseEncoder crockfordBase32EncodeData:data];
+    return [DDBaseXEncoder crockfordBase32EncodeData:data];
 }
 
 static NSString * zbase32Encode32(NSData * data)
 {
-    return [DDAbstractBaseEncoder zbase32EncodeData:data];
+    return [DDBaseXEncoder zbase32EncodeData:data];
 }
 
 - (void)testEncodeBase32

@@ -23,7 +23,7 @@
  */
 
 #import "NSData+DDExtensions.h"
-#import "DDAbstractBaseEncoder.h"
+#import "DDBaseXEncoder.h"
 
 
 @implementation NSData (DDExtensions)
@@ -36,12 +36,12 @@
 
 - (NSString *)dd_encodeBase64;
 {
-    return [DDAbstractBaseEncoder base64EncodeData:self];
+    return [DDBaseXEncoder base64EncodeData:self];
 }
 
 - (NSString *)dd_encodeBase32
 {
-    return [DDAbstractBaseEncoder base32EncodeData:self];
+    return [DDBaseXEncoder base32EncodeData:self];
 }
 
 @end

@@ -7,25 +7,25 @@
 //
 
 #import "DDBase64EncoderTest.h"
-#import "DDAbstractBaseEncoder.h"
+#import "DDBaseXEncoder.h"
 #import "NSData+DDExtensions.h"
 
 @implementation DDBase64EncoderTest
 
 static NSString * encode64(NSData * data)
 {
-    return [DDAbstractBaseEncoder base64EncodeData:data];
+    return [DDBaseXEncoder base64EncodeData:data];
 }
 
 static NSString * encode64NoPadding(NSData * data)
 {
-    return [DDAbstractBaseEncoder base64EncodeData:data
+    return [DDBaseXEncoder base64EncodeData:data
                                            options:DDBaseEncoderOptionNoPadding];
 }
 
 static NSString * encode64WithLineBreaks(NSData * data)
 {
-    return [DDAbstractBaseEncoder base64EncodeData:data
+    return [DDBaseXEncoder base64EncodeData:data
                                            options:DDBaseEncoderOptionAddLineBreaks];
 }
 

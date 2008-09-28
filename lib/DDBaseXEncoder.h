@@ -26,7 +26,7 @@ typedef unsigned DDBase32EncoderAlphabet;
 @class DDBaseXOutputBuffer;
 
 
-@interface DDAbstractBaseEncoder : NSObject
+@interface DDBaseXEncoder : NSObject
 {
   @protected
     int _byteIndex;

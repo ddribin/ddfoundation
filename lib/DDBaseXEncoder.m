@@ -6,7 +6,7 @@
 //  Copyright 2008 Bit Maki, Inc.. All rights reserved.
 //
 
-#import "DDAbstractBaseEncoder.h"
+#import "DDBaseXEncoder.h"
 #import "DDBaseXInputBuffer.h"
 #import "DDBaseXOutputBuffer.h"
 
@@ -17,7 +17,7 @@ static const char kRfc4648EncodingTable[] =   "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
 static const char kCrockfordEncodingTable[] = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
 static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769";
 
-@interface DDAbstractBaseEncoder ()
+@interface DDBaseXEncoder ()
 
 - (id)initWithOptions:(DDBaseEncoderOptions)options
           inputBuffer:(DDBaseXInputBuffer *)inputBuffer
@@ -27,26 +27,26 @@ static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769"
 
 @end
 
-@implementation DDAbstractBaseEncoder
+@implementation DDBaseXEncoder
 
 #pragma mark -
 #pragma mark Base64 Convenience Methods
 
 + (NSString *)base64EncodeData:(NSData *)data;
 {
-    DDAbstractBaseEncoder * encoder = [self base64EncoderWithOptions:0];
+    DDBaseXEncoder * encoder = [self base64EncoderWithOptions:0];
     return [encoder encodeDataAndFinish:data];
 }
 
 + (NSString *)base64EncodeData:(NSData *)data options:(DDBaseEncoderOptions)options;
 {
-    DDAbstractBaseEncoder * encoder = [self base64EncoderWithOptions:options];
+    DDBaseXEncoder * encoder = [self base64EncoderWithOptions:options];
     return [encoder encodeDataAndFinish:data];
 }
 
 + (id)base64EncoderWithOptions:(DDBaseEncoderOptions)options;
 {
-    DDAbstractBaseEncoder * encoder = [[self alloc] initWithOptions:options
+    DDBaseXEncoder * encoder = [[self alloc] initWithOptions:options
                                                         inputBuffer:[DDBaseXInputBuffer base64InputBuffer]
                                                            alphabet:kBase64Rfc4648Alphabet];
     return [encoder autorelease];
@@ -80,7 +80,7 @@ static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769"
                        options:(DDBaseEncoderOptions)options
                       alphabet:(DDBase32EncoderAlphabet)alphabet;
 {
-    DDAbstractBaseEncoder * encoder = [self base32EncoderWithOptions:options
+    DDBaseXEncoder * encoder = [self base32EncoderWithOptions:options
                                                             alphabet:alphabet];
     return [encoder encodeDataAndFinish:data];
 }
@@ -96,7 +96,7 @@ static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769"
     else
         alphabetTable = kRfc4648EncodingTable;
     
-    DDAbstractBaseEncoder * encoder = [[self alloc] initWithOptions:options
+    DDBaseXEncoder * encoder = [[self alloc] initWithOptions:options
                                                         inputBuffer:[DDBaseXInputBuffer base32InputBuffer]
                                                            alphabet:alphabetTable];
     return [encoder autorelease];
