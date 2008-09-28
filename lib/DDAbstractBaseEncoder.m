@@ -29,6 +29,9 @@ static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769"
 
 @implementation DDAbstractBaseEncoder
 
+#pragma mark -
+#pragma mark Base64 Convenience Methods
+
 + (NSString *)base64EncodeData:(NSData *)data;
 {
     DDAbstractBaseEncoder * encoder = [self base64EncoderWithOptions:0];
@@ -48,6 +51,9 @@ static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769"
                                                            alphabet:kBase64Rfc4648Alphabet];
     return [encoder autorelease];
 }
+
+#pragma mark -
+#pragma mark Base32 Convenience Methods
 
 + (NSString *)base32EncodeData:(NSData *)data;
 {
@@ -96,31 +102,13 @@ static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769"
     return [encoder autorelease];
 }
 
-+ (NSString *)encodeData:(NSData *)data;
-{
-    DDAbstractBaseEncoder * encoder = [[[self alloc] init] autorelease];
-    return [encoder encodeDataAndFinish:data];
-}
-
-+ (NSString *)encodeData:(NSData *)data options:(DDBaseEncoderOptions)options;
-{
-    DDAbstractBaseEncoder * encoder = [[[self alloc] initWithOptions:options] autorelease];
-    return [encoder encodeDataAndFinish:data];
-}
+#pragma mark -
 
 - (id)init;
 {
-    return [self initWithOptions:0];
-}
-
-- (id)initWithOptions:(DDBaseEncoderOptions)options;
-{
-    return [self initWithOptions:options inputBuffer:nil];
-}
-
-- (id)initWithOptions:(DDBaseEncoderOptions)options inputBuffer:(DDBaseXInputBuffer *)inputBuffer;
-{
-    return [self initWithOptions:options inputBuffer:inputBuffer alphabet:kBase64Rfc4648Alphabet];
+    return [self initWithOptions:0
+                     inputBuffer:[DDBaseXInputBuffer base64InputBuffer]
+                        alphabet:kBase64Rfc4648Alphabet];
 }
 
 - (id)initWithOptions:(DDBaseEncoderOptions)options

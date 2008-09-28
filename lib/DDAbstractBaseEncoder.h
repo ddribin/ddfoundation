@@ -35,11 +35,17 @@ typedef unsigned DDBase32EncoderAlphabet;
     const char * _alphabet;
 }
 
+#pragma mark -
+#pragma mark Base64 Convenience Methods
+
 + (NSString *)base64EncodeData:(NSData *)data;
 
 + (NSString *)base64EncodeData:(NSData *)data options:(DDBaseEncoderOptions)options;
 
 + (id)base64EncoderWithOptions:(DDBaseEncoderOptions)options;
+
+#pragma mark -
+#pragma mark Base32 Convenience Methods
 
 + (NSString *)base32EncodeData:(NSData *)data;
 
@@ -57,16 +63,7 @@ typedef unsigned DDBase32EncoderAlphabet;
 + (id)base32EncoderWithOptions:(DDBaseEncoderOptions)options
                       alphabet:(DDBase32EncoderAlphabet)alphabet;
 
-
-+ (NSString *)encodeData:(NSData *)data;
-
-+ (NSString *)encodeData:(NSData *)data options:(DDBaseEncoderOptions)options;
-
-- (id)init;
-
-- (id)initWithOptions:(DDBaseEncoderOptions)options;
-
-- (id)initWithOptions:(DDBaseEncoderOptions)options inputBuffer:(DDBaseXInputBuffer *)inputBuffer;
+#pragma mark -
 
 - (void)reset;
 
