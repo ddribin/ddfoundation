@@ -30,14 +30,6 @@ enum {
 };
 typedef unsigned DDBaseEncoderOptions;
 
-enum
-{
-    DDBase32EncoderAlphabetRfc,
-    DDBase32EncoderAlphabetCrockford,
-    DDBase32EncoderAlphabetZBase32,
-};
-typedef unsigned DDBase32EncoderAlphabet;
-
 @class DDBaseXInputBuffer;
 @class DDBaseXOutputBuffer;
 
@@ -52,34 +44,10 @@ typedef unsigned DDBase32EncoderAlphabet;
 }
 
 #pragma mark -
-#pragma mark Base64 Convenience Methods
 
-+ (NSString *)base64EncodeData:(NSData *)data;
-
-+ (NSString *)base64EncodeData:(NSData *)data options:(DDBaseEncoderOptions)options;
-
-+ (id)base64EncoderWithOptions:(DDBaseEncoderOptions)options;
-
-#pragma mark -
-#pragma mark Base32 Convenience Methods
-
-+ (NSString *)base32EncodeData:(NSData *)data;
-
-+ (NSString *)crockfordBase32EncodeData:(NSData *)data;
-
-+ (NSString *)zbase32EncodeData:(NSData *)data;
-
-+ (NSString *)base32EncodeData:(NSData *)data
-                       options:(DDBaseEncoderOptions)options;
-
-+ (NSString *)base32EncodeData:(NSData *)data
-                       options:(DDBaseEncoderOptions)options
-                      alphabet:(DDBase32EncoderAlphabet)alphabet;
-
-+ (id)base32EncoderWithOptions:(DDBaseEncoderOptions)options
-                      alphabet:(DDBase32EncoderAlphabet)alphabet;
-
-#pragma mark -
+- (id)initWithOptions:(DDBaseEncoderOptions)options
+          inputBuffer:(DDBaseXInputBuffer *)inputBuffer
+             alphabet:(const char *)alphabet;
 
 - (void)reset;
 

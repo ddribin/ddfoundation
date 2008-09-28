@@ -34,9 +34,9 @@ int main(int argc, char * argv[])
     if (!isatty([standardInput fileDescriptor]))
     {
         NSData * input = [standardInput readDataToEndOfFile];
-        NSString * encoded = [DDBaseXEncoder crockfordBase32EncodeData:input];
+        NSString * encoded = [DDBase32Encoder crockfordBase32EncodeData:input];
         printf("c: %s\n", [encoded UTF8String]);
-        encoded = [DDBaseXEncoder zbase32EncodeData:input];
+        encoded = [DDBase32Encoder zbase32EncodeData:input];
         printf("z: %s\n", [encoded UTF8String]);
     }
     
@@ -46,9 +46,9 @@ int main(int argc, char * argv[])
     for (NSString * argument in arguments)
     {
         NSData * argumentData = [argument dataUsingEncoding:NSUTF8StringEncoding];
-        NSString * encoded = [DDBaseXEncoder crockfordBase32EncodeData:argumentData];
+        NSString * encoded = [DDBase32Encoder crockfordBase32EncodeData:argumentData];
         printf("c: %s\n", [encoded UTF8String]);
-        encoded = [DDBaseXEncoder zbase32EncodeData:argumentData];
+        encoded = [DDBase32Encoder zbase32EncodeData:argumentData];
         printf("z: %s\n", [encoded UTF8String]);
     }
     

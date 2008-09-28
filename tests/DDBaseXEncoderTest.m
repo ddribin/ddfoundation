@@ -7,7 +7,8 @@
 //
 
 #import "DDBaseXEncoderTest.h"
-#import "DDBaseXEncoder.h"
+#import "DDBase64Encoder.h"
+#import "DDBase32Encoder.h"
 #import "NSData+DDExtensions.h"
 
 @implementation DDBaseXEncoderTest
@@ -17,19 +18,19 @@
 
 static NSString * encode64(NSData * data)
 {
-    return [DDBaseXEncoder base64EncodeData:data];
+    return [DDBase64Encoder base64EncodeData:data];
 }
 
 static NSString * encode64NoPadding(NSData * data)
 {
-    return [DDBaseXEncoder base64EncodeData:data
-                                           options:DDBaseEncoderOptionNoPadding];
+    return [DDBase64Encoder base64EncodeData:data
+                                     options:DDBaseEncoderOptionNoPadding];
 }
 
 static NSString * encode64WithLineBreaks(NSData * data)
 {
-    return [DDBaseXEncoder base64EncodeData:data
-                                           options:DDBaseEncoderOptionAddLineBreaks];
+    return [DDBase64Encoder base64EncodeData:data
+                                     options:DDBaseEncoderOptionAddLineBreaks];
 }
 
 - (void)testBase64Encode
@@ -79,17 +80,17 @@ static NSString * encode64WithLineBreaks(NSData * data)
 
 static NSString * encode32(NSData * data)
 {
-    return [DDBaseXEncoder base32EncodeData:data];
+    return [DDBase32Encoder base32EncodeData:data];
 }
 
 static NSString * crockfordEncode32(NSData * data)
 {
-    return [DDBaseXEncoder crockfordBase32EncodeData:data];
+    return [DDBase32Encoder crockfordBase32EncodeData:data];
 }
 
 static NSString * zbase32Encode32(NSData * data)
 {
-    return [DDBaseXEncoder zbase32EncodeData:data];
+    return [DDBase32Encoder zbase32EncodeData:data];
 }
 
 - (void)testEncodeBase32

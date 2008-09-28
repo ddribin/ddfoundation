@@ -32,45 +32,6 @@ static int ceildiv(int x, int y)
 
 @implementation DDBaseXInputBuffer
 
-
-/*
- The 24-bit buffer:
- 
-  2     2                   1                   0 
-  3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
- +----byte 0-----+-----byte 1----+----byte 2-----+
- |7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|
- +-----------+---+-------+-------+---+-----------+
- |5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|
- +--group 0--+--group 1--+--group 2--+--group 3--+
- */
-
-+ (id)base64InputBuffer;
-{
-    id inputBuffer = [[self alloc] initWithCapacity:3 bitsPerGroup:6];
-    return [inputBuffer autorelease];
-}
-
-
-/*
- The 40-bit buffer layout:
- 
-  3                 3                   2                   1                   0
-  9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
- +----byte 0-----+-----byte 1----+----byte 2-----+----byte 3-----+----byte 4-----+
- |7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|
- +---------+-----+---+-----------+-------+-------+-+---------+---+-----+---------+
- |4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|4 3 2 1 0|
- +-group 0-+-group 1-+-group 2-+-group 3-+-group 4-+-group 5-+-group 6-+-group 7-+
- */
-
-+ (id)base32InputBuffer;
-{
-    id inputBuffer = [[self alloc] initWithCapacity:5 bitsPerGroup:5];
-    return [inputBuffer autorelease];
-}
-
-
 - (id)initWithCapacity:(unsigned)capacity bitsPerGroup:(unsigned)bitsPerGroup;
 {
     self = [super init];

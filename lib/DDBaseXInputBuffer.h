@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 
 @interface DDBaseXInputBuffer : NSObject
@@ -34,10 +34,6 @@
     unsigned _numberOfGroups;
     uint8_t _groupBitMask;
 }
-
-+ (id)base64InputBuffer;
-
-+ (id)base32InputBuffer;
 
 - (id)initWithCapacity:(unsigned)capacity bitsPerGroup:(unsigned)bitsPerGroup;
 
