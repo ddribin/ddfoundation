@@ -101,10 +101,10 @@ static int ceildiv(int x, int y)
 /*
  * Bit range manipulation
  *
- * Bit range location is relative to most significant bit, thus
- * bit 0 is the MSB of the byte buffer.  For example, the bit range with
- * location 0, length 4 of a 24-bit byte buffer is bits 24 through 20 of the
- * byte buffer.
+ * Bit range location is relative to most significant bit, thus bit 0 of
+ * a 24-bit byte buffer is bit 23 of the byte buffer.  A bit range with
+ * location 0, length 4 of a 24-bit byte buffer is bits 23 through 20 of
+ * the byte buffer.
  */
 
 - (uint64_t)valueOfBitRange:(NSRange)bitRange;
