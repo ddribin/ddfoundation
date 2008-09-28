@@ -30,6 +30,12 @@ static int ceildiv(int x, int y)
     return (x + y - 1)/y;
 }
 
+@interface DDBaseNInputBuffer ()
+
+- (unsigned)byteBufferBitFromInputBufferBit:(unsigned)inputBufferBit;
+
+@end
+
 @implementation DDBaseNInputBuffer
 
 - (id)initWithCapacityInBits:(unsigned)capacityInBits
@@ -68,28 +74,34 @@ static int ceildiv(int x, int y)
     return (_lengthInBits == _capacityInBits);
 }
 
-- (void)appendByte:(uint8_t)byte;
-{
-    NSAssert(![self isFull], @"Cannot insert into full buffer");
-
-    int bitsAvailable = _capacityInBits - _lengthInBits;
-    int bitsToShift = bitsAvailable - 8;
-    _byteBuffer |= ((uint64_t)byte << bitsToShift);
-    _lengthInBits += 8;
-}
-
 - (void)reset;
 {
     _byteBuffer = 0;
     _lengthInBits = 0;
 }
 
+- (void)appendByte:(uint8_t)byte;
+{
+    NSAssert(![self isFull], @"Cannot insert into full buffer");
+
+    _lengthInBits += 8;
+    int bitsToShift = [self byteBufferBitFromInputBufferBit:_lengthInBits];
+    _byteBuffer |= ((uint64_t)byte << bitsToShift);
+}
+
 - (uint8_t)valueAtGroupIndex:(unsigned)groupIndex;
 {
-    unsigned groupNumber = _numberOfGroups - groupIndex - 1;
-    unsigned bitsToShift = groupNumber * _bitsPerGroup;
+    unsigned lowestBitForGroup = (groupIndex+1) * _bitsPerGroup;
+    unsigned bitsToShift = [self byteBufferBitFromInputBufferBit:lowestBitForGroup];
     uint8_t value = (_byteBuffer >> bitsToShift) & _groupBitMask;
     return value;
+}
+
+
+- (unsigned)byteBufferBitFromInputBufferBit:(unsigned)inputBufferBit;
+{
+    // Input bit zero starts from the high order bit in the byte buffer
+    return _capacityInBits - inputBufferBit;
 }
 
 @end

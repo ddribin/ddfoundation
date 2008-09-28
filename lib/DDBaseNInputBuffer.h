@@ -44,9 +44,9 @@
 
 - (BOOL)isFull;
 
-- (void)appendByte:(uint8_t)byte;
-
 - (void)reset;
+
+- (void)appendByte:(uint8_t)byte;
 
 - (uint8_t)valueAtGroupIndex:(unsigned)groupIndex;
 
