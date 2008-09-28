@@ -34,9 +34,16 @@
 
 - (id)initWithOptions:(DDBaseEncoderOptions)options;
 {
+    return [self initWithOptions:options inputBuffer:nil];
+}
+
+- (id)initWithOptions:(DDBaseEncoderOptions)options inputBuffer:(DDBaseXInputBuffer *)inputBuffer;
+{
     self = [super init];
     if (self == nil)
         return nil;
+    
+    _inputBuffer = [inputBuffer retain];
     
     BOOL addPadding = ((options & DDBaseEncoderOptionNoPadding) == 0);
     BOOL addLineBreaks = ((options & DDBaseEncoderOptionAddLineBreaks) != 0);
@@ -51,6 +58,7 @@
 - (void)dealloc
 {
     [_outputBuffer release];
+    [_inputBuffer release];
     [super dealloc];
 }
 

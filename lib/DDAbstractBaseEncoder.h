@@ -14,6 +14,7 @@ enum {
 };
 typedef unsigned DDBaseEncoderOptions;
 
+@class DDBaseXInputBuffer;
 @class DDBaseXOutputBuffer;
 
 
@@ -21,6 +22,7 @@ typedef unsigned DDBaseEncoderOptions;
 {
   @protected
     int _byteIndex;
+    DDBaseXInputBuffer * _inputBuffer;
     DDBaseXOutputBuffer * _outputBuffer;
 }
 
@@ -31,6 +33,8 @@ typedef unsigned DDBaseEncoderOptions;
 - (id)init;
 
 - (id)initWithOptions:(DDBaseEncoderOptions)options;
+
+- (id)initWithOptions:(DDBaseEncoderOptions)options inputBuffer:(DDBaseXInputBuffer *)inputBuffer;
 
 - (void)reset;
 

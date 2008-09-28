@@ -9,11 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "DDAbstractBaseEncoder.h"
 
-@class DDBaseXInputBuffer;
-
 @interface DDBase64Encoder : DDAbstractBaseEncoder
 {
-    DDBaseXInputBuffer * _inputBuffer;
 }
 
 @end

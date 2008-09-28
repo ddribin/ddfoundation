@@ -27,25 +27,9 @@ static const char kRfc4648EncodingTable[] =
 
 - (id)initWithOptions:(DDBaseEncoderOptions)options;
 {
-    self = [super initWithOptions:options];
-    if (self == nil)
-        return nil;
-    
-    _inputBuffer = [[DDBaseXInputBuffer alloc] initWithCapacity:3 bitsPerGroup:6];
-    
-    return self;
-}
-
-- (void)dealloc
-{
-    [_inputBuffer release];
-    
-    [super dealloc];
-}
-
-- (void)reset;
-{
-    [super reset];
+    DDBaseXInputBuffer * base64InputBuffer = [[DDBaseXInputBuffer alloc] initWithCapacity:3 bitsPerGroup:6];
+    [base64InputBuffer autorelease];
+    return [super initWithOptions:options inputBuffer:base64InputBuffer];
 }
 
 /*
