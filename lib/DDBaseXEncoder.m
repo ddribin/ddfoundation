@@ -29,16 +29,16 @@
 static const char kBase64Rfc4648Alphabet[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-static const char kRfc4648EncodingTable[] =   "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-static const char kCrockfordEncodingTable[] = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
-static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769";
+static const char kBase32Rfc4648Alphabet[] =   "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+static const char kBase32CrockfordAlphabet[] = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+static const char kBase32ZBase32Alphabet[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769";
 
 @interface DDBaseXEncoder ()
 
 - (id)initWithOptions:(DDBaseEncoderOptions)options
           inputBuffer:(DDBaseXInputBuffer *)inputBuffer
              alphabet:(const char *)alphabet;
-- (void)encodeGroup:(int)group;
+- (void)encodeValueAtGroupIndex:(int)group;
 - (void)encodeNumberOfGroups:(int)group;
 
 @end
@@ -106,11 +106,11 @@ static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769"
 {
     const char * alphabetTable;
     if (alphabet == DDBase32EncoderAlphabetCrockford)
-        alphabetTable = kCrockfordEncodingTable;
+        alphabetTable = kBase32CrockfordAlphabet;
     else if (alphabet == DDBase32EncoderAlphabetZBase32)
-        alphabetTable = kZBase32EncodingTable;
+        alphabetTable = kBase32ZBase32Alphabet;
     else
-        alphabetTable = kRfc4648EncodingTable;
+        alphabetTable = kBase32Rfc4648Alphabet;
     
     DDBaseXEncoder * encoder = [[self alloc] initWithOptions:options
                                                         inputBuffer:[DDBaseXInputBuffer base32InputBuffer]
@@ -163,6 +163,12 @@ static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769"
     _byteIndex = 0;
 }
 
+- (NSString *)encodeDataAndFinish:(NSData *)data;
+{
+    [self encodeData:data];
+    return [self finishEncoding];
+}
+
 - (void)encodeData:(NSData *)data;
 {
     const uint8_t * bytes = [data bytes];
@@ -195,24 +201,18 @@ static const char kZBase32EncodingTable[] =   "YBNDRFG8EJKMCPQXOT1UWISZA345H769"
     return output;
 }
 
-- (NSString *)encodeDataAndFinish:(NSData *)data;
-{
-    [self encodeData:data];
-    return [self finishEncoding];
-}
-
 - (void)encodeNumberOfGroups:(int)group;
 {
     int i;
     for (i = 0; i < group; i++)
     {
-        [self encodeGroup:i];
+        [self encodeValueAtGroupIndex:i];
     }
 }
 
-- (void)encodeGroup:(int)group
+- (void)encodeValueAtGroupIndex:(int)groupIndex
 {
-    uint8_t value = [_inputBuffer valueAtGroupIndex:group];
+    uint8_t value = [_inputBuffer valueAtGroupIndex:groupIndex];
     [_outputBuffer appendCharacter:_alphabet[value]];
 }
 

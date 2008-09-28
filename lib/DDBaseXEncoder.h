@@ -83,12 +83,12 @@ typedef unsigned DDBase32EncoderAlphabet;
 
 - (void)reset;
 
+- (NSString *)encodeDataAndFinish:(NSData *)data;
+
 - (void)encodeByte:(uint8_t)byte;
 
 - (void)encodeData:(NSData *)data;
 
 - (NSString *)finishEncoding;
-
-- (NSString *)encodeDataAndFinish:(NSData *)data;
 
 @end
