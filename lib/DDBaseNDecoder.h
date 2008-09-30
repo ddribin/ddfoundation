@@ -10,18 +10,17 @@
 
 
 @class DDBaseNInputBuffer;
+@class DDBaseNDecoderAlphabet;
 
 @interface DDBaseNDecoder : NSObject
 {
     DDBaseNInputBuffer * _inputBuffer;
     NSMutableData * _outputBuffer;
-    const char * _alphabet;
-    unsigned _alphabetLength;
+    DDBaseNDecoderAlphabet * _alphabet;
 }
 
 - (id)initWithInputBuffer:(DDBaseNInputBuffer *)inputBuffer
-                 alphabet:(const char *)alphabet
-           alphabetLength:(unsigned)alphabetLength;
+                 alphabet:(DDBaseNDecoderAlphabet *)alphabet;
 
 - (NSData *)decodeStringAndFinish:(NSString *)string;
 

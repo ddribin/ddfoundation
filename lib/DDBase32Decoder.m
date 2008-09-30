@@ -8,10 +8,17 @@
 
 #import "DDBase32Decoder.h"
 #import "DDBase32Encoder.h"
+#import "DDBaseNDecoderAlphabet.h"
 
 
 static const char kBase32Rfc4648Alphabet[] =   "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 static const char kBase32CrockfordAlphabet[] = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+
+@interface DDBase32DecoderCrockfordAlphabet : DDBaseNDecoderAlphabet
+
++ (id)crockfordAlphabet;
+
+@end
 
 @implementation DDBase32Decoder
 
@@ -33,21 +40,42 @@ static const char kBase32CrockfordAlphabet[] = "0123456789ABCDEFGHJKMNPQRSTVWXYZ
     return [o autorelease];
 }
 
-
-- (id)initWithAlphabet:(DDBase32EncoderAlphabet)alphabet;
+- (id)initWithAlphabet:(DDBase32EncoderAlphabet)alphabetType;
 {
     DDBaseNInputBuffer * inputBuffer = [DDBaseNInputBuffer base32InputBuffer];
     
-    const char * alphabetTable;
-    if (alphabet == DDBase32EncoderAlphabetCrockford)
-        alphabetTable = kBase32CrockfordAlphabet;
+    DDBaseNDecoderAlphabet * alphabet;
+    if (alphabetType == DDBase32EncoderAlphabetCrockford)
+        alphabet = [DDBase32DecoderCrockfordAlphabet crockfordAlphabet];
     else
-        alphabetTable = kBase32Rfc4648Alphabet;
+        alphabet = [DDBaseNDecoderAlphabet alphabetWithCStringTable:kBase32Rfc4648Alphabet];
     
     self = [super initWithInputBuffer:inputBuffer
-                             alphabet:alphabetTable
-                       alphabetLength:sizeof(kBase32Rfc4648Alphabet)];
+                             alphabet:alphabet];
     return self;
 }
+
+@end
+
+@implementation DDBase32DecoderCrockfordAlphabet
+
++ (id)crockfordAlphabet;
+{
+    return [self alphabetWithCStringTable:kBase32CrockfordAlphabet];
+}
+
+- (void)setupDecodeTable:(const char *)stringTable length:(unsigned)tableLength;
+{
+    unsigned int i;
+    for (i = 0; i < tableLength; i++)
+    {
+        unsigned decodedValue = stringTable[i];
+        _decodeTable[decodedValue] = i;
+
+        decodedValue = tolower(stringTable[i]);
+        _decodeTable[decodedValue] = i;
+    }
+}
+
 
 @end

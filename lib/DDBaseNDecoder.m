@@ -8,6 +8,7 @@
 
 #import "DDBaseNDecoder.h"
 #import "DDBaseNInputBuffer.h"
+#import "DDBaseNDecoderAlphabet.h";
 
 
 @interface DDBaseNDecoder ()
@@ -19,8 +20,7 @@
 @implementation DDBaseNDecoder
 
 - (id)initWithInputBuffer:(DDBaseNInputBuffer *)inputBuffer
-                 alphabet:(const char *)alphabet
-           alphabetLength:(unsigned)alphabetLength;
+                 alphabet:(DDBaseNDecoderAlphabet *)alphabet;
 {
     self = [super init];
     if (self == nil)
@@ -28,14 +28,14 @@
     
     _inputBuffer = [inputBuffer retain];
     _outputBuffer = [[NSMutableData alloc] init];
-    _alphabet = alphabet;
-    _alphabetLength = alphabetLength;
+    _alphabet = [alphabet retain];
     
     return self;
 }
 
 - (void)dealloc
 {
+    [_alphabet release];
     [_outputBuffer release];
     [_inputBuffer release];
     [super dealloc];
@@ -60,8 +60,9 @@
 - (void)decodeCharacter:(unichar)character;
 {
     NSAssert(character <= 127, @"Only ASCII characters allowed in base32 string");
-    int decodedValue = [self lookupCharacter:character];
-    if (decodedValue < 0)
+    unsigned decodedValue = [self lookupCharacter:character];
+    NSLog(@"Decode %C to %u %u %d", character, decodedValue, NSNotFound, NSNotFound);
+    if (decodedValue == NSNotFound)
     {
         return;
     }
@@ -101,13 +102,7 @@
 
 - (int)lookupCharacter:(char)character;
 {
-    unsigned value;
-    for (value = 0; value < _alphabetLength; value++)
-    {
-        if (character == _alphabet[value])
-            return value;
-    }
-    return -1;
+    return [_alphabet decodeValue:character];
 }
 
 @end

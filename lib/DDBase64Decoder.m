@@ -8,6 +8,7 @@
 
 #import "DDBase64Decoder.h"
 #import "DDBase64Encoder.h"
+#import "DDBaseNDecoderAlphabet.h"
 
 
 static const char kBase64Rfc4648Alphabet[] =
@@ -30,9 +31,9 @@ static const char kBase64Rfc4648Alphabet[] =
 - (id)init;
 {
     DDBaseNInputBuffer * inputBuffer = [DDBaseNInputBuffer base64InputBuffer];
+    DDBaseNDecoderAlphabet * alphabet = [DDBaseNDecoderAlphabet alphabetWithCStringTable:kBase64Rfc4648Alphabet];
     self = [super initWithInputBuffer:inputBuffer
-                             alphabet:kBase64Rfc4648Alphabet
-                       alphabetLength:sizeof(kBase64Rfc4648Alphabet)];
+                             alphabet:alphabet];
     return self;
 }
 

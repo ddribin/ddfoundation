@@ -41,4 +41,10 @@ static NSData * crockfordDecode32(NSString * string)
     STAssertEqualObjects(dddata("foobar"), crockfordDecode32(@"CSQPYRK1E800"), nil);
 }
 
+- (void)testDecodeBase32CrockfordLowerCase
+{
+    STAssertEqualObjects(dddata("foobar"), crockfordDecode32(@"csqpyrk1e800"), nil);
+}
+
+
 @end
