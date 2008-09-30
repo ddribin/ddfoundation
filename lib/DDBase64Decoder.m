@@ -7,6 +7,8 @@
 //
 
 #import "DDBase64Decoder.h"
+#import "DDBase64Encoder.h"
+
 
 static const char kBase64Rfc4648Alphabet[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -33,21 +35,9 @@ static const char kBase64Rfc4648Alphabet[] =
 
 - (id)init;
 {
-    self = [super init];
-    if (self == nil)
-        return nil;
-    
-    _inputBuffer = [[DDBaseNInputBuffer base64InputBuffer] retain];
-    _outputBuffer = [[NSMutableData alloc] init];
-    
+    DDBaseNInputBuffer * inputBuffer = [DDBaseNInputBuffer base64InputBuffer];
+    self = [super initWithInputBuffer:inputBuffer];
     return self;
-}
-
-- (void)dealloc
-{
-    [_outputBuffer release];
-    [_inputBuffer release];
-    [super dealloc];
 }
 
 - (NSData *)decodeStringAndFinish:(NSString *)string;

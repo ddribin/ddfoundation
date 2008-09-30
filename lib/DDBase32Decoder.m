@@ -7,6 +7,7 @@
 //
 
 #import "DDBase32Decoder.h"
+#import "DDBase32Encoder.h"
 
 
 static const char kBase32Rfc4648Alphabet[] =   "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
@@ -33,21 +34,9 @@ static const char kBase32Rfc4648Alphabet[] =   "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567
 
 - (id)init;
 {
-    self = [super init];
-    if (self == nil)
-        return nil;
-    
-    _inputBuffer = [[DDBaseNInputBuffer base32InputBuffer] retain];
-    _outputBuffer = [[NSMutableData alloc] init];
-    
+    DDBaseNInputBuffer * inputBuffer = [DDBaseNInputBuffer base32InputBuffer];
+    self = [super initWithInputBuffer:inputBuffer];
     return self;
-}
-
-- (void)dealloc
-{
-    [_outputBuffer release];
-    [_inputBuffer release];
-    [super dealloc];
 }
 
 - (NSData *)decodeStringAndFinish:(NSString *)string;

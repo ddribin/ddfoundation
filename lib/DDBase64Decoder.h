@@ -7,13 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DDBase64Encoder.h"
+#import "DDBaseNDecoder.h"
 
 
-@interface DDBase64Decoder : NSObject
+@interface DDBase64Decoder : DDBaseNDecoder
 {
-    DDBaseNInputBuffer * _inputBuffer;
-    NSMutableData * _outputBuffer;
 }
 
 + (NSData *)base64DecodeString:(NSString *)base64;

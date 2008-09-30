@@ -7,12 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DDBase32Encoder.h"
+#import "DDBaseNDecoder.h"
 
-@interface DDBase32Decoder : NSObject
+@interface DDBase32Decoder : DDBaseNDecoder
 {
-    DDBaseNInputBuffer * _inputBuffer;
-    NSMutableData * _outputBuffer;
 }
 
 + (NSData *)base32DecodeString:(NSString *)string;
