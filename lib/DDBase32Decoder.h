@@ -19,12 +19,4 @@
 
 - (id)init;
 
-- (NSData *)decodeStringAndFinish:(NSString *)string;
-
-- (void)decodeString:(NSString *)string;
-
-- (void)decodeCharacter:(unichar)character;
-
-- (NSData *)finishDecoding;
-
 @end

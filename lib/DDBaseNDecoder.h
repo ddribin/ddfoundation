@@ -15,8 +15,20 @@
 {
     DDBaseNInputBuffer * _inputBuffer;
     NSMutableData * _outputBuffer;
+    const char * _alphabet;
+    unsigned _alphabetLength;
 }
 
-- (id)initWithInputBuffer:(DDBaseNInputBuffer *)inputBuffer;
+- (id)initWithInputBuffer:(DDBaseNInputBuffer *)inputBuffer
+                 alphabet:(const char *)alphabet
+           alphabetLength:(unsigned)alphabetLength;
+
+- (NSData *)decodeStringAndFinish:(NSString *)string;
+
+- (void)decodeString:(NSString *)string;
+
+- (void)decodeCharacter:(unichar)character;
+
+- (NSData *)finishDecoding;
 
 @end
