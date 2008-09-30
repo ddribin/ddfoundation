@@ -31,6 +31,12 @@ static int ceildiv(int x, int y)
     return (x + y - 1)/y;
 }
 
+static int floordiv(int x, int y)
+{
+    return x/y;
+}
+
+
 @interface DDBaseNInputBuffer ()
 
 - (uint64_t)valueOfBitRange:(NSRange)bitRange;
@@ -77,7 +83,7 @@ static int ceildiv(int x, int y)
 
 - (unsigned)numberOfFilledBytes;
 {
-    return ceildiv(_lengthInBits, 8);
+    return floordiv(_lengthInBits, 8);
 }
 
 - (BOOL)isFull;

@@ -1,5 +1,5 @@
 //
-//  DDBase64Decoder.h
+//  DDBase32Decoder.h
 //  DDFoundation
 //
 //  Created by Dave Dribin on 9/29/08.
@@ -7,18 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DDBase64Encoder.h"
+#import "DDBase32Encoder.h"
 
-
-@interface DDBase64Decoder : NSObject
+@interface DDBase32Decoder : NSObject
 {
     DDBaseNInputBuffer * _inputBuffer;
     NSMutableData * _outputBuffer;
 }
 
-+ (NSData *)base64DecodeString:(NSString *)base64;
++ (NSData *)base32DecodeString:(NSString *)string;
 
-+ (id)base64Decoder;
++ (id)base32Decoder;
 
 - (id)init;
 
