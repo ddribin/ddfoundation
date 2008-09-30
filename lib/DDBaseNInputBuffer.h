@@ -32,6 +32,7 @@
     unsigned _lengthInBits;
     unsigned _bitsPerGroup;
     unsigned _numberOfGroups;
+    unsigned _numberOfBytes;
 }
 
 - (id)initWithCapacityInBits:(unsigned)capacityInBits
@@ -41,6 +42,10 @@
 
 - (unsigned)numberOfFilledGroups;
 
+- (unsigned)numberOfBytes;
+
+- (unsigned)numberOfFilledBytes;
+
 - (BOOL)isFull;
 
 - (unsigned)numberOfBitsAvailable;
@@ -49,6 +54,10 @@
 
 - (void)appendByte:(uint8_t)byte;
 
+- (void)appendGroupValue:(uint8_t)groupValue;
+
 - (uint8_t)valueAtGroupIndex:(unsigned)groupIndex;
+
+- (uint8_t)valueAtByteIndex:(unsigned)byteIndex;
 
 @end

@@ -53,6 +53,7 @@ static int ceildiv(int x, int y)
     _capacityInBits = capacityInBits;
     _bitsPerGroup = bitsPerGroup;
     _numberOfGroups = _capacityInBits / _bitsPerGroup;
+    _numberOfBytes = _capacityInBits / 8;
     
     [self reset];
     
@@ -67,6 +68,16 @@ static int ceildiv(int x, int y)
 - (unsigned)numberOfFilledGroups;
 {
     return ceildiv(_lengthInBits, _bitsPerGroup);
+}
+
+- (unsigned)numberOfBytes;
+{
+    return _numberOfBytes;
+}
+
+- (unsigned)numberOfFilledBytes;
+{
+    return ceildiv(_lengthInBits, 8);
 }
 
 - (BOOL)isFull;
@@ -93,9 +104,22 @@ static int ceildiv(int x, int y)
     _lengthInBits += 8;
 }
 
+- (void)appendGroupValue:(uint8_t)groupValue;
+{
+    NSAssert([self numberOfBitsAvailable] >= _bitsPerGroup, @"No room to insert byte");
+    
+    [self setValueOfBitRange:NSMakeRange(_lengthInBits, _bitsPerGroup) toValue:groupValue];
+    _lengthInBits += _bitsPerGroup;
+}
+
 - (uint8_t)valueAtGroupIndex:(unsigned)groupIndex;
 {
     return [self valueOfBitRange:NSMakeRange(groupIndex*_bitsPerGroup, _bitsPerGroup)];
+}
+
+- (uint8_t)valueAtByteIndex:(unsigned)byteIndex;
+{
+    return [self valueOfBitRange:NSMakeRange(byteIndex*8, 8)];
 }
 
 /*
