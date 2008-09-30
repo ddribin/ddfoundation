@@ -23,7 +23,6 @@ static NSData * decode64(NSString * base64)
                          dddata(), nil);
     STAssertEqualObjects(decode64(@"Zg=="),
                          dddata('f'), nil);
-#if 1
     STAssertEqualObjects(decode64(@"Zm8="),
                          dddata('f', 'o'), nil);
     STAssertEqualObjects(decode64(@"Zm9v"),
@@ -34,6 +33,5 @@ static NSData * decode64(NSString * base64)
                          dddata('f', 'o', 'o', 'b', 'a'), nil);
     STAssertEqualObjects(decode64(@"Zm9vYmFy"),
                          dddata('f', 'o', 'o', 'b', 'a', 'r'), nil);
-#endif
 }
 @end

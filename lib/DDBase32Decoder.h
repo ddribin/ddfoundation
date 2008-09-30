@@ -8,15 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import "DDBaseNDecoder.h"
+#import "DDBase32Encoder.h"
 
 @interface DDBase32Decoder : DDBaseNDecoder
 {
 }
 
 + (NSData *)base32DecodeString:(NSString *)string;
++ (NSData *)crockfordBase32DecodeString:(NSString *)string;
 
-+ (id)base32Decoder;
++ (id)base32DecoderWithAlphabet:(DDBase32EncoderAlphabet)alphabet;
 
-- (id)init;
+- (id)initWithAlphabet:(DDBase32EncoderAlphabet)alphabet;
 
 @end

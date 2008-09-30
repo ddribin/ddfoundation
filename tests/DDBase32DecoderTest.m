@@ -18,6 +18,11 @@ static NSData * decode32(NSString * string)
     return [DDBase32Decoder base32DecodeString:string];
 }
 
+static NSData * crockfordDecode32(NSString * string)
+{
+    return [DDBase32Decoder crockfordBase32DecodeString:string];
+}
+
 - (void)testDecodeBase32
 {
     STAssertEqualObjects(dddata(), decode32(@""), nil);
@@ -29,6 +34,11 @@ static NSData * decode32(NSString * string)
                          decode32(@"MZXW6YTB"), nil);
     STAssertEqualObjects(dddata('f', 'o', 'o', 'b', 'a', 'r'),
                          decode32(@"MZXW6YTBOI======"), nil);
+}
+
+- (void)testDecodeBase32Crockford
+{
+    STAssertEqualObjects(dddata("foobar"), crockfordDecode32(@"CSQPYRK1E800"), nil);
 }
 
 @end
