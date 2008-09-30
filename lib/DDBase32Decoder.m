@@ -75,6 +75,11 @@ static const char kBase32CrockfordAlphabet[] = "0123456789ABCDEFGHJKMNPQRSTVWXYZ
         decodedValue = tolower(stringTable[i]);
         _decodeTable[decodedValue] = i;
     }
+    
+    _decodeTable['O'] = _decodeTable['o'] = _decodeTable['0'];
+    
+    _decodeTable['I'] = _decodeTable['i'] = _decodeTable['1'];
+    _decodeTable['L'] = _decodeTable['l'] = _decodeTable['1'];
 }
 
 
