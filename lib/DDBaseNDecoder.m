@@ -61,7 +61,6 @@
 {
     NSAssert(character <= 127, @"Only ASCII characters allowed in base32 string");
     unsigned decodedValue = [self lookupCharacter:character];
-    NSLog(@"Decode %C to %u %u %d", character, decodedValue, NSNotFound, NSNotFound);
     if (decodedValue == NSNotFound)
     {
         return;

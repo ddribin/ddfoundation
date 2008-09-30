@@ -56,6 +56,7 @@
 		55A5E9470E91D664005B2667 /* DDBaseNDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A5E9450E91D664005B2667 /* DDBaseNDecoder.m */; };
 		55A5E96A0E91F47E005B2667 /* DDBaseNDecoderAlphabet.h in Headers */ = {isa = PBXBuildFile; fileRef = 55A5E9680E91F47E005B2667 /* DDBaseNDecoderAlphabet.h */; };
 		55A5E96B0E91F47E005B2667 /* DDBaseNDecoderAlphabet.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A5E9690E91F47E005B2667 /* DDBaseNDecoderAlphabet.m */; };
+		55A5E9950E9201D4005B2667 /* DDBaseN.h in Headers */ = {isa = PBXBuildFile; fileRef = 55A5E9940E9201D4005B2667 /* DDBaseN.h */; };
 		55B669910D47F91E006A4FB3 /* DDTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B669900D47F91E006A4FB3 /* DDTestCase.m */; };
 		55B6699B0D47FA31006A4FB3 /* DDTestCaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B6699A0D47FA31006A4FB3 /* DDTestCaseTest.m */; };
 		55B669C30D47FC93006A4FB3 /* test.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55B669C20D47FC93006A4FB3 /* test.plist */; };
@@ -177,6 +178,7 @@
 		55A5E9450E91D664005B2667 /* DDBaseNDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDBaseNDecoder.m; sourceTree = "<group>"; };
 		55A5E9680E91F47E005B2667 /* DDBaseNDecoderAlphabet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDBaseNDecoderAlphabet.h; sourceTree = "<group>"; };
 		55A5E9690E91F47E005B2667 /* DDBaseNDecoderAlphabet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDBaseNDecoderAlphabet.m; sourceTree = "<group>"; };
+		55A5E9940E9201D4005B2667 /* DDBaseN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDBaseN.h; sourceTree = "<group>"; };
 		55B6698F0D47F91E006A4FB3 /* DDTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTestCase.h; sourceTree = "<group>"; };
 		55B669900D47F91E006A4FB3 /* DDTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTestCase.m; sourceTree = "<group>"; };
 		55B669990D47FA31006A4FB3 /* DDTestCaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTestCaseTest.h; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 				5586CDBE0E8FC3DD00599103 /* DDBaseNOutputBuffer.m */,
 				55A5E9680E91F47E005B2667 /* DDBaseNDecoderAlphabet.h */,
 				55A5E9690E91F47E005B2667 /* DDBaseNDecoderAlphabet.m */,
+				55A5E9940E9201D4005B2667 /* DDBaseN.h */,
 			);
 			name = "BaseN Encoding";
 			sourceTree = "<group>";
@@ -487,6 +490,7 @@
 				55A5E8F30E91D275005B2667 /* DDBase32Decoder.h in Headers */,
 				55A5E9460E91D664005B2667 /* DDBaseNDecoder.h in Headers */,
 				55A5E96A0E91F47E005B2667 /* DDBaseNDecoderAlphabet.h in Headers */,
+				55A5E9950E9201D4005B2667 /* DDBaseN.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

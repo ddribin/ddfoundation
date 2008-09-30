@@ -26,30 +26,64 @@
 #import "DDFoundation.h"
 
 
+static void encodeData(NSData * data)
+{
+    NSString * encoded = [DDBase32Encoder crockfordBase32EncodeData:data];
+    printf("c: %s\n", [encoded UTF8String]);
+    encoded = [DDBase32Encoder zbase32EncodeData:data];
+    printf("z: %s\n", [encoded UTF8String]);
+}
+
+static void decodeString(NSString * string)
+{
+    NSData * decoded = [DDBase32Decoder crockfordBase32DecodeString:string];
+    printf("c: %s\n", [[decoded description] UTF8String]);
+    NSString * decodedString = [[NSString alloc] initWithData:decoded encoding:NSUTF8StringEncoding];
+    [decodedString autorelease];
+    printf("c: %s\n", [decodedString UTF8String]);
+}
+
 int main(int argc, char * argv[])
 {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
+    NSProcessInfo * processInfo = [NSProcessInfo processInfo];
+    NSEnumerator * arguments = [[processInfo arguments] objectEnumerator];
+    BOOL encode = YES;
+    [arguments nextObject];
+    for (NSString * argument in arguments)
+    {
+        if ([argument isEqualToString:@"-d"])
+        {
+            encode = NO;
+            continue;
+        }
+        
+        if (encode)
+        {
+            NSData * argumentData = [argument dataUsingEncoding:NSUTF8StringEncoding];
+            encodeData(argumentData);
+        }
+        else
+        {
+            decodeString(argument);
+        }
+    }
     
     NSFileHandle * standardInput = [NSFileHandle fileHandleWithStandardInput];
     if (!isatty([standardInput fileDescriptor]))
     {
         NSData * input = [standardInput readDataToEndOfFile];
-        NSString * encoded = [DDBase32Encoder crockfordBase32EncodeData:input];
-        printf("c: %s\n", [encoded UTF8String]);
-        encoded = [DDBase32Encoder zbase32EncodeData:input];
-        printf("z: %s\n", [encoded UTF8String]);
-    }
-    
-    NSProcessInfo * processInfo = [NSProcessInfo processInfo];
-    NSEnumerator * arguments = [[processInfo arguments] objectEnumerator];
-    [arguments nextObject];
-    for (NSString * argument in arguments)
-    {
-        NSData * argumentData = [argument dataUsingEncoding:NSUTF8StringEncoding];
-        NSString * encoded = [DDBase32Encoder crockfordBase32EncodeData:argumentData];
-        printf("c: %s\n", [encoded UTF8String]);
-        encoded = [DDBase32Encoder zbase32EncodeData:argumentData];
-        printf("z: %s\n", [encoded UTF8String]);
+        if (encode)
+        {
+            encodeData(input);
+        }
+        else
+        {
+            NSString * string = [[NSString alloc] initWithData:input encoding:NSUTF8StringEncoding];
+            [string autorelease];
+            decodeString(string);
+        }
     }
     
     [pool release];
