@@ -90,15 +90,9 @@ static const char kBase64Rfc4648Alphabet[] =
 
 - (NSData *)finishDecoding;
 {
-    unsigned numberOfFilledGroups = [_inputBuffer numberOfFilledGroups];
-    if (numberOfFilledGroups > 0)
+    unsigned numberOfFilledBytes = [_inputBuffer numberOfFilledBytes];
+    if (numberOfFilledBytes > 0)
     {
-        unsigned numberOfFilledBytes = 0;
-        if (numberOfFilledGroups == 2)
-            numberOfFilledBytes = 1;
-        if (numberOfFilledGroups == 3)
-            numberOfFilledBytes = 2;
-        
         unsigned byteIndex = 0;
         for (byteIndex = 0; byteIndex < numberOfFilledBytes; byteIndex++)
         {
