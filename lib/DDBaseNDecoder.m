@@ -29,6 +29,9 @@
 
 @interface DDBaseNDecoder ()
 
+- (void)decodeAllBytes;
+- (void)decodeFilledBytes;
+- (void)decodeNumberOfBytes:(unsigned)numberOfBytes;
 - (int)lookupCharacter:(char)character;
 
 @end
@@ -76,43 +79,52 @@
 - (void)decodeCharacter:(unichar)character;
 {
     NSAssert(character <= 127, @"Only ASCII characters allowed in base32 string");
+
     unsigned decodedValue = [self lookupCharacter:character];
     if (decodedValue == NSNotFound)
-    {
         return;
-    }
     
     [_inputBuffer appendGroupValue:decodedValue];
     if ([_inputBuffer isFull])
     {
-        unsigned byteIndex = 0;
-        for (byteIndex = 0; byteIndex < [_inputBuffer numberOfBytes]; byteIndex++)
-        {
-            uint8_t byteValue = [_inputBuffer valueAtByteIndex:byteIndex];;
-            [_outputBuffer appendBytes:&byteValue length:1];
-        }
+        [self decodeAllBytes];
         [_inputBuffer reset];
+    }
+}
+
+- (void)decodeAllBytes;
+{
+    [self decodeNumberOfBytes:[_inputBuffer numberOfBytes]];
+}
+
+- (void)decodeNumberOfBytes:(unsigned)numberOfBytes;
+{
+    unsigned byteIndex = 0;
+    for (byteIndex = 0; byteIndex < numberOfBytes; byteIndex++)
+    {
+        uint8_t byteValue = [_inputBuffer valueAtByteIndex:byteIndex];;
+        [_outputBuffer appendBytes:&byteValue length:1];
     }
 }
 
 - (NSData *)finishDecoding;
 {
-    unsigned numberOfFilledBytes = [_inputBuffer numberOfFilledBytes];
-    if (numberOfFilledBytes > 0)
-    {
-        unsigned byteIndex = 0;
-        for (byteIndex = 0; byteIndex < numberOfFilledBytes; byteIndex++)
-        {
-            uint8_t byteValue = [_inputBuffer valueAtByteIndex:byteIndex];;
-            [_outputBuffer appendBytes:&byteValue length:1];
-        }
-    }
+    [self decodeFilledBytes];
     
     NSData * result = [[_outputBuffer retain] autorelease];
     [_outputBuffer release];
     _outputBuffer = [[NSMutableData alloc] init];
     
     return result;
+}
+
+- (void)decodeFilledBytes;
+{
+    unsigned numberOfFilledBytes = [_inputBuffer numberOfFilledBytes];
+    if (numberOfFilledBytes > 0)
+    {
+        [self decodeNumberOfBytes:numberOfFilledBytes];
+    }
 }
 
 - (int)lookupCharacter:(char)character;
