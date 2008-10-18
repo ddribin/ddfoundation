@@ -29,6 +29,7 @@
 {
 }
 
+- (NSBundle *) myBundle;
 - (NSString *) resourcePath;
 - (NSString *) pathForResource: (NSString *) resource ofType: (NSString *) type;
 

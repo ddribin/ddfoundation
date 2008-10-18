@@ -32,16 +32,24 @@
     [self setDefaultJRLogLevel: JRLogLevel_Error];
 }
 
-- (NSString *) resourcePath;
+- (NSBundle *) myBundle;
 {
     NSBundle * myBundle = [NSBundle bundleForClass: [self class]];
-    return [myBundle resourcePath];
+    return myBundle;
+}
+
+- (NSString *) resourcePath;
+{
+    NSBundle * myBundle = [self myBundle];
+    NSString * resourcePath =  [myBundle resourcePath];
+    return resourcePath;
 }
 
 - (NSString *) pathForResource: (NSString *) resource ofType: (NSString *) type;
 {
-    NSBundle * myBundle = [NSBundle bundleForClass: [self class]];
-    return [myBundle pathForResource: resource ofType: type];
+    NSBundle * myBundle = [self myBundle];
+    NSString * path = [myBundle pathForResource: resource ofType: type];
+    return path;
 }
 
 - (NSString *) stringForResource: (NSString *) resource ofType: (NSString *) type;
