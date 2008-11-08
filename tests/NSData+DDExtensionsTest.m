@@ -28,6 +28,21 @@
     STAssertEqualObjects(actual, expected, nil);
 }
 
+- (void)testDataMacroTwice
+{
+    NSData * actual1 = dddata(0x01, 0x02, 0x03);
+    NSData * actual2 = dddata(0xbe, 0xef);
+    
+    uint8_t expectedBytes1[] = {0x01, 0x02, 0x03};
+    NSData * expected1 = [NSData dataWithBytes:expectedBytes1 length:sizeof(expectedBytes1)];
+
+    uint8_t expectedBytes2[] = {0xbe, 0xef};
+    NSData * expected2 = [NSData dataWithBytes:expectedBytes2 length:sizeof(expectedBytes2)];
+    
+    STAssertEqualObjects(actual1, expected1, nil);
+    STAssertEqualObjects(actual2, expected2, nil);
+}
+
 - (void)testAppendUTF8String
 {
     NSMutableData * actual = [NSMutableData data];
