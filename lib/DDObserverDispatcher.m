@@ -24,6 +24,13 @@
 
 #import "DDObserverDispatcher.h"
 
+@interface NSThread (DDObserverDispatcher)
+
++ (BOOL)isMainThread;
+
+@end
+
+
 @interface DDObserverDispatcherEntry : NSObject
 {
     SEL _action;
@@ -262,17 +269,26 @@ defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
     
     NSDictionary * userInfo =
         [NSDictionary dictionaryWithObjectsAndKeys:
-         keyPath, DDObserverDispatcherKeyPathKey,
+         [[keyPath copy] autorelease], DDObserverDispatcherKeyPathKey,
          object, DDObserverDispatcherObjectKey,
-         change, DDObserverDispatcherChangeKey,
+         [[change copy] autorelease], DDObserverDispatcherChangeKey,
          nil];
     
-    if (dispatchOption == DDObserverDispatchOnMainThreadAndWait)
+    BOOL dispatchNow = (dispatchOption == DDObserverDispatchOnCallingThread);
+    if ([[NSThread class] respondsToSelector:@selector(isMainThread)])
+    {
+        BOOL dispatchOnMainThread = ((dispatchOption == DDObserverDispatchOnMainThreadAndWait) ||
+                                     (dispatchOption == DDObserverDispatchOnMainThread));
+        dispatchNow = (dispatchNow ||
+                       (dispatchOnMainThread && [NSThread isMainThread]));
+    }
+    
+    if (dispatchNow)
+        [_target performSelector: action withObject: userInfo];
+    else if (dispatchOption == DDObserverDispatchOnMainThreadAndWait)
         [_target performSelectorOnMainThread: action withObject: userInfo waitUntilDone: YES];
     else if (dispatchOption == DDObserverDispatchOnMainThread)
         [_target performSelectorOnMainThread: action withObject: userInfo waitUntilDone: NO];
-    else // (dispatchOption == DDObserverDispatchOnCallingThread)
-        [_target performSelector: action withObject: userInfo];
 }
 
 @end
