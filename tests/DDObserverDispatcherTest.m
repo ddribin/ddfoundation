@@ -29,15 +29,15 @@
 
 @interface DDObserverDispatcher (DDObserverDispatcherTest)
 
-- (NSMutableDictionary *) test_keyPathsByObject;
+- (NSUInteger)test_entryCount;
 
 @end
 
-@implementation DDObserverDispatcher (Test)
+@implementation DDObserverDispatcher (DDObserverDispatcherTest)
 
-- (NSMutableDictionary *) test_keyPathsByObject;
+- (NSUInteger)test_entryCount;
 {
-    return _keyPathsByObject;
+    return [_observerEntries count];
 }
 
 @end
@@ -197,8 +197,7 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 1, nil);
 
-    NSMutableDictionary * keyPathsByObject = [dispatcher test_keyPathsByObject];
-    STAssertEquals([keyPathsByObject count], 0U, nil);
+    STAssertEquals([dispatcher test_entryCount], 0U, nil);
 }
 
 - (void) testMultipleActions
@@ -230,8 +229,8 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 3, nil);
     
-    NSMutableDictionary * keyPathsByObject = [dispatcher test_keyPathsByObject];
-    STAssertEquals([keyPathsByObject count], 0U, nil);
+    STAssertEquals([dispatcher test_entryCount], 0U, nil);
+    [dispatcher removeAllDispatchActions];
 }
 
 - (void) testResettingAction;
@@ -294,8 +293,7 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 2, nil);
     
-    NSMutableDictionary * keyPathsByObject = [dispatcher test_keyPathsByObject];
-    STAssertEquals([keyPathsByObject count], 0U, nil);
+    STAssertEquals([dispatcher test_entryCount], 0U, nil);
 }
 
 - (void) testRemoveAllActionsForAnObserver
@@ -324,8 +322,7 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
     [object2 toggleFlagged];
     STAssertEquals([observer notificationCount], 4, nil);
     
-    NSMutableDictionary * keyPathsByObject = [dispatcher test_keyPathsByObject];
-    STAssertEquals([keyPathsByObject count], 1U, nil);
+    STAssertEquals([dispatcher test_entryCount], 1U, nil);
     
     [dispatcher removeAllDispatchActionsOfObject: object2];
     [object1 toggleFlagged];
@@ -333,8 +330,7 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
     [object2 toggleFlagged];
     STAssertEquals([observer notificationCount], 4, nil);
     
-    keyPathsByObject = [dispatcher test_keyPathsByObject];
-    STAssertEquals([keyPathsByObject count], 0U, nil);
+    STAssertEquals([dispatcher test_entryCount], 0U, nil);
 }
 
 - (void) testBackgroundThreadName

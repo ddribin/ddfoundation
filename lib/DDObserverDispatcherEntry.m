@@ -23,47 +23,56 @@
  */
 
 #import "DDObserverDispatcherEntry.h"
+#import "DDObserverNotification.h"
+
+@interface NSThread (DDObserverDispatcher)
+
++ (BOOL)isMainThread;
+
+@end
 
 
 @implementation DDObserverDispatcherEntry
 
-+ (id) entryWithAction: (SEL) action;
-{
-    id o =[[self alloc] initWithAction: action];
-    return [o autorelease];
-}
-
-+ (id) entryWithAction: (SEL) action
-        dispatchOption: (DDObserverDispatchOption) dispatchOption;
-{
-    id o =[[self alloc] initWithAction: action dispatchOption: dispatchOption];
-    return [o autorelease];
-}
-
-- (id) initWithAction: (SEL) action;
+- (id) initWithObserved:(id)observed
+                keyPath:(NSString *)keyPath
+                 target:(id)target
+                 action:(SEL)action
+         dispatchOption: (DDObserverDispatchOption) dispatchOption;
 {
     self = [super init];
     if (self == nil)
         return nil;
     
-    _action = action;
-    _hasDispatchOption = NO;
-    
-    return self;
-}
-
-- (id) initWithAction: (SEL) action
-       dispatchOption: (DDObserverDispatchOption) dispatchOption;
-{
-    self = [super init];
-    if (self == nil)
-        return nil;
-    
+    _observed = observed;
+    _keyPath = [keyPath copy];
+    _target = target;
     _action = action;
     _hasDispatchOption = YES;
     _dispatchOption = dispatchOption;
     
     return self;
+}
+
+- (void)dealloc
+{
+    [_keyPath release];
+    [super dealloc];
+}
+
+- (id)observed;
+{
+    return _observed;
+}
+
+- (NSString *)keyPath;
+{
+    return _keyPath;
+}
+
+- (id)target;
+{
+    return _target;
 }
 
 - (SEL) action;
@@ -79,6 +88,54 @@
 - (DDObserverDispatchOption) dispatchOption;
 {
     return _dispatchOption;
+}
+
+- (void)startObservingWithOptions:(NSKeyValueObservingOptions)kvoOptions
+{
+    [_observed addObserver:self
+                forKeyPath:_keyPath
+                   options:kvoOptions
+                   context:NULL];
+}
+
+- (void)stopObserving;
+{
+    [_observed removeObserver:self
+                   forKeyPath:_keyPath];
+}
+
+- (BOOL)matchesObserved:(id)observed keyPath:(NSString *)keyPath;
+{
+    BOOL matchesObserved = (observed == nil) || (_observed == observed);
+    BOOL matchesKeyPath = (keyPath == nil) || ([_keyPath isEqualToString:keyPath]);
+    return (matchesObserved && matchesKeyPath);
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    DDObserverNotification * notification =
+    [DDObserverNotification notificationWithObject:object
+                                           keyPath:_keyPath
+                                            change:change];
+    
+    BOOL dispatchNow = (_dispatchOption == DDObserverDispatchOnCallingThread);
+    if ([[NSThread class] respondsToSelector:@selector(isMainThread)])
+    {
+        BOOL dispatchOnMainThread = ((_dispatchOption == DDObserverDispatchOnMainThreadAndWait) ||
+                                     (_dispatchOption == DDObserverDispatchOnMainThread));
+        dispatchNow = (dispatchNow ||
+                       (dispatchOnMainThread && [NSThread isMainThread]));
+    }
+    
+    if (dispatchNow)
+        [_target performSelector: _action withObject: notification];
+    else if (_dispatchOption == DDObserverDispatchOnMainThreadAndWait)
+        [_target performSelectorOnMainThread: _action withObject: notification waitUntilDone: YES];
+    else if (_dispatchOption == DDObserverDispatchOnMainThread)
+        [_target performSelectorOnMainThread: _action withObject: notification waitUntilDone: NO];
 }
 
 @end

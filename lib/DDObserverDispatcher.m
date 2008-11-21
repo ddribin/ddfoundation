@@ -26,25 +26,10 @@
 #import "DDObserverDispatcherEntry.h"
 #import "DDObserverNotification.h"
 
-@interface NSThread (DDObserverDispatcher)
-
-+ (BOOL)isMainThread;
-
-@end
-
-
-NSString * DDObserverDispatcherKeyPathKey = @"keyPath";
-NSString * DDObserverDispatcherObjectKey = @"object";
-NSString * DDObserverDispatcherChangeKey = @"change";
 
 @interface DDObserverDispatcher (Private)
 
-- (void) removeObserverForAllKeyPaths: (NSMutableDictionary *) keyPaths
-                      ofObjectWrapper: (NSArray *) objectWrapper;
-
-- (void) setDispatchEntry: (DDObserverDispatcherEntry *) entry
-               forKeyPath: (NSString *) keyPath
-                 ofObject: (NSObject *) object
+- (void) addDispatchEntry: (DDObserverDispatcherEntry *) entry
                kvoOptions: (NSKeyValueObservingOptions) kvoOptions;
 
 @end
@@ -59,7 +44,7 @@ defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
         return nil;
     
     _target = target;
-    _keyPathsByObject = [[NSMutableDictionary alloc] init];
+    _observerEntries = [[NSMutableArray alloc] init];
     _defaultDispatchOption = dispatchOption;
     _defaultKvoOptions = 0;
     
@@ -80,8 +65,7 @@ defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
 - (void) dealloc
 {
     [self removeAllDispatchActions];
-    [_keyPathsByObject release];
-    _keyPathsByObject = nil;
+    [_observerEntries release];
     
     [super dealloc];
 }
@@ -110,12 +94,11 @@ defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
                 forKeyPath: (NSString *) keyPath
                   ofObject: (NSObject *) object;
 {
-    DDObserverDispatcherEntry * entry =
-    [DDObserverDispatcherEntry entryWithAction: action];
-    [self setDispatchEntry: entry
-                forKeyPath: keyPath
-                  ofObject: object
-                kvoOptions: _defaultKvoOptions];
+    [self setDispatchAction:action
+                 forKeyPath:keyPath
+                   ofObject:object
+             dispatchOption:_defaultDispatchOption
+                 kvoOptions:_defaultKvoOptions];
 }
 
 - (void) setDispatchAction: (SEL) action
@@ -123,13 +106,11 @@ defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
                   ofObject: (NSObject *) object
             dispatchOption: (DDObserverDispatchOption) dispatchOption;
 {
-    DDObserverDispatcherEntry * entry =
-        [DDObserverDispatcherEntry entryWithAction: action
-                                    dispatchOption: dispatchOption];
-    [self setDispatchEntry: entry
-                forKeyPath: keyPath
-                  ofObject: object
-                kvoOptions: _defaultKvoOptions];
+    [self setDispatchAction:action
+                 forKeyPath:keyPath
+                   ofObject:object
+             dispatchOption:dispatchOption
+                 kvoOptions:_defaultKvoOptions];
 }
 
 - (void) setDispatchAction: (SEL) action
@@ -137,12 +118,11 @@ defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
                   ofObject: (NSObject *) object
                 kvoOptions: (NSKeyValueObservingOptions) kvoOptions;
 {
-    DDObserverDispatcherEntry * entry =
-        [DDObserverDispatcherEntry entryWithAction: action];
-    [self setDispatchEntry: entry
-                forKeyPath: keyPath
-                  ofObject: object
-                kvoOptions: kvoOptions];
+    [self setDispatchAction:action
+                 forKeyPath:keyPath
+                   ofObject:object
+             dispatchOption:_defaultDispatchOption
+                 kvoOptions:kvoOptions];
 }
 
 - (void) setDispatchAction: (SEL) action
@@ -152,12 +132,13 @@ defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
                 kvoOptions: (NSKeyValueObservingOptions) kvoOptions;
 {
     DDObserverDispatcherEntry * entry =
-        [DDObserverDispatcherEntry entryWithAction: action
-                                    dispatchOption: dispatchOption];
-    [self setDispatchEntry: entry
-                forKeyPath: keyPath
-                  ofObject: object
-                kvoOptions: kvoOptions];
+    [[DDObserverDispatcherEntry alloc] initWithObserved:object
+                                                keyPath:keyPath
+                                                 target:_target
+                                                 action:action
+                                         dispatchOption:dispatchOption];
+    [entry autorelease];
+    [self addDispatchEntry:entry kvoOptions:kvoOptions];
 }
 
 - (void) removeDispatchActionForKeyPath: (NSString *) keyPath
@@ -165,139 +146,44 @@ defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
 {
     @synchronized (self)
     {
-        NSArray * objectWrapper = [NSArray arrayWithObject: object];
-        NSMutableDictionary * actionsByKeyPath =
-        [_keyPathsByObject objectForKey: objectWrapper];
-        
-        if ([actionsByKeyPath objectForKey: keyPath] == nil)
-            return;
-        
-        [actionsByKeyPath removeObjectForKey: keyPath];
-        [object removeObserver: self forKeyPath: keyPath];
-        
-        if ([actionsByKeyPath count] == 0)
+        NSEnumerator * entries = [_observerEntries objectEnumerator];
+        DDObserverDispatcherEntry * entry;
+        NSMutableArray * entriesToRemove = [NSMutableArray array];
+        while ((entry = [entries nextObject]) != nil)
         {
-            [_keyPathsByObject removeObjectForKey: objectWrapper];
+            if ([entry matchesObserved:object keyPath:keyPath])
+            {
+                [entry stopObserving];
+                [entriesToRemove addObject:entry];
+            }
         }
+        
+        [_observerEntries removeObjectsInArray:entriesToRemove];
     }
 }
 
 - (void) removeAllDispatchActions
 {
-    @synchronized (self)
-    {
-        NSEnumerator * e = [_keyPathsByObject keyEnumerator];
-        NSArray * objectWrapper;
-        while ((objectWrapper = [e nextObject]))
-        {
-            NSMutableDictionary * keyPaths = [_keyPathsByObject objectForKey: objectWrapper];
-            [self removeObserverForAllKeyPaths: keyPaths ofObjectWrapper: objectWrapper];
-        }
-        [_keyPathsByObject removeAllObjects];
-    }
+    [self removeDispatchActionForKeyPath:nil ofObject:nil];
 }
 
 - (void) removeAllDispatchActionsOfObject: (NSObject *) object;
 {
-    @synchronized (self)
-    {
-        NSArray * objectWrapper = [NSArray arrayWithObject: object];
-        NSMutableDictionary * keyPaths = [_keyPathsByObject objectForKey: objectWrapper];
-        [self removeObserverForAllKeyPaths: keyPaths ofObjectWrapper: objectWrapper];
-        [_keyPathsByObject removeObjectForKey: objectWrapper];
-    }
-}
-
--(void) observeValueForKeyPath: (NSString *) keyPath ofObject: (id) object
-                        change: (NSDictionary *) change context: (void *) context
-{
-    NSArray * objectWrapper = [NSArray arrayWithObject: object];
-    SEL action;
-    DDObserverDispatchOption dispatchOption;
-    @synchronized (self)
-    {
-        NSMutableDictionary * actionsByKeyPath;
-        actionsByKeyPath = [_keyPathsByObject objectForKey: objectWrapper];
-        if (actionsByKeyPath == nil)
-            return;
-        
-        DDObserverDispatcherEntry * entry = [actionsByKeyPath objectForKey: keyPath];
-        if (entry == nil)
-            return;
-        
-        action = [entry action];
-        if ([entry hasDispatchOption])
-            dispatchOption = [entry dispatchOption];
-        else
-            dispatchOption = _defaultDispatchOption;
-    }
-    
-    DDObserverNotification * notification =
-        [DDObserverNotification notificationWithObject:object
-                                               keyPath:keyPath
-                                                change:change];
-    
-    BOOL dispatchNow = (dispatchOption == DDObserverDispatchOnCallingThread);
-    if ([[NSThread class] respondsToSelector:@selector(isMainThread)])
-    {
-        BOOL dispatchOnMainThread = ((dispatchOption == DDObserverDispatchOnMainThreadAndWait) ||
-                                     (dispatchOption == DDObserverDispatchOnMainThread));
-        dispatchNow = (dispatchNow ||
-                       (dispatchOnMainThread && [NSThread isMainThread]));
-    }
-    
-    if (dispatchNow)
-        [_target performSelector: action withObject: notification];
-    else if (dispatchOption == DDObserverDispatchOnMainThreadAndWait)
-        [_target performSelectorOnMainThread: action withObject: notification waitUntilDone: YES];
-    else if (dispatchOption == DDObserverDispatchOnMainThread)
-        [_target performSelectorOnMainThread: action withObject: notification waitUntilDone: NO];
+    [self removeDispatchActionForKeyPath:nil ofObject:object];
 }
 
 @end
 
 @implementation DDObserverDispatcher (Private)
 
-- (void) removeObserverForAllKeyPaths: (NSMutableDictionary *) keyPaths
-                      ofObjectWrapper: (NSArray *) objectWrapper;
-{
-    NSObject * object = [objectWrapper objectAtIndex: 0];
-    NSEnumerator * e = [keyPaths keyEnumerator];
-    NSString * keyPath;
-    while ((keyPath = [e nextObject]))
-    {
-        [object removeObserver: self forKeyPath: keyPath];
-    }
-}
-
-- (void) setDispatchEntry: (DDObserverDispatcherEntry *) entry
-               forKeyPath: (NSString *) keyPath
-                 ofObject: (NSObject *) object
+- (void) addDispatchEntry: (DDObserverDispatcherEntry *) entry
                kvoOptions: (NSKeyValueObservingOptions) kvoOptions;
 {
     @synchronized (self)
     {
-        NSArray * objectWrapper = [NSArray arrayWithObject: object];
-        NSMutableDictionary * actionsByKeyPath =
-        [_keyPathsByObject objectForKey: objectWrapper];
-        
-        // Create if it does not yet exist
-        if (actionsByKeyPath == nil)
-        {
-            actionsByKeyPath = [NSMutableDictionary dictionary];
-            [_keyPathsByObject setObject: actionsByKeyPath forKey: objectWrapper];
-        }
-        
-        if ([actionsByKeyPath objectForKey: keyPath] != nil)
-        {
-            [object removeObserver:self forKeyPath:keyPath];
-        }
-        
-        [actionsByKeyPath setObject: entry forKey: keyPath];
-        [object addObserver: self
-                 forKeyPath: keyPath
-                    options: kvoOptions
-                    context: NULL];
+        [self removeDispatchActionForKeyPath:[entry keyPath] ofObject:[entry observed]];
+        [_observerEntries addObject:entry];
+        [entry startObservingWithOptions:kvoOptions];
     }
 }
 

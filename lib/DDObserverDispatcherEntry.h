@@ -28,25 +28,36 @@
 
 @interface DDObserverDispatcherEntry : NSObject
 {
+    id _observed;
+    NSString * _keyPath;
+    id _target;
     SEL _action;
     BOOL _hasDispatchOption;
     DDObserverDispatchOption _dispatchOption;
 }
 
-+ (id) entryWithAction: (SEL) action;
-
-+ (id) entryWithAction: (SEL) action
+- (id)initWithObserved:(id)observed
+               keyPath:(NSString *)keyPath
+                target:(id)target
+                action:(SEL)action
         dispatchOption: (DDObserverDispatchOption) dispatchOption;
 
-- (id) initWithAction: (SEL) action;
+- (id)observed;
 
-- (id) initWithAction: (SEL) action
-       dispatchOption: (DDObserverDispatchOption) dispatchOption;
+- (NSString *)keyPath;
 
-- (SEL) action;
+- (id)target;
 
-- (BOOL) hasDispatchOption;
+- (SEL)action;
 
-- (DDObserverDispatchOption) dispatchOption;
+- (BOOL)hasDispatchOption;
+
+- (DDObserverDispatchOption)dispatchOption;
+
+- (void)startObservingWithOptions:(NSKeyValueObservingOptions)kvoOptions;
+
+- (void)stopObserving;
+
+- (BOOL)matchesObserved:(id)observed keyPath:(NSString *)keyPath;
 
 @end
