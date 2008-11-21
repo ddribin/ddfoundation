@@ -22,19 +22,64 @@
  * SOFTWARE.
  */
 
-#import "DDInvocationGrabber.h"
-#import "DDObserverDispatcher.h"
-#import "DDObserverNotification.h"
-#import "DDRunLoopPoker.h"
-#import "DDRunLoopCondition.h"
-#import "DDSequenceComparator.h"
-#import "DDTemporaryDirectory.h"
+#import "DDObserverDispatcherEntry.h"
 
-#import "DDBaseN.h"
 
-#import "NSArray+DDExtensions.h"
-#import "NSSet+DDExtensions.h"
-#import "NSData+DDExtensions.h"
-#import "NSObject+DDExtensions.h"
-#import "NSString+DDExtensions.h"
-#import "NSSortDescriptor+DDExtensions.h"
+@implementation DDObserverDispatcherEntry
+
++ (id) entryWithAction: (SEL) action;
+{
+    id o =[[self alloc] initWithAction: action];
+    return [o autorelease];
+}
+
++ (id) entryWithAction: (SEL) action
+        dispatchOption: (DDObserverDispatchOption) dispatchOption;
+{
+    id o =[[self alloc] initWithAction: action dispatchOption: dispatchOption];
+    return [o autorelease];
+}
+
+- (id) initWithAction: (SEL) action;
+{
+    self = [super init];
+    if (self == nil)
+        return nil;
+    
+    _action = action;
+    _hasDispatchOption = NO;
+    
+    return self;
+}
+
+- (id) initWithAction: (SEL) action
+       dispatchOption: (DDObserverDispatchOption) dispatchOption;
+{
+    self = [super init];
+    if (self == nil)
+        return nil;
+    
+    _action = action;
+    _hasDispatchOption = YES;
+    _dispatchOption = dispatchOption;
+    
+    return self;
+}
+
+- (SEL) action;
+{
+    return _action;
+}
+
+- (BOOL) hasDispatchOption;
+{
+    return _hasDispatchOption;
+}
+
+- (DDObserverDispatchOption) dispatchOption;
+{
+    return _dispatchOption;
+}
+
+@end
+

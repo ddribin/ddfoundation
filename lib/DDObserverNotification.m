@@ -22,19 +22,56 @@
  * SOFTWARE.
  */
 
-#import "DDInvocationGrabber.h"
-#import "DDObserverDispatcher.h"
 #import "DDObserverNotification.h"
-#import "DDRunLoopPoker.h"
-#import "DDRunLoopCondition.h"
-#import "DDSequenceComparator.h"
-#import "DDTemporaryDirectory.h"
 
-#import "DDBaseN.h"
 
-#import "NSArray+DDExtensions.h"
-#import "NSSet+DDExtensions.h"
-#import "NSData+DDExtensions.h"
-#import "NSObject+DDExtensions.h"
-#import "NSString+DDExtensions.h"
-#import "NSSortDescriptor+DDExtensions.h"
+@implementation DDObserverNotification
+
++ (id)notificationWithObject:(NSObject *)object
+                     keyPath:(NSString *)keyPath
+                      change:(NSDictionary *)change;
+{
+    id o = [[self alloc] initWithObject:object keyPath:keyPath change:change];
+    return [o autorelease];
+}
+
+- (id)initWithObject:(NSObject *)object
+             keyPath:(NSString *)keyPath
+              change:(NSDictionary *)change;
+{
+    self = [super init];
+    if (self == nil)
+        return nil;
+    
+    _object = [object retain];
+    _keyPath = [keyPath copy];
+    _change = [change copy];
+    
+    return self;
+}
+
+- (void)dealloc
+{
+    [_change release];
+    [_keyPath release];
+    [_object release];
+    
+    [super dealloc];
+}
+
+- (id)object;
+{
+    return _object;
+}
+
+- (NSString *)keyPath;
+{
+    return _keyPath;
+}
+
+- (NSDictionary *)change;
+{
+    return _change;
+}
+
+@end

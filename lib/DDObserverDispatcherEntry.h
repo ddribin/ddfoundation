@@ -22,19 +22,31 @@
  * SOFTWARE.
  */
 
-#import "DDInvocationGrabber.h"
+#import <Foundation/Foundation.h>
 #import "DDObserverDispatcher.h"
-#import "DDObserverNotification.h"
-#import "DDRunLoopPoker.h"
-#import "DDRunLoopCondition.h"
-#import "DDSequenceComparator.h"
-#import "DDTemporaryDirectory.h"
 
-#import "DDBaseN.h"
 
-#import "NSArray+DDExtensions.h"
-#import "NSSet+DDExtensions.h"
-#import "NSData+DDExtensions.h"
-#import "NSObject+DDExtensions.h"
-#import "NSString+DDExtensions.h"
-#import "NSSortDescriptor+DDExtensions.h"
+@interface DDObserverDispatcherEntry : NSObject
+{
+    SEL _action;
+    BOOL _hasDispatchOption;
+    DDObserverDispatchOption _dispatchOption;
+}
+
++ (id) entryWithAction: (SEL) action;
+
++ (id) entryWithAction: (SEL) action
+        dispatchOption: (DDObserverDispatchOption) dispatchOption;
+
+- (id) initWithAction: (SEL) action;
+
+- (id) initWithAction: (SEL) action
+       dispatchOption: (DDObserverDispatchOption) dispatchOption;
+
+- (SEL) action;
+
+- (BOOL) hasDispatchOption;
+
+- (DDObserverDispatchOption) dispatchOption;
+
+@end

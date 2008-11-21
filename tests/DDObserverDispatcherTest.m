@@ -24,6 +24,7 @@
 
 #import "DDObserverDispatcherTest.h"
 #import "DDObserverDispatcher.h"
+#import "DDObserverNotification.h"
 
 
 @interface DDObserverDispatcher (DDObserverDispatcherTest)
@@ -123,8 +124,8 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
 
 + (id) observer;
 
-- (void) countNotification: (NSNotification *) note;
-- (void) ignoreNotification: (NSNotification *) note;
+- (void) countNotification: (DDObserverNotification *) note;
+- (void) ignoreNotification: (DDObserverNotification *) note;
 - (int) notificationCount;
 
 @end
@@ -144,13 +145,13 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
     [super dealloc];
 }
 
-- (void) countNotification: (NSNotification *) note;
+- (void) countNotification: (DDObserverNotification *) note;
 {
     _notificationCount++;
     self.lastThreadName = [NSThread currentThread].name;
 }
 
-- (void) ignoreNotification: (NSNotification *) note;
+- (void) ignoreNotification: (DDObserverNotification *) note;
 {
 }
 

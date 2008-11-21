@@ -46,6 +46,10 @@
 		5586CFD10E8FE5FB00599103 /* DDBase32Encoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 5586CFCF0E8FE5FB00599103 /* DDBase32Encoder.h */; };
 		5586CFD20E8FE5FB00599103 /* DDBase32Encoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586CFD00E8FE5FB00599103 /* DDBase32Encoder.m */; };
 		5586D06C0E8FEAD500599103 /* DDBase32EncoderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586D06B0E8FEAD500599103 /* DDBase32EncoderTest.m */; };
+		55A418A40ED664190030F98A /* DDObserverDispatcherEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = 55A418A20ED664190030F98A /* DDObserverDispatcherEntry.h */; };
+		55A418A50ED664190030F98A /* DDObserverDispatcherEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A418A30ED664190030F98A /* DDObserverDispatcherEntry.m */; };
+		55A418B00ED665B70030F98A /* DDObserverNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = 55A418AE0ED665B70030F98A /* DDObserverNotification.h */; };
+		55A418B10ED665B70030F98A /* DDObserverNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A418AF0ED665B70030F98A /* DDObserverNotification.m */; };
 		55A5E84E0E919E6B005B2667 /* DDBase64DecoderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A5E84D0E919E6B005B2667 /* DDBase64DecoderTest.m */; };
 		55A5E8510E919F8D005B2667 /* DDBase64Decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 55A5E84F0E919F8D005B2667 /* DDBase64Decoder.h */; };
 		55A5E8520E919F8D005B2667 /* DDBase64Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A5E8500E919F8D005B2667 /* DDBase64Decoder.m */; };
@@ -166,6 +170,10 @@
 		5586CFD00E8FE5FB00599103 /* DDBase32Encoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDBase32Encoder.m; sourceTree = "<group>"; };
 		5586D06A0E8FEAD500599103 /* DDBase32EncoderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDBase32EncoderTest.h; sourceTree = "<group>"; };
 		5586D06B0E8FEAD500599103 /* DDBase32EncoderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDBase32EncoderTest.m; sourceTree = "<group>"; };
+		55A418A20ED664190030F98A /* DDObserverDispatcherEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDObserverDispatcherEntry.h; sourceTree = "<group>"; };
+		55A418A30ED664190030F98A /* DDObserverDispatcherEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDObserverDispatcherEntry.m; sourceTree = "<group>"; };
+		55A418AE0ED665B70030F98A /* DDObserverNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDObserverNotification.h; sourceTree = "<group>"; };
+		55A418AF0ED665B70030F98A /* DDObserverNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDObserverNotification.m; sourceTree = "<group>"; };
 		55A5E84C0E919E6B005B2667 /* DDBase64DecoderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDBase64DecoderTest.h; sourceTree = "<group>"; };
 		55A5E84D0E919E6B005B2667 /* DDBase64DecoderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDBase64DecoderTest.m; sourceTree = "<group>"; };
 		55A5E84F0E919F8D005B2667 /* DDBase64Decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDBase64Decoder.h; sourceTree = "<group>"; };
@@ -296,10 +304,10 @@
 		08FB77AEFE84172EC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				55A419770ED66CDC0030F98A /* Observer Dispatcher */,
+				5586CF6A0E8FE0CE00599103 /* BaseN Encoding */,
 				55F7D4CD0DDAA4F000FD433C /* DDInvocationGrabber.h */,
 				55F7D4CE0DDAA4F000FD433C /* DDInvocationGrabber.m */,
-				555D37230D48F512001A5533 /* DDObserverDispatcher.h */,
-				555D37240D48F512001A5533 /* DDObserverDispatcher.m */,
 				55EA25CB0E852DBE0051E267 /* DDRunLoopCondition.h */,
 				55EA25CC0E852DBE0051E267 /* DDRunLoopCondition.m */,
 				55EA25CD0E852DBE0051E267 /* DDRunLoopPoker.h */,
@@ -310,7 +318,6 @@
 				55CA858A0D454F3F004492E9 /* DDTemporaryDirectory.m */,
 				55CA858B0D454F3F004492E9 /* DDTemporaryFile.h */,
 				55CA858C0D454F3F004492E9 /* DDTemporaryFile.m */,
-				5586CF6A0E8FE0CE00599103 /* BaseN Encoding */,
 				5586CC6E0E8E9AAF00599103 /* DDDisposable.h */,
 				55EF2A9F0E17021900B465BE /* NSArray+DDExtensions.h */,
 				55EF2AA00E17021900B465BE /* NSArray+DDExtensions.m */,
@@ -386,6 +393,19 @@
 				55A5E9940E9201D4005B2667 /* DDBaseN.h */,
 			);
 			name = "BaseN Encoding";
+			sourceTree = "<group>";
+		};
+		55A419770ED66CDC0030F98A /* Observer Dispatcher */ = {
+			isa = PBXGroup;
+			children = (
+				555D37230D48F512001A5533 /* DDObserverDispatcher.h */,
+				555D37240D48F512001A5533 /* DDObserverDispatcher.m */,
+				55A418A20ED664190030F98A /* DDObserverDispatcherEntry.h */,
+				55A418A30ED664190030F98A /* DDObserverDispatcherEntry.m */,
+				55A418AE0ED665B70030F98A /* DDObserverNotification.h */,
+				55A418AF0ED665B70030F98A /* DDObserverNotification.m */,
+			);
+			name = "Observer Dispatcher";
 			sourceTree = "<group>";
 		};
 		55CA859E0D454FE9004492E9 /* vendor */ = {
@@ -491,6 +511,8 @@
 				55A5E9460E91D664005B2667 /* DDBaseNDecoder.h in Headers */,
 				55A5E96A0E91F47E005B2667 /* DDBaseNDecoderAlphabet.h in Headers */,
 				55A5E9950E9201D4005B2667 /* DDBaseN.h in Headers */,
+				55A418A40ED664190030F98A /* DDObserverDispatcherEntry.h in Headers */,
+				55A418B00ED665B70030F98A /* DDObserverNotification.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -658,6 +680,8 @@
 				55A5E8F40E91D275005B2667 /* DDBase32Decoder.m in Sources */,
 				55A5E9470E91D664005B2667 /* DDBaseNDecoder.m in Sources */,
 				55A5E96B0E91F47E005B2667 /* DDBaseNDecoderAlphabet.m in Sources */,
+				55A418A50ED664190030F98A /* DDObserverDispatcherEntry.m in Sources */,
+				55A418B10ED665B70030F98A /* DDObserverNotification.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

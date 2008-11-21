@@ -22,19 +22,28 @@
  * SOFTWARE.
  */
 
-#import "DDInvocationGrabber.h"
-#import "DDObserverDispatcher.h"
-#import "DDObserverNotification.h"
-#import "DDRunLoopPoker.h"
-#import "DDRunLoopCondition.h"
-#import "DDSequenceComparator.h"
-#import "DDTemporaryDirectory.h"
+#import <Foundation/Foundation.h>
 
-#import "DDBaseN.h"
 
-#import "NSArray+DDExtensions.h"
-#import "NSSet+DDExtensions.h"
-#import "NSData+DDExtensions.h"
-#import "NSObject+DDExtensions.h"
-#import "NSString+DDExtensions.h"
-#import "NSSortDescriptor+DDExtensions.h"
+@interface DDObserverNotification : NSObject
+{
+    NSObject * _object;
+    NSString * _keyPath;
+    NSDictionary * _change;
+}
+
++ (id)notificationWithObject:(NSObject *)object
+                     keyPath:(NSString *)keyPath
+                      change:(NSDictionary *)change;
+
+- (id)initWithObject:(NSObject *)object
+             keyPath:(NSString *)keyPath
+              change:(NSDictionary *)change;
+
+- (id)object;
+
+- (NSString *)keyPath;
+
+- (NSDictionary *)change;
+
+@end

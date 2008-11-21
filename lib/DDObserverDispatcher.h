@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 typedef enum
 {
@@ -42,12 +42,16 @@ typedef enum
      */
     NSMutableDictionary * _keyPathsByObject;
     DDObserverDispatchOption _defaultDispatchOption;
+    NSKeyValueObservingOptions _defaultKvoOptions;
 }
 
 - (id) initWithTarget: (id) target
 defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
 
 - (id) initWithTarget: (id) target;
+
+- (void)setDefaultKvoOptions: (NSKeyValueObservingOptions) kvoOptions;
+- (NSKeyValueObservingOptions)defaultKvoOptions;
 
 - (void) setDispatchAction: (SEL) action
                 forKeyPath: (NSString *) keyPath
@@ -57,6 +61,17 @@ defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
                 forKeyPath: (NSString *) keyPath
                   ofObject: (NSObject *) object
             dispatchOption: (DDObserverDispatchOption) dispatchOption;
+
+- (void) setDispatchAction: (SEL) action
+                forKeyPath: (NSString *) keyPath
+                  ofObject: (NSObject *) object
+            dispatchOption: (DDObserverDispatchOption) dispatchOption
+                kvoOptions: (NSKeyValueObservingOptions) kvoOptions;
+
+- (void) setDispatchAction: (SEL) action
+                forKeyPath: (NSString *) keyPath
+                  ofObject: (NSObject *) object
+                kvoOptions: (NSKeyValueObservingOptions) kvoOptions;
 
 - (void) removeDispatchActionForKeyPath: (NSString *) keyPath
                                ofObject: (NSObject *) object;
