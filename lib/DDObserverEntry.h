@@ -26,7 +26,7 @@
 #import "DDObserverDispatcher.h"
 
 
-@interface DDObserverDispatcherEntry : NSObject
+@interface DDObserverEntry : NSObject
 {
     id _observed;
     NSString * _keyPath;

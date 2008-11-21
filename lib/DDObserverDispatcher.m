@@ -23,13 +23,13 @@
  */
 
 #import "DDObserverDispatcher.h"
-#import "DDObserverDispatcherEntry.h"
+#import "DDObserverEntry.h"
 #import "DDObserverNotification.h"
 
 
 @interface DDObserverDispatcher (Private)
 
-- (void) addDispatchEntry: (DDObserverDispatcherEntry *) entry
+- (void) addDispatchEntry: (DDObserverEntry *) entry
                kvoOptions: (NSKeyValueObservingOptions) kvoOptions;
 
 @end
@@ -64,7 +64,7 @@ defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
 
 - (void) dealloc
 {
-    [self removeAllDispatchActions];
+    [self stopObservingAll];
     [_observerEntries release];
     
     [super dealloc];
@@ -72,7 +72,7 @@ defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
 
 - (void) finalize
 {
-    [self removeAllDispatchActions];
+    [self stopObservingAll];
     [super finalize];
 }
 
@@ -90,64 +90,75 @@ defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
 
 #pragma mark -
 
-- (void) setDispatchAction: (SEL) action
-                forKeyPath: (NSString *) keyPath
-                  ofObject: (NSObject *) object;
+- (void)startObserving:(NSObject *)object
+               keyPath:(NSString *)keyPath
+                action:(SEL)action;
 {
-    [self setDispatchAction:action
-                 forKeyPath:keyPath
-                   ofObject:object
-             dispatchOption:_defaultDispatchOption
-                 kvoOptions:_defaultKvoOptions];
+    [self startObserving:object
+                 keyPath:keyPath
+                  action:action
+          dispatchOption:_defaultDispatchOption
+              kvoOptions:_defaultKvoOptions];
 }
 
-- (void) setDispatchAction: (SEL) action
-                forKeyPath: (NSString *) keyPath
-                  ofObject: (NSObject *) object
-            dispatchOption: (DDObserverDispatchOption) dispatchOption;
+- (void)startObserving:(NSObject *)object
+               keyPath:(NSString *)keyPath
+                action:(SEL)action
+        dispatchOption:(DDObserverDispatchOption)dispatchOption;
 {
-    [self setDispatchAction:action
-                 forKeyPath:keyPath
-                   ofObject:object
-             dispatchOption:dispatchOption
-                 kvoOptions:_defaultKvoOptions];
+    [self startObserving:object
+                 keyPath:keyPath
+                  action:action
+          dispatchOption:dispatchOption
+              kvoOptions:_defaultKvoOptions];
 }
 
-- (void) setDispatchAction: (SEL) action
-                forKeyPath: (NSString *) keyPath
-                  ofObject: (NSObject *) object
-                kvoOptions: (NSKeyValueObservingOptions) kvoOptions;
+- (void)startObserving:(NSObject *)object
+               keyPath:(NSString *)keyPath
+                action:(SEL)action
+            kvoOptions:(NSKeyValueObservingOptions)kvoOptions;
 {
-    [self setDispatchAction:action
-                 forKeyPath:keyPath
-                   ofObject:object
-             dispatchOption:_defaultDispatchOption
-                 kvoOptions:kvoOptions];
+    [self startObserving:object
+                 keyPath:keyPath
+                  action:action
+          dispatchOption:_defaultDispatchOption
+              kvoOptions:kvoOptions];
 }
 
-- (void) setDispatchAction: (SEL) action
-                forKeyPath: (NSString *) keyPath
-                  ofObject: (NSObject *) object
-            dispatchOption: (DDObserverDispatchOption) dispatchOption
-                kvoOptions: (NSKeyValueObservingOptions) kvoOptions;
+- (void)startObserving:(NSObject *)object
+               keyPath:(NSString *)keyPath
+                action:(SEL)action
+        dispatchOption:(DDObserverDispatchOption)dispatchOption
+            kvoOptions:(NSKeyValueObservingOptions)kvoOptions;
 {
-    DDObserverDispatcherEntry * entry =
-    [[DDObserverDispatcherEntry alloc] initWithObserved:object
-                                                keyPath:keyPath
-                                                 target:_target
-                                                 action:action
-                                         dispatchOption:dispatchOption];
+    DDObserverEntry * entry =
+        [[DDObserverEntry alloc] initWithObserved:object
+                                          keyPath:keyPath
+                                           target:_target
+                                           action:action
+                                   dispatchOption:dispatchOption];
     [entry autorelease];
     [self addDispatchEntry:entry kvoOptions:kvoOptions];
 }
 
-- (void) removeDispatchActionForKeyPath: (NSString *) keyPath
-                               ofObject: (NSObject *) object;
+#pragma mark -
+
+- (void)stopObservingAll;
+{
+    [self stopObserving:nil keyPath:nil];
+}
+
+- (void)stopObserving:(NSObject *)object;
+{
+    [self stopObserving:object keyPath:nil];
+}
+
+- (void)stopObserving:(NSObject *)object keyPath:(NSString *)keyPath;
 {
     @synchronized (self)
     {
         NSEnumerator * entries = [_observerEntries objectEnumerator];
-        DDObserverDispatcherEntry * entry;
+        DDObserverEntry * entry;
         NSMutableArray * entriesToRemove = [NSMutableArray array];
         while ((entry = [entries nextObject]) != nil)
         {
@@ -162,26 +173,16 @@ defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
     }
 }
 
-- (void) removeAllDispatchActions
-{
-    [self removeDispatchActionForKeyPath:nil ofObject:nil];
-}
-
-- (void) removeAllDispatchActionsOfObject: (NSObject *) object;
-{
-    [self removeDispatchActionForKeyPath:nil ofObject:object];
-}
-
 @end
 
 @implementation DDObserverDispatcher (Private)
 
-- (void) addDispatchEntry: (DDObserverDispatcherEntry *) entry
+- (void) addDispatchEntry: (DDObserverEntry *) entry
                kvoOptions: (NSKeyValueObservingOptions) kvoOptions;
 {
     @synchronized (self)
     {
-        [self removeDispatchActionForKeyPath:[entry keyPath] ofObject:[entry observed]];
+        [self stopObserving:[entry observed] keyPath:[entry keyPath]];
         [_observerEntries addObject:entry];
         [entry startObservingWithOptions:kvoOptions];
     }

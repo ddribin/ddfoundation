@@ -39,39 +39,42 @@ typedef enum
     NSKeyValueObservingOptions _defaultKvoOptions;
 }
 
-- (id) initWithTarget: (id) target
-defaultDispatchOption: (DDObserverDispatchOption) dispatchOption;
+- (id)initWithTarget:(id)target
+defaultDispatchOption:(DDObserverDispatchOption)dispatchOption;
 
-- (id) initWithTarget: (id) target;
+- (id)initWithTarget:(id)target;
 
-- (void)setDefaultKvoOptions: (NSKeyValueObservingOptions) kvoOptions;
+- (void)setDefaultKvoOptions:(NSKeyValueObservingOptions)kvoOptions;
 - (NSKeyValueObservingOptions)defaultKvoOptions;
 
-- (void) setDispatchAction: (SEL) action
-                forKeyPath: (NSString *) keyPath
-                  ofObject: (NSObject *) object;
+#pragma mark -
 
-- (void) setDispatchAction: (SEL) action
-                forKeyPath: (NSString *) keyPath
-                  ofObject: (NSObject *) object
-            dispatchOption: (DDObserverDispatchOption) dispatchOption;
+- (void)startObserving:(NSObject *)object
+               keyPath:(NSString *)keyPath
+                action:(SEL)action;
 
-- (void) setDispatchAction: (SEL) action
-                forKeyPath: (NSString *) keyPath
-                  ofObject: (NSObject *) object
-            dispatchOption: (DDObserverDispatchOption) dispatchOption
-                kvoOptions: (NSKeyValueObservingOptions) kvoOptions;
+- (void)startObserving:(NSObject *)object
+               keyPath:(NSString *)keyPath
+                action:(SEL)action
+        dispatchOption:(DDObserverDispatchOption)dispatchOption;
 
-- (void) setDispatchAction: (SEL) action
-                forKeyPath: (NSString *) keyPath
-                  ofObject: (NSObject *) object
-                kvoOptions: (NSKeyValueObservingOptions) kvoOptions;
+- (void)startObserving:(NSObject *)object
+               keyPath:(NSString *)keyPath
+                action:(SEL)action
+            kvoOptions:(NSKeyValueObservingOptions)kvoOptions;
 
-- (void) removeDispatchActionForKeyPath: (NSString *) keyPath
-                               ofObject: (NSObject *) object;
+- (void)startObserving:(NSObject *)object
+               keyPath:(NSString *)keyPath
+                action:(SEL)action
+        dispatchOption:(DDObserverDispatchOption)dispatchOption
+            kvoOptions:(NSKeyValueObservingOptions)kvoOptions;
 
-- (void) removeAllDispatchActions;
+#pragma mark  -
 
-- (void) removeAllDispatchActionsOfObject: (NSObject *) object;
+- (void)stopObservingAll;
+
+- (void)stopObserving:(NSObject *)object;
+
+- (void)stopObserving:(NSObject *)object keyPath:(NSString *)keyPath;
 
 @end

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#import "DDObserverDispatcherEntry.h"
+#import "DDObserverEntry.h"
 #import "DDObserverNotification.h"
 
 @interface NSThread (DDObserverDispatcher)
@@ -32,7 +32,7 @@
 @end
 
 
-@implementation DDObserverDispatcherEntry
+@implementation DDObserverEntry
 
 - (id) initWithObserved:(id)observed
                 keyPath:(NSString *)keyPath

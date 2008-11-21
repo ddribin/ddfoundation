@@ -184,15 +184,15 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
     STAssertEquals([observer notificationCount], 0, nil);
     
     DDObserverDispatcher * dispatcher = [self dispatcherWithTarget: observer];
-    [dispatcher setDispatchAction: @selector(countNotification:)
-                       forKeyPath: @"flagged" ofObject: object];
+    [dispatcher startObserving:object keyPath:@"flagged"
+                        action:@selector(countNotification:)];
     
     [object toggleFlagged];
     [object toggleFlagged2];
     
     STAssertEquals([observer notificationCount], 1, nil);
     
-    [dispatcher removeDispatchActionForKeyPath: @"flagged" ofObject: object];
+    [dispatcher stopObserving:object keyPath:@"flagged"];
     [object toggleFlagged];
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 1, nil);
@@ -209,28 +209,28 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
     STAssertEquals([observer notificationCount], 0, nil);
     
     DDObserverDispatcher * dispatcher = [self dispatcherWithTarget: observer];
-    [dispatcher setDispatchAction: @selector(countNotification:)
-                       forKeyPath: @"flagged" ofObject: object];
-    [dispatcher setDispatchAction: @selector(countNotification:)
-                       forKeyPath: @"flagged2" ofObject: object];
+    [dispatcher startObserving:object keyPath:@"flagged"
+                        action:@selector(countNotification:)];
+    [dispatcher startObserving:object keyPath:@"flagged2"
+                        action:@selector(countNotification:)];
     
     [object toggleFlagged];
     [object toggleFlagged2];
     
     STAssertEquals([observer notificationCount], 2, nil);
     
-    [dispatcher removeDispatchActionForKeyPath: @"flagged" ofObject: object];
+    [dispatcher stopObserving:object keyPath:@"flagged"];
     [object toggleFlagged];
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 3, nil);
     
-    [dispatcher removeDispatchActionForKeyPath: @"flagged2" ofObject: object];
+    [dispatcher stopObserving:object keyPath:@"flagged2"];
     [object toggleFlagged];
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 3, nil);
     
     STAssertEquals([dispatcher test_entryCount], 0U, nil);
-    [dispatcher removeAllDispatchActions];
+    [dispatcher stopObservingAll];
 }
 
 - (void) testResettingAction;
@@ -242,34 +242,34 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
     STAssertEquals([observer notificationCount], 0, nil);
     
     DDObserverDispatcher * dispatcher = [self dispatcherWithTarget: observer];
-    [dispatcher setDispatchAction: @selector(countNotification:)
-                       forKeyPath: @"flagged" ofObject: object];
-    [dispatcher setDispatchAction: @selector(countNotification:)
-                       forKeyPath: @"flagged2" ofObject: object];
+    [dispatcher startObserving:object keyPath:@"flagged"
+                        action:@selector(countNotification:)];
+    [dispatcher startObserving:object keyPath:@"flagged2"
+                        action:@selector(countNotification:)];
     
     [object toggleFlagged];
     [object toggleFlagged2];
 
     STAssertEquals([observer notificationCount], 2, nil);
     
-    [dispatcher setDispatchAction: @selector(ignoreNotification:)
-                       forKeyPath: @"flagged" ofObject: object];
+    [dispatcher startObserving:object keyPath:@"flagged"
+                        action:@selector(ignoreNotification:)];
     [object toggleFlagged];
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 3, nil);
     
-    [dispatcher removeDispatchActionForKeyPath: @"flagged2" ofObject: object];
+    [dispatcher stopObserving:object keyPath:@"flagged2"];
     [object toggleFlagged];
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 3, nil);
     
-    [dispatcher removeDispatchActionForKeyPath: @"flagged" ofObject: object];
+    [dispatcher stopObserving:object keyPath:@"flagged"];
     [object toggleFlagged];
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 3, nil);
 }
 
-- (void) testRemoveAllActions
+- (void) testStopObservingAll
 {
     DDObserverDispatcherTestObject * object = [DDObserverDispatcherTestObject object];
     DDObserverDispatcherTestObserver * observer = [DDObserverDispatcherTestObserver observer];
@@ -278,17 +278,17 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
     STAssertEquals([observer notificationCount], 0, nil);
     
     DDObserverDispatcher * dispatcher = [self dispatcherWithTarget: observer];
-    [dispatcher setDispatchAction: @selector(countNotification:)
-                       forKeyPath: @"flagged" ofObject: object];
-    [dispatcher setDispatchAction: @selector(countNotification:)
-                       forKeyPath: @"flagged2" ofObject: object];
+    [dispatcher startObserving:object keyPath:@"flagged"
+                        action:@selector(countNotification:)];
+    [dispatcher startObserving:object keyPath:@"flagged2"
+                        action:@selector(countNotification:)];
     
     [object toggleFlagged];
     [object toggleFlagged2];
     
     STAssertEquals([observer notificationCount], 2, nil);
     
-    [dispatcher removeAllDispatchActions];
+    [dispatcher stopObservingAll];
     [object toggleFlagged];
     [object toggleFlagged2];
     STAssertEquals([observer notificationCount], 2, nil);
@@ -296,19 +296,19 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
     STAssertEquals([dispatcher test_entryCount], 0U, nil);
 }
 
-- (void) testRemoveAllActionsForAnObserver
+- (void) testStopObserveringAnIndividualObserver
 {
     DDObserverDispatcherTestObject * object1 = [DDObserverDispatcherTestObject object];
     DDObserverDispatcherTestObject * object2 = [DDObserverDispatcherTestObject object];
     DDObserverDispatcherTestObserver * observer = [DDObserverDispatcherTestObserver observer];
     
     DDObserverDispatcher * dispatcher = [self dispatcherWithTarget: observer];
-    [dispatcher setDispatchAction: @selector(countNotification:)
-                       forKeyPath: @"flagged" ofObject: object1];
-    [dispatcher setDispatchAction: @selector(countNotification:)
-                       forKeyPath: @"flagged2" ofObject: object1];
-    [dispatcher setDispatchAction: @selector(countNotification:)
-                       forKeyPath: @"flagged" ofObject: object2];
+    [dispatcher startObserving:object1 keyPath:@"flagged"
+                        action:@selector(countNotification:)];
+    [dispatcher startObserving:object1 keyPath:@"flagged2"
+                        action:@selector(countNotification:)];
+    [dispatcher startObserving:object2 keyPath:@"flagged"
+                        action:@selector(countNotification:)];
     
     [object1 toggleFlagged];
     [object1 toggleFlagged2];
@@ -316,7 +316,7 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
     
     STAssertEquals([observer notificationCount], 3, nil);
     
-    [dispatcher removeAllDispatchActionsOfObject: object1];
+    [dispatcher stopObserving:object1];
     [object1 toggleFlagged];
     [object1 toggleFlagged2];
     [object2 toggleFlagged];
@@ -324,7 +324,7 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
     
     STAssertEquals([dispatcher test_entryCount], 1U, nil);
     
-    [dispatcher removeAllDispatchActionsOfObject: object2];
+    [dispatcher stopObserving:object2];
     [object1 toggleFlagged];
     [object1 toggleFlagged2];
     [object2 toggleFlagged];
@@ -346,8 +346,8 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
     DDObserverDispatcherTestObserver * observer = [DDObserverDispatcherTestObserver observer];
     
     DDObserverDispatcher * dispatcher = [self dispatcherWithTarget: observer];
-    [dispatcher setDispatchAction: @selector(countNotification:)
-                       forKeyPath: @"flagged" ofObject: object];
+    [dispatcher startObserving:object keyPath:@"flagged"
+                        action:@selector(countNotification:)];
     
     [object toggleFlaggedInBackground];
     STAssertEqualObjects(observer.lastThreadName, BACKGROUND_THREAD_NAME, nil);
@@ -360,8 +360,8 @@ static NSString * BACKGROUND_THREAD_NAME = @"Background Thread";
     
     DDObserverDispatcher * dispatcher = [self dispatcherWithTarget: observer
                                                     dispatchOption: DDObserverDispatchOnMainThread];
-    [dispatcher setDispatchAction: @selector(countNotification:)
-                       forKeyPath: @"flagged" ofObject: object];
+    [dispatcher startObserving:object keyPath:@"flagged"
+                        action:@selector(countNotification:)];
     
     [object toggleFlaggedInBackground];
     STAssertEqualObjects(observer.lastThreadName, [[NSThread currentThread] name], nil);
