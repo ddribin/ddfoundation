@@ -32,6 +32,19 @@
     [self setDefaultJRLogLevel: JRLogLevel_Error];
 }
 
+- (NSString *)name
+{
+    SEL selector = [[self invocation] selector];
+    if ([[self class] respondsToSelector:selector])
+    {
+        NSString * testName = [[self class] performSelector:selector];
+        return [NSString stringWithFormat:@"-[%@ '%@']",
+                [self className], testName];
+    }
+    else
+        return [super name];
+}
+
 - (NSBundle *) myBundle;
 {
     NSBundle * myBundle = [NSBundle bundleForClass: [self class]];
