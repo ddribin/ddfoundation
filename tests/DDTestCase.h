@@ -41,7 +41,9 @@
 
 #define DD_TEST(_NAME_) DD_TEST2(_NAME_, __LINE__)
 
-#define DD_TEST2(_NAME_, _LINE_) \
+#define DD_TEST2(_NAME_, _LINE_) DD_TEST3(_NAME_, _LINE_)
+
+#define DD_TEST3(_NAME_, _LINE_) \
 + (NSString *)testLine_ ## _LINE_ { return _NAME_; } \
 - (void)testLine_ ## _LINE_
 
