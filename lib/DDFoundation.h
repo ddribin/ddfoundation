@@ -29,6 +29,7 @@
 #import "DDRunLoopCondition.h"
 #import "DDSequenceComparator.h"
 #import "DDTemporaryDirectory.h"
+#import "DDTemporaryFile.h"
 
 #import "DDBaseN.h"
 
