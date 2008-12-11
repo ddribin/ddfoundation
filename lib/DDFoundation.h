@@ -30,6 +30,7 @@
 #import "DDSequenceComparator.h"
 #import "DDTemporaryDirectory.h"
 #import "DDTemporaryFile.h"
+#import "DDDelegateProxy.h"
 
 #import "DDBaseN.h"
 
