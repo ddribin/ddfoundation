@@ -6,7 +6,6 @@
 //  Copyright 2008 Bit Maki, Inc.. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
 #import "DDTestCase.h"
 
 @interface DDDisposableTest : DDTestCase {
