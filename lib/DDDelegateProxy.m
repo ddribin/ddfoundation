@@ -86,20 +86,12 @@
 
 - (id)forwardingTargetForSelector:(SEL)selector;
 {
-    Method method = class_getInstanceMethod([_delegate class], selector);
     id target = _delegate;
-    if (method == NULL)
-    {
-        method = class_getInstanceMethod([_defaultImplementation class], selector);
+    if ([_delegate respondsToSelector:selector])
+        target = _delegate;
+    else if ([_defaultImplementation respondsToSelector:selector])
         target = _defaultImplementation;
-    }
     
-    if (method == NULL)
-        return _delegate;
-    
-    IMP imp = method_getImplementation(method);
-    const char * types = method_getTypeEncoding(method);
-    class_addMethod([self class], selector, imp, types);
     return target;
 }
 
