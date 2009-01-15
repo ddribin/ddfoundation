@@ -30,7 +30,11 @@ NSString * DDNSStringFromBOOL(BOOL b);
 
 @interface NSString (DDExtensions)
 
++ (NSString *) dd_stringFromOSType:(OSType)type;
+
 - (NSString *) dd_pathMimeType;
+
+- (OSType) dd_osType;
 
 @end
 

@@ -48,9 +48,22 @@ NSString * DDNSStringFromBOOL(BOOL b)
 
 @implementation NSString (DDExtensions)
 
++ (NSString *) dd_stringFromOSType:(OSType)type;
+{
+    CFStringRef cfTypeString = UTCreateStringForOSType(type);
+    NSString * typeString = [(id)(cfTypeString) autorelease];
+    return typeString;
+}
+
 - (NSString *) dd_pathMimeType;
 {
     return DDMimeTypeForExtension([self pathExtension]);
+}
+
+- (OSType) dd_osType;
+{
+    OSType type = UTGetOSTypeFromString((CFStringRef)self);
+    return type;
 }
 
 NSString * DDToStringFromTypeAndValue(const char * typeCode, void * value)

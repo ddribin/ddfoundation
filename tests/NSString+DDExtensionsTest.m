@@ -45,6 +45,18 @@
     STAssertEqualObjects([@"foo" dd_pathMimeType], @"application/octet-stream", nil);
 }
 
+- (void)testOSTypeToString
+{
+    NSString * stringType = [NSString dd_stringFromOSType:typeAEList];
+    STAssertEqualObjects(@"list", stringType, nil);
+}
+
+- (void)testStringToOSType
+{
+    OSType type = [@"list" dd_osType];
+    STAssertEquals((OSType)typeAEList, type, nil);
+}
+
 - (void)testNSPointToStringWithTemp
 {
     NSPoint point = NSMakePoint(5, 10);
