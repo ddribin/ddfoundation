@@ -22,16 +22,34 @@
  * SOFTWARE.
  */
 
-#import "DDInvocationGrabber.h"
-#import "DDObserverDispatcher.h"
-#import "DDObserverNotification.h"
-#import "DDRunLoopPoker.h"
-#import "DDRunLoopCondition.h"
-#import "DDSequenceComparator.h"
-#import "DDTemporaryDirectory.h"
-#import "DDTemporaryFile.h"
-#import "DDDelegateProxy.h"
+#import "NSValue+DDExtensionsTest.h"
+#import "NSValue+DDExtensions.h"
 
-#import "DDBaseN.h"
 
-#import "DDFoundationExtensions.h"
+@implementation NSValue_DDExtensionsTest
+
+- (void)testIntValue
+{
+    NSValue * value = ddvalue(42);
+    
+    int i = 42;
+    STAssertEqualObjects(value, [NSValue valueWithBytes:&i objCType:@encode(int)], nil);
+}
+
+- (void)testBoolYesValue
+{
+    NSValue * value = ddvalue(YES);
+    
+    BOOL b = YES;
+    STAssertEqualObjects(value, [NSValue valueWithBytes:&b objCType:@encode(BOOL)], nil);
+}
+
+- (void)testBoolNoValue
+{
+    NSValue * value = ddvalue(NO);
+    
+    BOOL b = NO;
+    STAssertEqualObjects(value, [NSValue valueWithBytes:&b objCType:@encode(BOOL)], nil);
+}
+
+@end

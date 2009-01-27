@@ -22,16 +22,5 @@
  * SOFTWARE.
  */
 
-#import "DDInvocationGrabber.h"
-#import "DDObserverDispatcher.h"
-#import "DDObserverNotification.h"
-#import "DDRunLoopPoker.h"
-#import "DDRunLoopCondition.h"
-#import "DDSequenceComparator.h"
-#import "DDTemporaryDirectory.h"
-#import "DDTemporaryFile.h"
-#import "DDDelegateProxy.h"
-
-#import "DDBaseN.h"
-
-#import "DDFoundationExtensions.h"
+#define ddvalue(_X_) ({typeof(_X_) _Y_ = (_X_);\
+    [NSValue valueWithBytes:&_Y_ objCType:@encode(typeof(_Y_))];})

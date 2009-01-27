@@ -30,6 +30,10 @@
 		5529B6790E89AA5D00ED5C34 /* base32.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529B6780E89AA5D00ED5C34 /* base32.m */; };
 		5529B6800E89AB6D00ED5C34 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5529B67F0E89AB6D00ED5C34 /* Foundation.framework */; };
 		5529B6830E89AB7400ED5C34 /* libDDFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC07E0554694100DB518D /* libDDFoundation.a */; };
+		5536F14E0F2FBA0400488A67 /* DDFoundationExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5536F14D0F2FBA0400488A67 /* DDFoundationExtensions.h */; };
+		5536F1500F2FBA4C00488A67 /* NSValue+DDExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5536F14F0F2FBA4C00488A67 /* NSValue+DDExtensions.h */; };
+		5536F1560F2FBAB700488A67 /* NSValue+DDExtensionsTest.h in Headers */ = {isa = PBXBuildFile; fileRef = 5536F1540F2FBAB700488A67 /* NSValue+DDExtensionsTest.h */; };
+		5536F1570F2FBAB700488A67 /* NSValue+DDExtensionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536F1550F2FBAB700488A67 /* NSValue+DDExtensionsTest.m */; };
 		553D74D60EEB04FA000A3CF1 /* DDDelegateProxyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 553D74D50EEB04FA000A3CF1 /* DDDelegateProxyTest.m */; };
 		555D37250D48F512001A5533 /* DDObserverDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 555D37230D48F512001A5533 /* DDObserverDispatcher.h */; };
 		555D37260D48F512001A5533 /* DDObserverDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 555D37240D48F512001A5533 /* DDObserverDispatcher.m */; };
@@ -159,6 +163,10 @@
 		5529B6720E89AA3F00ED5C34 /* base32 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = base32; sourceTree = BUILT_PRODUCTS_DIR; };
 		5529B6780E89AA5D00ED5C34 /* base32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = base32.m; sourceTree = "<group>"; };
 		5529B67F0E89AB6D00ED5C34 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		5536F14D0F2FBA0400488A67 /* DDFoundationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFoundationExtensions.h; sourceTree = "<group>"; };
+		5536F14F0F2FBA4C00488A67 /* NSValue+DDExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+DDExtensions.h"; sourceTree = "<group>"; };
+		5536F1540F2FBAB700488A67 /* NSValue+DDExtensionsTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+DDExtensionsTest.h"; sourceTree = "<group>"; };
+		5536F1550F2FBAB700488A67 /* NSValue+DDExtensionsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSValue+DDExtensionsTest.m"; sourceTree = "<group>"; };
 		553D74D40EEB04FA000A3CF1 /* DDDelegateProxyTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDDelegateProxyTest.h; sourceTree = "<group>"; };
 		553D74D50EEB04FA000A3CF1 /* DDDelegateProxyTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDDelegateProxyTest.m; sourceTree = "<group>"; };
 		555D37230D48F512001A5533 /* DDObserverDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDObserverDispatcher.h; sourceTree = "<group>"; };
@@ -437,6 +445,8 @@
 				55EA07370DDE5E610087B37B /* NSObject+DDExtensionsTest.m */,
 				5529B3C80E89417F00ED5C34 /* NSData+DDExtensionsTest.h */,
 				5529B3C90E89417F00ED5C34 /* NSData+DDExtensionsTest.m */,
+				5536F1540F2FBAB700488A67 /* NSValue+DDExtensionsTest.h */,
+				5536F1550F2FBAB700488A67 /* NSValue+DDExtensionsTest.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -469,6 +479,8 @@
 				55EA25D00E852DBE0051E267 /* NSSet+DDExtensions.m */,
 				55EA25D10E852DBE0051E267 /* NSSortDescriptor+DDExtensions.h */,
 				55EA25D20E852DBE0051E267 /* NSSortDescriptor+DDExtensions.m */,
+				5536F14F0F2FBA4C00488A67 /* NSValue+DDExtensions.h */,
+				5536F14D0F2FBA0400488A67 /* DDFoundationExtensions.h */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -574,6 +586,9 @@
 				55A418B00ED665B70030F98A /* DDObserverNotification.h in Headers */,
 				55A036100ED8853E0089F431 /* DDEqualBuilder.h in Headers */,
 				55D044400EF1A3BF002A18BE /* DDDelegateProxy.h in Headers */,
+				5536F14E0F2FBA0400488A67 /* DDFoundationExtensions.h in Headers */,
+				5536F1500F2FBA4C00488A67 /* NSValue+DDExtensions.h in Headers */,
+				5536F1560F2FBAB700488A67 /* NSValue+DDExtensionsTest.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -748,6 +763,7 @@
 				55A418B10ED665B70030F98A /* DDObserverNotification.m in Sources */,
 				55A036110ED8853E0089F431 /* DDEqualBuilder.m in Sources */,
 				55D044410EF1A3BF002A18BE /* DDDelegateProxy.m in Sources */,
+				5536F1570F2FBAB700488A67 /* NSValue+DDExtensionsTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

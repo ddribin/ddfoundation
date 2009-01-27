@@ -22,16 +22,9 @@
  * SOFTWARE.
  */
 
-#import "DDInvocationGrabber.h"
-#import "DDObserverDispatcher.h"
-#import "DDObserverNotification.h"
-#import "DDRunLoopPoker.h"
-#import "DDRunLoopCondition.h"
-#import "DDSequenceComparator.h"
-#import "DDTemporaryDirectory.h"
-#import "DDTemporaryFile.h"
-#import "DDDelegateProxy.h"
-
-#import "DDBaseN.h"
-
-#import "DDFoundationExtensions.h"
+#import "NSArray+DDExtensions.h"
+#import "NSSet+DDExtensions.h"
+#import "NSData+DDExtensions.h"
+#import "NSObject+DDExtensions.h"
+#import "NSString+DDExtensions.h"
+#import "NSSortDescriptor+DDExtensions.h"

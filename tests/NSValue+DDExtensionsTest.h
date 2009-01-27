@@ -22,16 +22,11 @@
  * SOFTWARE.
  */
 
-#import "DDInvocationGrabber.h"
-#import "DDObserverDispatcher.h"
-#import "DDObserverNotification.h"
-#import "DDRunLoopPoker.h"
-#import "DDRunLoopCondition.h"
-#import "DDSequenceComparator.h"
-#import "DDTemporaryDirectory.h"
-#import "DDTemporaryFile.h"
-#import "DDDelegateProxy.h"
+#import <SenTestingKit/SenTestingKit.h>
+#import "DDTestCase.h"
 
-#import "DDBaseN.h"
+@interface NSValue_DDExtensionsTest : DDTestCase {
+    
+}
 
-#import "DDFoundationExtensions.h"
+@end
