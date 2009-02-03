@@ -72,6 +72,7 @@
     _target = nil;
     _invocation = nil;
     _forwardInvokesOnMainThread = NO;
+    _invocationThread = nil;
     _waitUntilDone = NO;
     
     return self;
@@ -125,6 +126,13 @@
     _forwardInvokesOnMainThread = forwardInvokesOnMainThread;
 }
 
+#if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+- (void)setInvokesOnThread:(NSThread *)thread;
+{
+    _invocationThread = thread;
+}
+#endif
+
 - (BOOL)waitUntilDone;
 {
     return _waitUntilDone;
@@ -146,14 +154,28 @@
 {
     [ioInvocation setTarget:[self target]];
     [self setInvocation:ioInvocation];
+    BOOL invokeOnOtherThread = _forwardInvokesOnMainThread || (_invocationThread != nil);
+    if (invokeOnOtherThread && !_waitUntilDone)
+    {
+        [_invocation retainArguments];
+    }
+    
     if (_forwardInvokesOnMainThread)
     {
-        if (!_waitUntilDone)
-            [_invocation retainArguments];
         [_invocation performSelectorOnMainThread:@selector(invoke)
                                       withObject:nil
                                    waitUntilDone:_waitUntilDone];
     }
+    
+#if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+    if (_invocationThread != nil)
+    {
+        [_invocation performSelector:@selector(invoke)
+                            onThread:_invocationThread
+                          withObject:nil
+                       waitUntilDone:_waitUntilDone];
+    }
+#endif
 }
 
 @end

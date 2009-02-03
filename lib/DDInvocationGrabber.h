@@ -80,6 +80,7 @@
 	id _target;
 	NSInvocation * _invocation;
     BOOL _forwardInvokesOnMainThread;
+    NSThread * _invocationThread;
     BOOL _waitUntilDone;
 }
 
@@ -97,6 +98,10 @@
 
 - (BOOL)forwardInvokesOnMainThread;
 - (void)setForwardInvokesOnMainThread:(BOOL)forwardInvokesOnMainThread;
+
+#if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+- (void)setInvokesOnThread:(NSThread *)thread;
+#endif
 
 - (BOOL)waitUntilDone;
 - (void)setWaitUntilDone:(BOOL)waitUntilDone;

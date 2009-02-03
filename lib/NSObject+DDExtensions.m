@@ -40,4 +40,21 @@
     return [grabber prepareWithInvocationTarget:self];
 }
 
+#if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+
+- (id)dd_invokeOnThread:(NSThread *)thread;
+{
+    return [self dd_invokeOnThread:thread waitUntilDone:NO];
+}
+
+- (id)dd_invokeOnThread:(NSThread *)thread waitUntilDone:(BOOL)waitUntilDone;
+{
+    DDInvocationGrabber * grabber = [DDInvocationGrabber invocationGrabber];
+    [grabber setInvokesOnThread:thread];
+    [grabber setWaitUntilDone:waitUntilDone];
+    return [grabber prepareWithInvocationTarget:self];
+}
+
+#endif
+
 @end

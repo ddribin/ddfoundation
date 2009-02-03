@@ -30,6 +30,11 @@
 - (id)dd_invokeOnMainThread;
 - (id)dd_invokeOnMainThreadAndWaitUntilDone:(BOOL)waitUntilDone;
 
+#if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+- (id)dd_invokeOnThread:(NSThread *)thread;
+- (id)dd_invokeOnThread:(NSThread *)thread waitUntilDone:(BOOL)waitUntilDone;
+#endif
+
 @end
 
 #define ddsynthesize(_X_) @synthesize _X_ = _##_X_
