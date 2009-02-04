@@ -34,6 +34,8 @@
 
 + (DDTemporaryFile *) temporaryFileWithName: (NSString *) name;
 
+- (id) initWithName:(NSString *) name prefix:(NSString *)prefix;
+
 - (id) initWithName: (NSString *) name;
 
 - (void) cleanup;

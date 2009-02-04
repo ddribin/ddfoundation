@@ -23,6 +23,7 @@
  */
 
 #import "DDTemporaryDirectory.h"
+#import "NSString+DDExtensions.h"
 #include <unistd.h>
 #import "JRLog.h"
 
@@ -34,7 +35,12 @@
     return [[[self alloc] init] autorelease];
 }
 
-- (id) init;
+- (id) init
+{
+    return [self initWithPrefix:@""];
+}
+
+- (id) initWithPrefix:(NSString *)prefix
 {
     self = [super init];
     if (self == nil)
@@ -43,8 +49,9 @@
     NSString * tempDir = NSTemporaryDirectory();
     if (tempDir == nil)
         tempDir = @"/tmp";
-    
-    NSString * template = [tempDir stringByAppendingPathComponent: @"temp.XXXXXX"];
+
+    NSString * pattern = ddsprintf(@"%@temp.XXXXXX", prefix);
+    NSString * template = [tempDir stringByAppendingPathComponent: pattern];
     JRLogDebug(@"Template: %@", template);
     const char * fsTemplate = [template fileSystemRepresentation];
     NSMutableData * bufferData = [NSMutableData dataWithBytes: fsTemplate

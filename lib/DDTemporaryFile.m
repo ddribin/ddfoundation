@@ -32,13 +32,18 @@
     return [[[self alloc] initWithName: name] autorelease];
 }
 
-- (id) initWithName: (NSString *) name;
+- (id) initWithName:(NSString *) name;
+{
+    return [self initWithName:name prefix:@""];
+}
+
+- (id) initWithName:(NSString *) name prefix:(NSString *)prefix;
 {
     self = [super init];
     if (self == nil)
         return nil;
     
-    mTemporaryDirectory = [[DDTemporaryDirectory alloc] init];
+    mTemporaryDirectory = [[DDTemporaryDirectory alloc] initWithPrefix:prefix];
     mFullPath = [[[mTemporaryDirectory fullPath]
         stringByAppendingPathComponent: name] retain];
     

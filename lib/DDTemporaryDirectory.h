@@ -33,6 +33,7 @@
 
 + (DDTemporaryDirectory *) temporaryDirectory;
 
+- (id) initWithPrefix:(NSString *)prefix;
 - (id) init;
 
 - (void) cleanup;
