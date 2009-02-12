@@ -30,7 +30,7 @@
 
 @implementation DDTemporaryDirectory
 
-+ (NSString *)baseTemopraryDirectory;
++ (NSString *)baseTemporaryDirectory;
 {
     NSString * tempDir = NSTemporaryDirectory();
     if (tempDir == nil)
@@ -54,7 +54,7 @@
     if (self == nil)
         return nil;
     
-    NSString * tempDir = [[self class] baseTemopraryDirectory];
+    NSString * tempDir = [[self class] baseTemporaryDirectory];
 
     NSString * pattern = ddsprintf(@"%@temp.XXXXXX", prefix);
     NSString * template = [tempDir stringByAppendingPathComponent: pattern];

@@ -33,7 +33,7 @@
 /**
  * This is the directory where the temporary directory is created.
  */
-+ (NSString *)baseTemopraryDirectory;
++ (NSString *)baseTemporaryDirectory;
 
 + (DDTemporaryDirectory *) temporaryDirectory;
 
