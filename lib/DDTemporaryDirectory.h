@@ -30,6 +30,10 @@
     NSString * mFullPath;
 }
 
+/**
+ * This is the directory where the temporary directory is created.
+ */
++ (NSString *)baseTemopraryDirectory;
 
 + (DDTemporaryDirectory *) temporaryDirectory;
 

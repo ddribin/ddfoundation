@@ -30,6 +30,14 @@
 
 @implementation DDTemporaryDirectory
 
++ (NSString *)baseTemopraryDirectory;
+{
+    NSString * tempDir = NSTemporaryDirectory();
+    if (tempDir == nil)
+        tempDir = @"/tmp";
+    return tempDir;
+}
+
 + (DDTemporaryDirectory *) temporaryDirectory;
 {
     return [[[self alloc] init] autorelease];
@@ -46,9 +54,7 @@
     if (self == nil)
         return nil;
     
-    NSString * tempDir = NSTemporaryDirectory();
-    if (tempDir == nil)
-        tempDir = @"/tmp";
+    NSString * tempDir = [[self class] baseTemopraryDirectory];
 
     NSString * pattern = ddsprintf(@"%@temp.XXXXXX", prefix);
     NSString * template = [tempDir stringByAppendingPathComponent: pattern];
