@@ -32,9 +32,13 @@ NSString * DDNSStringFromBOOL(BOOL b);
 
 + (NSString *) dd_stringFromOSType:(OSType)type;
 
++ (NSString *) dd_stringWithUtf8Data:(NSData *)data;
+
 - (NSString *) dd_pathMimeType;
 
 - (OSType) dd_osType;
+
+- (NSData *) dd_utf8Data;
 
 @end
 

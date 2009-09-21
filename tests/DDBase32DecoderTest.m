@@ -24,60 +24,60 @@
 
 #import "DDBase32DecoderTest.h"
 #import "DDBase32Decoder.h"
-#import "NSData+DDExtensions.h"
+#import "NSString+DDExtensions.h"
 
 
 @implementation DDBase32DecoderTest
 
-static NSData * decode32(NSString * string)
+static NSString * decode32(NSString * string)
 {
-    return [DDBase32Decoder base32DecodeString:string];
+    NSData * data = [DDBase32Decoder base32DecodeString:string];
+    return [NSString dd_stringWithUtf8Data:data];
 }
 
-static NSData * crockfordDecode32(NSString * string)
+static NSString * crockfordDecode32(NSString * string)
 {
-    return [DDBase32Decoder crockfordBase32DecodeString:string];
+    NSData * data = [DDBase32Decoder crockfordBase32DecodeString:string];
+    return [NSString dd_stringWithUtf8Data:data];
 }
 
 - (void)testDecodeBase32
 {
-    STAssertEqualObjects(dddata(), decode32(@""), nil);
-    STAssertEqualObjects(dddata('f'), decode32(@"MY======"), nil);
-    STAssertEqualObjects(dddata('f', 'o'), decode32(@"MZXQ===="), nil);
-    STAssertEqualObjects(dddata('f', 'o', 'o'), decode32(@"MZXW6==="), nil);
-    STAssertEqualObjects(dddata('f', 'o', 'o', 'b'), decode32(@"MZXW6YQ="), nil);
-    STAssertEqualObjects(dddata('f', 'o', 'o', 'b', 'a'),
-                         decode32(@"MZXW6YTB"), nil);
-    STAssertEqualObjects(dddata('f', 'o', 'o', 'b', 'a', 'r'),
-                         decode32(@"MZXW6YTBOI======"), nil);
+    STAssertEqualObjects(@"",       decode32(@""), nil);
+    STAssertEqualObjects(@"f",      decode32(@"MY======"), nil);
+    STAssertEqualObjects(@"fo",     decode32(@"MZXQ===="), nil);
+    STAssertEqualObjects(@"foo",    decode32(@"MZXW6==="), nil);
+    STAssertEqualObjects(@"foob",   decode32(@"MZXW6YQ="), nil);
+    STAssertEqualObjects(@"fooba",  decode32(@"MZXW6YTB"), nil);
+    STAssertEqualObjects(@"foobar", decode32(@"MZXW6YTBOI======"), nil);
 }
 
 - (void)testDecodeBase32Crockford
 {
-    STAssertEqualObjects(dddata("foobar"), crockfordDecode32(@"CSQPYRK1E800"), nil);
+    STAssertEqualObjects(@"foobar\0", crockfordDecode32(@"CSQPYRK1E800"), nil);
 }
 
 - (void)testDecodeBase32CrockfordLowerCase
 {
-    STAssertEqualObjects(dddata("foobar"), crockfordDecode32(@"csqpyrk1e800"), nil);
+    STAssertEqualObjects(@"foobar\0", crockfordDecode32(@"csqpyrk1e800"), nil);
 }
 
 - (void)testDecodeBase32CrockfordZeroAliases
 {
-    STAssertEqualObjects(dddata("foobar"), crockfordDecode32(@"CSQPYRK1E8Oo"), nil);
+    STAssertEqualObjects(@"foobar\0", crockfordDecode32(@"CSQPYRK1E8Oo"), nil);
 }
 
 - (void)testDecodeBase32CrockfordOneAliases
 {
-    STAssertEqualObjects(dddata("foobar"), crockfordDecode32(@"CSQPYRKIE800"), nil);
-    STAssertEqualObjects(dddata("foobar"), crockfordDecode32(@"CSQPYRKiE800"), nil);
-    STAssertEqualObjects(dddata("foobar"), crockfordDecode32(@"CSQPYRKLE800"), nil);
-    STAssertEqualObjects(dddata("foobar"), crockfordDecode32(@"CSQPYRKlE800"), nil);
+    STAssertEqualObjects(@"foobar\0", crockfordDecode32(@"CSQPYRKIE800"), nil);
+    STAssertEqualObjects(@"foobar\0", crockfordDecode32(@"CSQPYRKiE800"), nil);
+    STAssertEqualObjects(@"foobar\0", crockfordDecode32(@"CSQPYRKLE800"), nil);
+    STAssertEqualObjects(@"foobar\0", crockfordDecode32(@"CSQPYRKlE800"), nil);
 }
 
 - (void)testDecodeBase32CrockfordDashesIgnored
 {
-    STAssertEqualObjects(dddata("foobar"), crockfordDecode32(@"CSQPYR-K1E800"), nil);
+    STAssertEqualObjects(@"foobar\0", crockfordDecode32(@"CSQPYR-K1E800"), nil);
 }
 
 @end

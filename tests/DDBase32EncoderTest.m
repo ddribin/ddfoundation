@@ -24,45 +24,47 @@
 
 #import "DDBase32EncoderTest.h"
 #import "DDBase32Encoder.h"
-#import "NSData+DDExtensions.h"
+#import "NSString+DDExtensions.h"
 
 @implementation DDBase32EncoderTest
 
-static NSString * encode32(NSData * data)
+static NSString * encode32(NSString * stringData)
 {
+    NSData * data = [stringData dd_utf8Data];
     return [DDBase32Encoder base32EncodeData:data];
 }
 
-static NSString * crockfordEncode32(NSData * data)
+static NSString * crockfordEncode32(NSString * stringData)
 {
+    NSData * data = [stringData dd_utf8Data];
     return [DDBase32Encoder crockfordBase32EncodeData:data];
 }
 
-static NSString * zbase32Encode32(NSData * data)
+static NSString * zbase32Encode32(NSString * stringData)
 {
+    NSData * data = [stringData dd_utf8Data];
     return [DDBase32Encoder zbase32EncodeData:data];
 }
 
 - (void)testEncodeBase32
 {
-    STAssertEqualObjects(@"", encode32(dddata()), nil);
-    STAssertEqualObjects(@"MY======", encode32(dddata('f')), nil);
-    STAssertEqualObjects(@"MZXQ====", encode32(dddata('f', 'o')), nil);
-    STAssertEqualObjects(@"MZXW6===", encode32(dddata('f', 'o', 'o')), nil);
-    STAssertEqualObjects(@"MZXW6YQ=", encode32(dddata('f', 'o', 'o', 'b')), nil);
-    STAssertEqualObjects(@"MZXW6YTB", encode32(dddata('f', 'o', 'o', 'b', 'a')), nil);
-    STAssertEqualObjects(@"MZXW6YTBOI======",
-                         encode32(dddata('f', 'o', 'o', 'b', 'a', 'r')), nil);
+    STAssertEqualObjects(@"",         encode32(@""), nil);
+    STAssertEqualObjects(@"MY======", encode32(@"f"), nil);
+    STAssertEqualObjects(@"MZXQ====", encode32(@"fo"), nil);
+    STAssertEqualObjects(@"MZXW6===", encode32(@"foo"), nil);
+    STAssertEqualObjects(@"MZXW6YQ=", encode32(@"foob"), nil);
+    STAssertEqualObjects(@"MZXW6YTB", encode32(@"fooba"), nil);
+    STAssertEqualObjects(@"MZXW6YTBOI======", encode32(@"foobar"), nil);
 }
 
 - (void)testEncodeBase32Crockford
 {
-    STAssertEqualObjects(@"CSQPYRK1E800", crockfordEncode32(dddata("foobar")), nil);
+    STAssertEqualObjects(@"CSQPYRK1E800", crockfordEncode32(@"foobar\0"), nil);
 }
 
 - (void)testEncodeBase32ZBase32
 {
-    STAssertEqualObjects(@"C3ZS6AUBQEYY", zbase32Encode32(dddata("foobar")), nil);
+    STAssertEqualObjects(@"C3ZS6AUBQEYY", zbase32Encode32(@"foobar\0"), nil);
 }
 
 @end

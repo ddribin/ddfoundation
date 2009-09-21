@@ -24,30 +24,24 @@
 
 #import "DDBase64DecoderTest.h"
 #import "DDBase64Decoder.h"
-#import "NSData+DDExtensions.h"
+#import "NSString+DDExtensions.h"
 
 @implementation DDBase64DecoderTest
 
-static NSData * decode64(NSString * base64)
+static NSString * decode64(NSString * base64)
 {
-    return [DDBase64Decoder base64DecodeString:base64];
+    NSData * data = [DDBase64Decoder base64DecodeString:base64];
+    return [NSString dd_stringWithUtf8Data:data];
 }
 
 - (void)testBase64Decode
 {
-    STAssertEqualObjects(decode64(@""),
-                         dddata(), nil);
-    STAssertEqualObjects(decode64(@"Zg=="),
-                         dddata('f'), nil);
-    STAssertEqualObjects(decode64(@"Zm8="),
-                         dddata('f', 'o'), nil);
-    STAssertEqualObjects(decode64(@"Zm9v"),
-                         dddata('f', 'o', 'o'), nil);
-    STAssertEqualObjects(decode64(@"Zm9vYg=="),
-                         dddata('f', 'o', 'o', 'b'), nil);
-    STAssertEqualObjects(decode64(@"Zm9vYmE="),
-                         dddata('f', 'o', 'o', 'b', 'a'), nil);
-    STAssertEqualObjects(decode64(@"Zm9vYmFy"),
-                         dddata('f', 'o', 'o', 'b', 'a', 'r'), nil);
+    STAssertEqualObjects(decode64(@""),         @"", nil);
+    STAssertEqualObjects(decode64(@"Zg=="),     @"f", nil);
+    STAssertEqualObjects(decode64(@"Zm8="),     @"fo", nil);
+    STAssertEqualObjects(decode64(@"Zm9v"),     @"foo", nil);
+    STAssertEqualObjects(decode64(@"Zm9vYg=="), @"foob", nil);
+    STAssertEqualObjects(decode64(@"Zm9vYmE="), @"fooba", nil);
+    STAssertEqualObjects(decode64(@"Zm9vYmFy"), @"foobar", nil);
 }
 @end

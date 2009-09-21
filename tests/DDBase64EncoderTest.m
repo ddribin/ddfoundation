@@ -25,57 +25,51 @@
 #import "DDBase64EncoderTest.h"
 #import "DDBase64Encoder.h"
 #import "NSData+DDExtensions.h"
+#import "NSString+DDExtensions.h"
 
 @implementation DDBase64EncoderTest
 
-static NSString * encode64(NSData * data)
+static NSString * encode64(NSString * stringData)
 {
+    NSData * data = [stringData dd_utf8Data];
     return [DDBase64Encoder base64EncodeData:data];
 }
 
-static NSString * encode64NoPadding(NSData * data)
+static NSString * encode64NoPadding(NSString * stringData)
 {
+    NSData * data = [stringData dd_utf8Data];
     return [DDBase64Encoder base64EncodeData:data
                                      options:DDBaseEncoderOptionNoPadding];
 }
 
-static NSString * encode64WithLineBreaks(NSData * data)
+static NSString * encode64WithLineBreaks(NSString * stringData)
 {
+    NSData * data = [stringData dd_utf8Data];
     return [DDBase64Encoder base64EncodeData:data
                                      options:DDBaseEncoderOptionAddLineBreaks];
 }
 
 - (void)testBase64Encode
 {
-    STAssertEqualObjects(encode64(dddata()),
-                         @"", nil);
-    STAssertEqualObjects(encode64(dddata('f')),
-                         @"Zg==", nil);
-    STAssertEqualObjects(encode64(dddata('f', 'o')),
-                         @"Zm8=", nil);
-    STAssertEqualObjects(encode64(dddata('f', 'o', 'o')),
-                         @"Zm9v", nil);
-    STAssertEqualObjects(encode64(dddata('f', 'o', 'o', 'b')),
-                         @"Zm9vYg==", nil);
-    STAssertEqualObjects(encode64(dddata('f', 'o', 'o', 'b', 'a')),
-                         @"Zm9vYmE=", nil);
-    STAssertEqualObjects(encode64(dddata('f', 'o', 'o', 'b', 'a', 'r')),
-                         @"Zm9vYmFy", nil);
+    STAssertEqualObjects(encode64(@""),         @"", nil);
+    STAssertEqualObjects(encode64(@"f"),        @"Zg==", nil);
+    STAssertEqualObjects(encode64(@"fo"),       @"Zm8=", nil);
+    STAssertEqualObjects(encode64(@"foo"),      @"Zm9v", nil);
+    STAssertEqualObjects(encode64(@"foob"),     @"Zm9vYg==", nil);
+    STAssertEqualObjects(encode64(@"fooba"),    @"Zm9vYmE=", nil);
+    STAssertEqualObjects(encode64(@"foobar"),   @"Zm9vYmFy", nil);
 }
 
 - (void)testBase64EncodeNoPadding
 {
-    STAssertEqualObjects(encode64NoPadding(dddata('f')),
-                         @"Zg", nil);
-    STAssertEqualObjects(encode64NoPadding(dddata('f', 0)),
-                         @"ZgA", nil);
-    STAssertEqualObjects(encode64NoPadding(dddata('f', 0, 0)),
-                         @"ZgAA", nil);
+    STAssertEqualObjects(encode64NoPadding(@"f"),       @"Zg", nil);
+    STAssertEqualObjects(encode64NoPadding(@"f\0"),     @"ZgA", nil);
+    STAssertEqualObjects(encode64NoPadding(@"f\0\0"),   @"ZgAA", nil);
 }
 
 - (void)testBase64EncodeWithLineBreaks
 {
-    NSData * loremIpsum = dddata("Lorem ipsum dolor sit amet, consectetur adipisicing");
+    NSString * loremIpsum = @"Lorem ipsum dolor sit amet, consectetur adipisicing\0";
     
     STAssertEqualObjects(encode64(loremIpsum),
                          @"TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2ljaW5nAA==",

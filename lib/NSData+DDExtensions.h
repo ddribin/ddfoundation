@@ -27,6 +27,8 @@
 #define dddata(_BYTES_...) ({ uint8_t _Y_[] = {_BYTES_};\
     [NSData dataWithBytes:_Y_ length:sizeof(_Y_)]; })
 
+NSData * DDStringData(NSString * string);
+
 @interface NSData (DDExtensions)
 
 + (NSData *)dd_randomDataOfLength:(unsigned)length;

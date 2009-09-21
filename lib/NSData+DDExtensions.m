@@ -27,6 +27,11 @@
 #import "DDBase32Encoder.h"
 
 
+NSData * DDStringData(NSString * string)
+{
+    return [string dataUsingEncoding:NSUTF8StringEncoding];
+}
+
 @implementation NSData (DDExtensions)
 
 + (NSData *)dd_randomDataOfLength:(unsigned)length;

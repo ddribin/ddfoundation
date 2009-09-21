@@ -104,4 +104,15 @@ NSString * DDToStringFromTypeAndValue(const char * typeCode, void * value)
     return ddsprintf(@"? <%s>", typeCode);
 }
 
++ (NSString *) dd_stringWithUtf8Data:(NSData *)data;
+{
+    NSString * string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    return [string autorelease];
+}
+
+- (NSData *) dd_utf8Data;
+{
+    return [self dataUsingEncoding:NSUTF8StringEncoding];
+}
+
 @end

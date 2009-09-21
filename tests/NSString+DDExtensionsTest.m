@@ -24,6 +24,7 @@
 
 #import "NSString+DDExtensionsTest.h"
 #import "NSString+DDExtensions.h"
+#import "NSData+DDExtensions.h"
 
 @implementation NSString_DDExtensionsTest
 
@@ -119,6 +120,31 @@
     STAssertEqualObjects(DDToNString(YES),
                          DDNSStringFromBOOL(YES),
                          nil);
+}
+
+- (void)testToUtf8Data
+{
+    STAssertEqualObjects(dddata('b', 'a', 'r'), [@"bar" dd_utf8Data], nil);
+}
+
+- (void)testToUtf8DataWithNull
+{
+    STAssertEqualObjects(dddata('b', 'a', 'r', '\0'), [@"bar\0" dd_utf8Data], nil);
+}
+
+- (void)testToUtf8DataWithTwoNulls
+{
+    STAssertEqualObjects(dddata('b', 'a', 'r', '\0', '\0'), [@"bar\0\0" dd_utf8Data], nil);
+}
+
+- (void)testFromUtf8Data
+{
+    STAssertEqualObjects([NSString dd_stringWithUtf8Data:dddata('b', 'a', 'r')], @"bar", nil);
+}
+
+- (void)testFromUtf8DataWithNull
+{
+    STAssertEqualObjects([NSString dd_stringWithUtf8Data:dddata('b', 'a', 'r', '\0')], @"bar\0", nil);
 }
 
 @end
