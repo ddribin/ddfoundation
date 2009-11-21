@@ -29,6 +29,7 @@
 {
     NSRunLoop * _runLoop;
     NSPort * _pokerPort;
+    CFRunLoopSourceRef _pokerSource;
 }
 
 + (id)pokerWithRunLoop:(NSRunLoop *)runLoop;

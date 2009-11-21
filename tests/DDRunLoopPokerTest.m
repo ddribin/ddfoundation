@@ -58,11 +58,11 @@
     NSRunLoop * currentRunLoop = [NSRunLoop currentRunLoop];
     _poker = [DDRunLoopPoker pokerWithRunLoop:currentRunLoop];
     
-    NSDate * startDate = [NSDate date];
+    NSTimeInterval startTime = [NSDate timeIntervalSinceReferenceDate];
     BOOL result = [currentRunLoop runMode:NSDefaultRunLoopMode
                                beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.0]];
     STAssertTrue(result, nil);
-    NSTimeInterval waitTime = [startDate timeIntervalSinceNow];
+    NSTimeInterval waitTime = [NSDate timeIntervalSinceReferenceDate] - startTime;
     STAssertEqualsWithAccuracy(waitTime, 0.0, 0.01, nil);
     
     [_poker dispose];
@@ -84,11 +84,11 @@
                              toTarget:self
                            withObject:nil];
     
-    NSDate * startDate = [NSDate date];
+    NSTimeInterval startTime = [NSDate timeIntervalSinceReferenceDate];
     BOOL result = [currentRunLoop runMode:NSDefaultRunLoopMode
                                beforeDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
     STAssertTrue(result, nil);
-    NSTimeInterval waitTime = [startDate timeIntervalSinceNow];
+    NSTimeInterval waitTime = [NSDate timeIntervalSinceReferenceDate] - startTime;
     STAssertEqualsWithAccuracy(waitTime, 0.0, 0.1, nil);
     
     [_poker dispose];

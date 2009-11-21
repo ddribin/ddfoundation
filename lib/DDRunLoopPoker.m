@@ -24,7 +24,11 @@
 
 #import "DDRunLoopPoker.h"
 
+#define USE_MACH_PORT 1
+
+#if USE_MACH_PORT
 static const uint32_t kPokeMessage = 100;
+#endif
 
 @implementation DDRunLoopPoker
 
@@ -46,9 +50,30 @@ static const uint32_t kPokeMessage = 100;
         return nil;
     
     _runLoop = [runLoop retain];
+#if USE_MACH_PORT
     _pokerPort = [[NSMachPort port] retain];
     [_runLoop addPort:_pokerPort forMode:NSDefaultRunLoopMode];
     [_runLoop addPort:_pokerPort forMode:NSModalPanelRunLoopMode];
+#else
+    // We can set all callbacks to NULL. We're just using this as a way
+    // to ensure there's at least on source on the run loop and to wake
+    // up the run loop. We don't need to do anything when it fires.
+    CFRunLoopSourceContext context = {
+        .info = 0,
+        .retain = NULL,
+        .release = NULL,
+        .copyDescription = NULL,
+        .equal = NULL,
+        .hash = NULL,
+        .schedule = NULL,
+        .cancel = NULL,
+        .perform = NULL,
+    };
+    _pokerSource = CFRunLoopSourceCreate(kCFAllocatorDefault, 0, &context);
+    CFRunLoopRef cfRunLoop = [_runLoop getCFRunLoop];
+    CFRunLoopAddSource(cfRunLoop, _pokerSource, (CFStringRef)NSDefaultRunLoopMode);
+    CFRunLoopAddSource(cfRunLoop, _pokerSource, (CFStringRef)NSModalPanelRunLoopMode);
+#endif
     
     return self;
 }
@@ -69,6 +94,7 @@ static const uint32_t kPokeMessage = 100;
 
 - (void)dispose;
 {
+#if USE_MACH_PORT
     if (_pokerPort != nil)
     {
         [_runLoop removePort:_pokerPort forMode:NSModalPanelRunLoopMode];
@@ -77,6 +103,17 @@ static const uint32_t kPokeMessage = 100;
     [_pokerPort invalidate];
     [_pokerPort release];
     _pokerPort = nil;
+#else
+    CFRunLoopRef cfRunLoop = [_runLoop getCFRunLoop];
+    if (_pokerSource != NULL)
+    {
+        CFRunLoopRemoveSource(cfRunLoop, _pokerSource, (CFStringRef)NSModalPanelRunLoopMode);
+        CFRunLoopRemoveSource(cfRunLoop, _pokerSource, (CFStringRef)NSDefaultRunLoopMode);
+    }
+    CFRunLoopSourceInvalidate(_pokerSource);
+    CFRelease(_pokerSource);
+    _pokerSource = NULL;
+#endif
     
     [_runLoop release];
     _runLoop = nil;
@@ -84,6 +121,7 @@ static const uint32_t kPokeMessage = 100;
 
 - (void)pokeRunLoop;
 {
+#if USE_MACH_PORT
     NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:_pokerPort
                                                           receivePort:nil
                                                            components:nil];
@@ -91,6 +129,11 @@ static const uint32_t kPokeMessage = 100;
     
     [message setMsgid:kPokeMessage];
     [message sendBeforeDate:[NSDate date]];
+#elif 1
+    CFRunLoopSourceSignal(_pokerSource);
+    CFRunLoopRef cfRunLoop = [_runLoop getCFRunLoop];
+    CFRunLoopWakeUp(cfRunLoop);
+#endif
 }
 
 @end
