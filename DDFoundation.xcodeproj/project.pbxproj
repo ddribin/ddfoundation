@@ -105,6 +105,7 @@
 		55EF2AA10E17021900B465BE /* NSArray+DDExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 55EF2A9F0E17021900B465BE /* NSArray+DDExtensions.h */; };
 		55EF2AA20E17021900B465BE /* NSArray+DDExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55EF2AA00E17021900B465BE /* NSArray+DDExtensions.m */; };
 		55EF2AA90E17039500B465BE /* DDFoundation.h in Headers */ = {isa = PBXBuildFile; fileRef = 55EF2AA80E17039500B465BE /* DDFoundation.h */; };
+		55F1D33311546CE7007928AE /* DDPerformDebugger.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F1D33211546CE7007928AE /* DDPerformDebugger.m */; };
 		55F7D4C90DDAA4BC00FD433C /* NSObject+DDExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F7D4C70DDAA4BC00FD433C /* NSObject+DDExtensions.h */; };
 		55F7D4CA0DDAA4BC00FD433C /* NSObject+DDExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F7D4C80DDAA4BC00FD433C /* NSObject+DDExtensions.m */; };
 		55F7D4CF0DDAA4F000FD433C /* DDInvocationGrabber.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F7D4CD0DDAA4F000FD433C /* DDInvocationGrabber.h */; };
@@ -259,6 +260,7 @@
 		55EF2A9F0E17021900B465BE /* NSArray+DDExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+DDExtensions.h"; sourceTree = "<group>"; };
 		55EF2AA00E17021900B465BE /* NSArray+DDExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+DDExtensions.m"; sourceTree = "<group>"; };
 		55EF2AA80E17039500B465BE /* DDFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFoundation.h; sourceTree = "<group>"; };
+		55F1D33211546CE7007928AE /* DDPerformDebugger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDPerformDebugger.m; sourceTree = "<group>"; };
 		55F7D4C70DDAA4BC00FD433C /* NSObject+DDExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+DDExtensions.h"; sourceTree = "<group>"; };
 		55F7D4C80DDAA4BC00FD433C /* NSObject+DDExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+DDExtensions.m"; sourceTree = "<group>"; };
 		55F7D4CD0DDAA4F000FD433C /* DDInvocationGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDInvocationGrabber.h; sourceTree = "<group>"; };
@@ -490,6 +492,7 @@
 				55EA25D20E852DBE0051E267 /* NSSortDescriptor+DDExtensions.m */,
 				5536F14F0F2FBA4C00488A67 /* NSValue+DDExtensions.h */,
 				5536F14D0F2FBA0400488A67 /* DDFoundationExtensions.h */,
+				55F1D33211546CE7007928AE /* DDPerformDebugger.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -774,6 +777,7 @@
 				55A036110ED8853E0089F431 /* DDEqualBuilder.m in Sources */,
 				55D044410EF1A3BF002A18BE /* DDDelegateProxy.m in Sources */,
 				5519EBC611095C470067F023 /* NSDictionary+DDExtensions.m in Sources */,
+				55F1D33311546CE7007928AE /* DDPerformDebugger.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -840,12 +844,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ONLY_ACTIVE_ARCH_PRE_XCODE_3_1)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = 4.0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH_PRE_XCODE_3_1 = "$(NATIVE_ARCH)";
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -859,11 +864,12 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = 4.0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
