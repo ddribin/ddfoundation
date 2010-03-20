@@ -93,7 +93,7 @@
                                                                     argument:argument];
     [debugger autorelease];
     
-    // This is the original implemetion, not recursion
+    // This calls the original implementation. It's not recursing.
     [debugger dd_performSelector:@selector(perform)
                         onThread:thread
                       withObject:nil
@@ -108,7 +108,7 @@
                                                                     argument:argument];
     [debugger autorelease];
     
-    // This is the original implemetion, not recursion
+    // This calls the original implementation. It's not recursing.
     [debugger dd_performSelector:@selector(perform)
                       withObject:nil
                       afterDelay:delay
